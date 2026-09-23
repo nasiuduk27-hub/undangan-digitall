@@ -1,0 +1,194 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Technical Spec — Undangan Nikahan Digital</title>
+<style>
+:root{--bg:#faf7f2;--surface:#ffffff;--text:#2b2420;--muted:#7a6f63;--accent:#a9724f;--accent-soft:#f1e4d8;--border:#e7ddd0;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px);}
+@media (prefers-color-scheme: dark){:root:not([data-theme="light"]){--bg:#1c1815;--surface:#241f1b;--text:#ece5dd;--muted:#a99d8e;--accent:#e0a97c;--accent-soft:#33291f;--border:#3a322a;}}
+:root[data-theme="dark"]{--bg:#1c1815;--surface:#241f1b;--text:#ece5dd;--muted:#a99d8e;--accent:#e0a97c;--accent-soft:#33291f;--border:#3a322a;}
+html{scroll-padding-top:env(safe-area-inset-top,0px);}
+*{box-sizing:border-box;}
+body{margin:0;background:var(--bg);color:var(--text);font-family:'Segoe UI',system-ui,-apple-system,sans-serif;line-height:1.65;}
+.wrap{max-width:880px;margin:0 auto;padding:32px 20px 90px;}
+.kicker{color:var(--accent);font-weight:600;letter-spacing:.08em;text-transform:uppercase;font-size:.75rem;}
+h1{font-size:1.8rem;margin:.3em 0 .2em;}
+.meta{color:var(--muted);font-size:.9rem;}
+h2{font-size:1.25rem;margin-top:2.4em;border-bottom:2px solid var(--accent-soft);padding-bottom:.4em;}
+h3{font-size:1rem;margin-top:1.5em;color:var(--accent);}
+p{margin:.6em 0;}
+ul,ol{padding-left:1.3em;}
+li{margin:.35em 0;}
+table{width:100%;border-collapse:collapse;margin:1em 0;font-size:.88rem;display:block;overflow-x:auto;}
+th,td{border:1px solid var(--border);padding:7px 10px;text-align:left;vertical-align:top;}
+th{background:var(--accent-soft);font-weight:600;}
+.card{background:var(--surface);border:1px solid var(--border);border-radius:12px;padding:16px 20px;margin:1em 0;}
+pre{background:var(--surface);border:1px solid var(--border);border-radius:10px;padding:14px 16px;overflow-x:auto;font-size:.82rem;}
+code{background:var(--accent-soft);padding:1px 6px;border-radius:4px;font-size:.85em;}
+pre code{background:none;padding:0;}
+.toc{background:var(--surface);border:1px solid var(--border);border-radius:12px;padding:16px 22px;}
+.toc a{color:var(--text);text-decoration:none;}
+.toc a:hover{color:var(--accent);}
+</style>
+</head>
+<body>
+<div class="wrap">
+
+<div class="kicker">Technical Specification</div>
+<h1>Undangan Nikahan Digital — Tech Stack & Arsitektur</h1>
+<div class="meta">v1.0 · Pelengkap PRD & Design System · 23 September 2026</div>
+
+<div class="toc">
+<strong>Daftar Isi</strong>
+<ol>
+<li><a href="#stack">Rekomendasi Tech Stack</a></li>
+<li><a href="#desktop-mobile">Strategi Desktop vs Mobile</a></li>
+<li><a href="#arsitektur">Arsitektur Sistem</a></li>
+<li><a href="#env">Environment Variables</a></li>
+<li><a href="#skema">Skema Data</a></li>
+<li><a href="#api">Kontrak API (Ringkas)</a></li>
+<li><a href="#folder">Struktur Folder Project</a></li>
+<li><a href="#deploy">Hosting & Deployment</a></li>
+</ol>
+</div>
+
+<h2 id="stack">1. Rekomendasi Tech Stack</h2>
+<table>
+<tr><th>Layer</th><th>Rekomendasi</th><th>Kenapa</th></tr>
+<tr><td>Frontend Framework</td><td><strong>Next.js (React) + TypeScript</strong></td><td>SSR/SSG untuk halaman undangan (penting untuk share-preview WhatsApp yang butuh meta tag server-rendered), dynamic route per slug tamu, image optimization bawaan, ekosistem terbesar untuk kasus seperti ini.</td></tr>
+<tr><td>Styling</td><td><strong>Tailwind CSS</strong> + CSS variables per tema</td><td>Cocok dengan pendekatan design token (spacing scale, warna) yang sudah dirancang; gampang bikin banyak tema tanpa file CSS terpisah-pisah.</td></tr>
+<tr><td>Backend/API</td><td><strong>Next.js API Routes / Route Handlers</strong> (mulai monolith dulu)</td><td>Tidak perlu server terpisah di awal; bisa dipecah ke NestJS terpisah nanti kalau logic membesar (mis. job compression media).</td></tr>
+<tr><td>Database</td><td><strong>PostgreSQL</strong> + <strong>Prisma ORM</strong></td><td>Relasional cocok untuk data user–undangan–tamu–rekening; kolom JSONB untuk konfigurasi tema yang fleksibel.</td></tr>
+<tr><td>Media Storage</td><td><strong>Cloudflare R2</strong> atau AWS S3</td><td>Object storage untuk foto/video/audio; R2 lebih murah untuk egress (penting karena tamu banyak yang buka link).</td></tr>
+<tr><td>CDN & Image/Video Processing</td><td><strong>Cloudflare Images/Stream</strong> atau proses via <strong>ffmpeg</strong> di background job</td><td>Kompresi & transcoding otomatis sebelum disajikan ke tamu, sesuai batas ukuran di Design System.</td></tr>
+<tr><td>Autentikasi</td><td><strong>NextAuth.js / Auth.js</strong></td><td>Login email/Google, siap pakai dengan Next.js.</td></tr>
+<tr><td>Background Job</td><td><strong>BullMQ + Redis</strong></td><td>Untuk kompresi media & generate thumbnail secara async, tidak blocking upload.</td></tr>
+<tr><td>QR Code</td><td><strong>qrcode</strong> (generate, server-side) + <strong>html5-qrcode</strong> atau <strong>@zxing/browser</strong> (scan via kamera browser)</td><td>Tidak perlu aplikasi native; scanner cukup dibuka lewat browser HP/tablet resepsionis.</td></tr>
+<tr><td>Hosting</td><td><strong>Vercel</strong> (frontend+API) + <strong>Neon/Supabase</strong> (Postgres)</td><td>Deploy cepat, auto-scaling, cocok untuk trafik tamu yang bisa lonjak mendadak (mis. H-1 acara).</td></tr>
+</table>
+<p class="meta">Alternatif jika tim lebih familiar Vue: Nuxt 3 + Pinia bisa menggantikan Next.js dengan trade-off ekosistem sedikit lebih kecil untuk kasus media-heavy seperti ini.</p>
+
+<h2 id="desktop-mobile">2. Strategi Tampilan Desktop & Mobile</h2>
+<p>Sesuai Design System, pendekatannya <strong>bukan</strong> "responsive penuh" (layout berubah total di breakpoint besar), melainkan <strong>mobile-first canvas terpusat</strong>:</p>
+<ul>
+<li>Canvas undangan tetap <code>max-width: 480px</code>, di-center secara horizontal menggunakan flex/grid pada wrapper halaman.</li>
+<li>Di layar desktop, area di luar canvas diberi background netral/blur/gradient dari tema (bukan konten kosong).</li>
+<li>Semua unit pakai <code>rem</code>/relative, <code>touch target</code> minimal 44px tetap berlaku di desktop (klik mouse tetap nyaman).</li>
+<li>Dashboard admin (tempat user mengelola undangan, upload media, lihat RSVP) sebaliknya dibuat <strong>responsive penuh</strong> — karena calon pengantin realistis akan mengelola dari laptop juga, bukan cuma HP.</li>
+</ul>
+<div class="card">
+<strong>Kesimpulan:</strong> Halaman undangan (yang dilihat tamu) = mobile-first, centered card. Dashboard pengelolaan (yang dipakai pembuat undangan) = responsive layout standar (sidebar di desktop, bottom nav di mobile).
+</div>
+
+<h2 id="arsitektur">3. Arsitektur Sistem (Ringkas)</h2>
+<pre><code>[Browser Tamu] ──► [Next.js SSR Page /invite/[slug]?to=guest]
+                         │
+                         ▼
+                 [API Route / Route Handler]
+                         │
+        ┌────────────────┼─────────────────┐
+        ▼                ▼                 ▼
+  [PostgreSQL]     [Redis + BullMQ]   [Object Storage: R2/S3]
+  (data undangan,   (job kompresi      (foto, video, audio
+   tamu, RSVP,       media & thumbnail   asli & hasil kompresi)
+   rekening, tema)   async)
+</code></pre>
+
+<h2 id="env">4. Environment Variables (.env)</h2>
+<pre><code># App
+NEXT_PUBLIC_APP_URL=https://undanganku.app
+NODE_ENV=production
+
+# Database
+DATABASE_URL=postgresql://user:pass@host:5432/undangan_db
+
+# Auth
+NEXTAUTH_SECRET=xxxxxx
+NEXTAUTH_URL=https://undanganku.app
+GOOGLE_CLIENT_ID=xxxxxx
+GOOGLE_CLIENT_SECRET=xxxxxx
+
+# Object Storage (Cloudflare R2 / S3-compatible)
+STORAGE_ENDPOINT=https://xxxx.r2.cloudflarestorage.com
+STORAGE_ACCESS_KEY_ID=xxxxxx
+STORAGE_SECRET_ACCESS_KEY=xxxxxx
+STORAGE_BUCKET_NAME=undangan-media
+STORAGE_PUBLIC_CDN_URL=https://cdn.undanganku.app
+
+# Background Job
+REDIS_URL=redis://default:pass@host:6379
+
+# Upload limits (dipakai validasi FE & BE)
+MAX_PHOTO_SIZE_MB=5
+MAX_VIDEO_SIZE_MB=100
+MAX_AUDIO_SIZE_MB=10
+MAX_VIDEO_DURATION_SEC=60
+MAX_AUDIO_DURATION_SEC=300
+</code></pre>
+
+<h2 id="skema">5. Skema Data (Ringkas)</h2>
+<table>
+<tr><th>Tabel</th><th>Kolom Kunci</th></tr>
+<tr><td><code>users</code></td><td>id, email, name, password_hash, created_at</td></tr>
+<tr><td><code>invitations</code></td><td>id, user_id, slug, groom_name, bride_name, event_date, theme_id, is_published, created_at</td></tr>
+<tr><td><code>themes</code></td><td>id, name, category, is_premium, config_json (token warna/font per tema), preview_thumbnail_url</td></tr>
+<tr><td><code>media_assets</code></td><td>id, invitation_id, type (photo/video/audio), url, thumbnail_url, order, status (uploading/processing/ready/error)</td></tr>
+<tr><td><code>bank_accounts</code></td><td>id, invitation_id, bank_code (relasi ke <code>banks</code>), account_number, account_holder</td></tr>
+<tr><td><code>banks</code></td><td>id, code, name, logo_url (master data, dikelola admin)</td></tr>
+<tr><td><code>guests</code></td><td>id, invitation_id, name, slug_token, group_label, is_opened, opened_at</td></tr>
+<tr><td><code>rsvps</code></td><td>id, guest_id, attendance_status (hadir/ragu/tidak), pax_count, wish_message, created_at</td></tr>
+<tr><td><code>check_ins</code></td><td>id, guest_id (unique), qr_token (unique, signed), checked_in_at, checked_in_by (id resepsionis/device), checkin_status (valid/duplicate_attempt)</td></tr>
+</table>
+<p class="meta"><code>qr_token</code> sebaiknya berupa token bertanda tangan (signed, mis. JWT singkat atau HMAC) yang di-generate dari <code>guest.slug_token</code> — bukan slug tamu itu sendiri, supaya QR tidak bisa ditebak/diduplikasi manual.</p>
+
+<h2 id="api">6. Kontrak API (Ringkas)</h2>
+<table>
+<tr><th>Endpoint</th><th>Fungsi</th></tr>
+<tr><td><code>POST /api/invitations</code></td><td>Buat undangan baru</td></tr>
+<tr><td><code>PATCH /api/invitations/:id</code></td><td>Update data dasar & pilihan tema</td></tr>
+<tr><td><code>POST /api/invitations/:id/media</code></td><td>Upload foto/video/audio (presigned URL ke object storage)</td></tr>
+<tr><td><code>POST /api/invitations/:id/bank-accounts</code></td><td>Tambah rekening (bank_code dari master <code>banks</code>)</td></tr>
+<tr><td><code>POST /api/invitations/:id/guests</code></td><td>Tambah/import daftar tamu → generate slug_token</td></tr>
+<tr><td><code>GET /api/invite/:slug?to=:token</code></td><td>Ambil data undangan untuk render halaman tamu (SSR)</td></tr>
+<tr><td><code>POST /api/invite/:slug/rsvp</code></td><td>Submit RSVP dari sisi tamu</td></tr>
+<tr><td><code>GET /api/invitations/:id/dashboard</code></td><td>Rekap RSVP, check-in, & analitik kunjungan tamu</td></tr>
+<tr><td><code>GET /api/invite/:slug/qr?to=:token</code></td><td>Generate/ambil kode QR unik tamu (dipanggil dari halaman undangan)</td></tr>
+<tr><td><code>POST /api/checkin/verify</code></td><td>Verifikasi hasil scan QR dari halaman scanner resepsionis; body: <code>{ qr_token }</code>; response: valid/sudah-dipakai/tidak-valid + nama tamu</td></tr>
+<tr><td><code>GET /api/invitations/:id/checkin-stats</code></td><td>Statistik real-time: total diundang vs RSVP hadir vs check-in aktual</td></tr>
+</table>
+
+<h2 id="folder">7. Struktur Folder Project (Next.js App Router)</h2>
+<pre><code>/app
+  /(dashboard)          → halaman pengelolaan (responsive penuh)
+  /invite/[slug]        → halaman undangan publik (mobile-first canvas)
+  /scan/[invitationId]  → halaman scanner resepsionis (netral, kamera fullscreen)
+  /api                  → route handlers
+/components
+  /themes/editorial-brutalism
+  /themes/raw-wabi-sabi
+  /themes/cyber-celestial-noir
+  /themes/70s-warm-groovy
+  /shared               → komponen wajib lintas tema (RSVP, BankCard, dst — sesuai Kontrak Portabilitas Tema)
+/lib
+  /db (prisma client)
+  /storage (helper upload ke R2/S3)
+  /jobs (BullMQ workers: compress-image, compress-video)
+/prisma
+  schema.prisma
+</code></pre>
+
+<h2 id="deploy">8. Hosting & Deployment</h2>
+<ul>
+<li><strong>Frontend + API:</strong> Vercel (auto-scaling, cocok trafik lonjak H-1 acara).</li>
+<li><strong>Database:</strong> Neon atau Supabase (Postgres managed, mendukung branching untuk staging).</li>
+<li><strong>Media & CDN:</strong> Cloudflare R2 + Cloudflare CDN (murah untuk egress trafik tinggi dari tamu).</li>
+<li><strong>Background job worker:</strong> jalan terpisah (mis. Railway/Fly.io) karena job compression butuh proses long-running, tidak cocok di serverless function biasa.</li>
+<li><strong>Monitoring dasar:</strong> Vercel Analytics + Sentry untuk error tracking sejak awal.</li>
+</ul>
+
+<hr>
+<p class="meta">Spesifikasi ini siap dipakai sebagai referensi awal untuk AI coding tool (mis. Claude Code) — simpan sebagai <code>docs/technical-spec.md</code> di repo project.</p>
+</div>
+</body>
+</html>

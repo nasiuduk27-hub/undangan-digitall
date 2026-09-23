@@ -1,0 +1,130 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id            String       @id @default(cuid())
+  email         String       @unique
+  name          String
+  password_hash String
+  created_at    DateTime     @default(now())
+  invitations   Invitation[]
+
+  @@map("users")
+}
+
+model Invitation {
+  id           String        @id @default(cuid())
+  user_id      String
+  slug         String        @unique
+  groom_name   String
+  bride_name   String
+  event_date   DateTime
+  theme_id     String
+  is_published Boolean       @default(false)
+  created_at   DateTime      @default(now())
+
+  user         User          @relation(fields: [user_id], references: [id], onDelete: Cascade)
+  theme        Theme         @relation(fields: [theme_id], references: [id])
+  media_assets MediaAsset[]
+  bank_accounts BankAccount[]
+  guests       Guest[]
+
+  @@map("invitations")
+}
+
+model Theme {
+  id                    String       @id @default(cuid())
+  name                  String
+  category              String
+  is_premium            Boolean      @default(false)
+  config_json           Json
+  preview_thumbnail_url String?
+  invitations           Invitation[]
+
+  @@map("themes")
+}
+
+model MediaAsset {
+  id            String     @id @default(cuid())
+  invitation_id String
+  type          String     // "photo" | "video" | "audio"
+  url           String
+  thumbnail_url String?
+  order         Int        @default(0)
+  status        String     @default("ready") // "uploading" | "processing" | "ready" | "error"
+
+  invitation    Invitation @relation(fields: [invitation_id], references: [id], onDelete: Cascade)
+
+  @@map("media_assets")
+}
+
+model Bank {
+  id            String        @id @default(cuid())
+  code          String        @unique
+  name          String
+  logo_url      String
+  bank_accounts BankAccount[]
+
+  @@map("banks")
+}
+
+model BankAccount {
+  id             String     @id @default(cuid())
+  invitation_id  String
+  bank_code      String
+  account_number String
+  account_holder String
+
+  invitation     Invitation @relation(fields: [invitation_id], references: [id], onDelete: Cascade)
+  bank           Bank       @relation(fields: [bank_code], references: [code], onDelete: Cascade)
+
+  @@map("bank_accounts")
+}
+
+model Guest {
+  id            String     @id @default(cuid())
+  invitation_id String
+  name          String
+  slug_token    String     @unique
+  group_label   String?
+  is_opened     Boolean    @default(false)
+  opened_at     DateTime?
+
+  invitation    Invitation @relation(fields: [invitation_id], references: [id], onDelete: Cascade)
+  rsvp          Rsvp?
+  check_in      CheckIn?
+
+  @@map("guests")
+}
+
+model Rsvp {
+  id                String   @id @default(cuid())
+  guest_id          String   @unique
+  attendance_status String   // "hadir" | "ragu" | "tidak"
+  pax_count         Int      @default(1)
+  wish_message      String?
+  created_at        DateTime @default(now())
+
+  guest             Guest    @relation(fields: [guest_id], references: [id], onDelete: Cascade)
+
+  @@map("rsvps")
+}
+
+model CheckIn {
+  id             String    @id @default(cuid())
+  guest_id       String    @unique
+  qr_token       String    @unique
+  checked_in_at  DateTime  @default(now())
+  checked_in_by  String?
+  checkin_status String    @default("valid") // "valid" | "duplicate_attempt"
+
+  guest          Guest     @relation(fields: [guest_id], references: [id], onDelete: Cascade)
+
+  @@map("check_ins")
+}
