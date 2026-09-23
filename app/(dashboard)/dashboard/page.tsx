@@ -175,6 +175,12 @@ export default function DashboardPage() {
                     >
                       Media
                     </Link>
+                    <Link
+                      href={`/invitations/${inv.id}/banks`}
+                      className="inline-flex items-center gap-1.5 px-3 py-1.5 bg-[#faf7f2] hover:bg-[#f1e4d8] text-[#2b2420] text-xs font-semibold rounded-lg border border-[#e7ddd0] transition-colors"
+                    >
+                      Rekening
+                    </Link>
                   </div>
 
                   <button

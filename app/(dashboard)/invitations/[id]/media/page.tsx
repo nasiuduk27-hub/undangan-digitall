@@ -171,6 +171,12 @@ export default function MediaManagementPage({
           <ArrowLeft className="w-3.5 h-3.5" />
           Kembali ke Pengaturan Undangan
         </Link>
+        <Link
+          href={`/invitations/${resolvedParams.id}/banks`}
+          className="inline-flex items-center gap-1.5 text-xs font-semibold text-[#a9724f] hover:underline"
+        >
+          Lanjut ke Rekening Bank →
+        </Link>
       </div>
 
       <div className="mb-6">

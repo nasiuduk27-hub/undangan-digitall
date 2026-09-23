@@ -164,6 +164,12 @@ export default function EditInvitationPage({
             >
               2. Kelola Media →
             </Link>
+            <Link
+              href={`/invitations/${resolvedParams.id}/banks`}
+              className="px-3 py-1.5 bg-[#faf7f2] hover:bg-[#f1e4d8] text-[#7a6f63] hover:text-[#2b2420] text-xs font-semibold rounded-lg transition-colors border border-[#e7ddd0]"
+            >
+              3. Info Rekening →
+            </Link>
           </div>
         </div>
 
