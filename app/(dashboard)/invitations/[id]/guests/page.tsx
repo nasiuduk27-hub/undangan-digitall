@@ -2,7 +2,7 @@
 
 import { use, useEffect, useState } from "react";
 import Link from "next/link";
-import { ArrowLeft, Copy, Trash2, Users } from "lucide-react";
+import { ArrowLeft, Copy, QrCode, Trash2, Users } from "lucide-react";
 
 type Guest = {
   id: string;
@@ -26,6 +26,7 @@ export default function GuestsPage({ params }: { params: Promise<{ id: string }>
   const [groupLabel, setGroupLabel] = useState("");
   const [loading, setLoading] = useState(true);
   const [saving, setSaving] = useState(false);
+  const [stats, setStats] = useState({ totalGuests: 0, rsvpHadir: 0, checkedIn: 0 });
 
   const load = async () => {
     const res = await fetch(`/api/invitations/${id}/guests`);
@@ -34,6 +35,8 @@ export default function GuestsPage({ params }: { params: Promise<{ id: string }>
       setGuests(data.guests || []);
       setInvitationSlug(data.invitationSlug || "");
     }
+    const statsRes = await fetch(`/api/invitations/${id}/checkin-stats`);
+    if (statsRes.ok) setStats(await statsRes.json());
     setLoading(false);
   };
 
@@ -89,6 +92,21 @@ export default function GuestsPage({ params }: { params: Promise<{ id: string }>
           Tambahkan tamu, salin link personal, dan pantau RSVP.
         </p>
       </div>
+
+      <div className="grid grid-cols-3 gap-3 mb-6">
+        <StatCard label="Diundang" value={stats.totalGuests} />
+        <StatCard label="RSVP Hadir" value={stats.rsvpHadir} />
+        <StatCard label="Check-in" value={stats.checkedIn} />
+      </div>
+
+      <Link
+        href={`/scan/${id}`}
+        target="_blank"
+        className="mb-6 inline-flex items-center gap-2 rounded-xl bg-[#121212] px-4 py-2.5 text-xs font-semibold text-white hover:bg-black"
+      >
+        <QrCode className="w-4 h-4" />
+        Buka Scanner Resepsionis
+      </Link>
 
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
         <form onSubmit={addGuests} className="bg-white border border-[#e7ddd0] rounded-2xl p-6 shadow-sm h-fit">
@@ -157,6 +175,15 @@ export default function GuestsPage({ params }: { params: Promise<{ id: string }>
           )}
         </div>
       </div>
+    </div>
+  );
+}
+
+function StatCard({ label, value }: { label: string; value: number }) {
+  return (
+    <div className="rounded-2xl border border-[#e7ddd0] bg-white p-4 shadow-sm">
+      <p className="text-[11px] font-semibold uppercase tracking-wider text-[#7a6f63]">{label}</p>
+      <p className="mt-1 text-2xl font-bold text-[#2b2420]">{value}</p>
     </div>
   );
 }

@@ -1,5 +1,6 @@
 import { AudioControl } from "@/components/shared/audio-control";
 import { BankCard } from "@/components/shared/bank-card";
+import { QrCheckinCard } from "@/components/shared/qr-checkin-card";
 import { QrCheckinPlaceholder } from "@/components/shared/qr-checkin-placeholder";
 import { RsvpForm } from "@/components/shared/rsvp-form";
 import { RsvpPlaceholder } from "@/components/shared/rsvp-placeholder";
@@ -192,7 +193,11 @@ export function EditorialBrutalismTheme({
         </section>
 
         {/* QR Check-in - wajib */}
-        <QrCheckinPlaceholder />
+        {guest ? (
+          <QrCheckinCard slug={invitation.slug} token={guest.slug_token} />
+        ) : (
+          <QrCheckinPlaceholder />
+        )}
       </div>
     </main>
   );
