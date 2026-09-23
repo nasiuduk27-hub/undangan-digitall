@@ -1,0 +1,299 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>PRD Lengkap — Undangan Nikahan Digital</title>
+<style>
+:root{
+  --bg:#faf7f2; --surface:#ffffff; --text:#2b2420; --muted:#7a6f63;
+  --accent:#a9724f; --accent-soft:#f1e4d8; --border:#e7ddd0;
+  box-sizing:border-box; padding-top:env(safe-area-inset-top,0px); padding-bottom:env(safe-area-inset-bottom,0px);
+}
+@media (prefers-color-scheme: dark){
+  :root:not([data-theme="light"]){ --bg:#1c1815; --surface:#241f1b; --text:#ece5dd; --muted:#a99d8e; --accent:#e0a97c; --accent-soft:#33291f; --border:#3a322a; }
+}
+:root[data-theme="dark"]{ --bg:#1c1815; --surface:#241f1b; --text:#ece5dd; --muted:#a99d8e; --accent:#e0a97c; --accent-soft:#33291f; --border:#3a322a; }
+html{scroll-padding-top:env(safe-area-inset-top,0px);}
+*{box-sizing:border-box;}
+body{margin:0; background:var(--bg); color:var(--text); font-family:'Segoe UI',system-ui,-apple-system,sans-serif; line-height:1.65;}
+.wrap{max-width:880px; margin:0 auto; padding:32px 20px 90px;}
+.kicker{color:var(--accent); font-weight:600; letter-spacing:.08em; text-transform:uppercase; font-size:.75rem;}
+h1{font-size:1.9rem; margin:.3em 0 .2em;}
+.meta{color:var(--muted); font-size:.9rem;}
+h2{font-size:1.3rem; margin-top:2.6em; border-bottom:2px solid var(--accent-soft); padding-bottom:.4em;}
+h3{font-size:1.05rem; margin-top:1.6em; color:var(--accent);}
+p{margin:.6em 0;}
+ul,ol{padding-left:1.3em;}
+li{margin:.35em 0;}
+table{width:100%; border-collapse:collapse; margin:1em 0; font-size:.9rem; display:block; overflow-x:auto;}
+th,td{border:1px solid var(--border); padding:8px 10px; text-align:left; vertical-align:top;}
+th{background:var(--accent-soft); font-weight:600;}
+.card{background:var(--surface); border:1px solid var(--border); border-radius:12px; padding:16px 20px; margin:1em 0;}
+.tag{display:inline-block; background:var(--accent-soft); color:var(--accent); border-radius:999px; padding:2px 10px; font-size:.75rem; font-weight:600; margin-right:6px;}
+.toc{background:var(--surface); border:1px solid var(--border); border-radius:12px; padding:16px 22px;}
+.toc a{color:var(--text); text-decoration:none;}
+.toc a:hover{color:var(--accent);}
+.swatch{display:inline-block; width:14px; height:14px; border-radius:3px; margin-right:6px; vertical-align:middle; border:1px solid var(--border);}
+code{background:var(--accent-soft); padding:1px 6px; border-radius:4px; font-size:.85em;}
+hr{border:none; border-top:1px solid var(--border); margin:2.4em 0;}
+</style>
+</head>
+<body>
+<div class="wrap">
+
+<div class="kicker">Product Requirements Document — Lengkap</div>
+<h1>Undangan Nikahan Digital</h1>
+<div class="meta">Versi 2.0 (gabungan PRD + Design System) · 23 September 2026 · Status: Draft</div>
+
+<div class="toc">
+<strong>Daftar Isi</strong>
+<ol>
+<li><a href="#latar">Latar Belakang & Tujuan</a></li>
+<li><a href="#target">Target Pengguna</a></li>
+<li><a href="#lingkup">Lingkup Produk</a></li>
+<li><a href="#fitur">Fitur Utama</a></li>
+<li><a href="#alur">Alur Pengguna</a></li>
+<li><a href="#nonfungsional">Kebutuhan Non-Fungsional</a></li>
+<li><a href="#metrik">Metrik Keberhasilan</a></li>
+<li><a href="#asumsi">Asumsi, Dependensi & Risiko</a></li>
+<li><a href="#roadmap">Roadmap Bertahap</a></li>
+<li><a href="#fitur46">4.6 Check-in Tamu via Barcode/QR</a></li>
+<li><a href="#ds-fondasi">Design System — Fondasi & Token</a></li>
+<li><a href="#ds-tema">Design System — Kurasi Tema</a></li>
+<li><a href="#ds-komponen">Design System — Komponen Inti</a></li>
+<li><a href="#ds-kontrak">Design System — Kontrak Portabilitas Tema</a></li>
+<li><a href="#ds-aset">Design System — Aset Logo Bank & Pembayaran</a></li>
+<li><a href="#ds-upload">Design System — Media Upload & State</a></li>
+<li><a href="#ds-lain">Design System — Komponen Tambahan & Catatan</a></li>
+<li><a href="#pertanyaan">Pertanyaan Terbuka</a></li>
+</ol>
+</div>
+
+<h2 id="latar">1. Latar Belakang & Tujuan</h2>
+<p>Undangan pernikahan digital saat ini banyak yang bersifat template statis dengan personalisasi terbatas. Pengguna (calon pengantin) ingin undangan yang mencerminkan cerita mereka sendiri — foto/video sendiri, musik pilihan sendiri, tema visual sesuai selera, info rekening yang rapi, dan kemampuan mengirim undangan yang dipersonalisasi per tamu.</p>
+<p><strong>Tujuan produk:</strong></p>
+<ul>
+<li>Memungkinkan pengguna membuat undangan digital yang sepenuhnya bisa dikustomisasi tanpa keahlian desain.</li>
+<li>Mempercepat proses pembuatan undangan (target &lt; 15 menit untuk kasus dasar).</li>
+<li>Meningkatkan pengalaman tamu lewat personalisasi nama/ucapan per penerima (guest path).</li>
+</ul>
+
+<h2 id="target">2. Target Pengguna</h2>
+<table>
+<tr><th>Persona</th><th>Kebutuhan Utama</th></tr>
+<tr><td>Calon pengantin</td><td>Kustomisasi cepat, tema menarik, mudah dibagikan, info rekening rapi</td></tr>
+<tr><td>Tamu undangan</td><td>Cepat dibuka di HP, terasa personal, mudah RSVP</td></tr>
+<tr><td>Wedding Organizer / vendor</td><td>Membuatkan undangan untuk banyak klien, kebutuhan branding/reseller</td></tr>
+</table>
+
+<h2 id="lingkup">3. Lingkup Produk</h2>
+<div class="card">
+<strong>Termasuk (v1):</strong>
+<ul>
+<li>Upload media (foto & video) oleh user</li>
+<li>Upload backsound musik oleh user</li>
+<li>Pemilihan tema dari katalog yang terus bertambah</li>
+<li>Info rekening bank/e-wallet dengan logo otomatis</li>
+<li>Personalisasi undangan per tamu (guest path)</li>
+</ul>
+<strong>Tidak termasuk (v1):</strong>
+<ul>
+<li>Editor drag-and-drop layout bebas</li>
+<li>Cetak undangan fisik</li>
+<li>Payment gateway terintegrasi — hanya menampilkan info rekening</li>
+</ul>
+</div>
+
+<h2 id="fitur">4. Fitur Utama</h2>
+<h3>4.1 Upload Foto & Video Sendiri <span class="tag">Media</span></h3>
+<ul>
+<li>Upload multi-foto (galeri) dengan drag-to-reorder, minimal 1 foto cover wajib.</li>
+<li>Upload 1 video utama (cover/opening), format MP4/MOV, maks. 100MB.</li>
+<li>Kompresi & konversi otomatis di server agar loading tetap cepat.</li>
+<li>Crop/preview sebelum simpan untuk rasio konsisten per tema.</li>
+<li>Validasi format & ukuran dengan pesan error jelas.</li>
+</ul>
+<h3>4.2 Upload Backsound Musik Sendiri <span class="tag">Media</span></h3>
+<ul>
+<li>Upload file audio sendiri (MP3/WAV), maks. 10MB / 5 menit.</li>
+<li>Alternatif: katalog musik bebas royalti bawaan platform.</li>
+<li>Autoplay setelah interaksi pertama tamu (sesuai kebijakan browser).</li>
+<li>Disclaimer hak cipta — user bertanggung jawab atas lagu yang diunggah.</li>
+</ul>
+<h3>4.3 Pilihan Tema <span class="tag">Desain</span></h3>
+<ul>
+<li>Katalog tema berkategori, preview real-time saat memilih/mengganti tema.</li>
+<li>Setiap tema punya set komponen standar agar konten user portable antar tema.</li>
+<li>Arsitektur tema modular — tema baru = kumpulan style + layout config, bukan ubah logika inti.</li>
+<li>Filter tema gratis vs premium (jika ada monetisasi berjenjang).</li>
+</ul>
+<h3>4.4 Info Rekening dengan Logo Bank Otomatis <span class="tag">Konten</span></h3>
+<ul>
+<li>Form tambah rekening: dropdown bank/e-wallet (searchable), nomor rekening, nama pemilik.</li>
+<li>Logo bank otomatis muncul berdasarkan bank yang dipilih (aset dikelola sistem).</li>
+<li>Dukung multi-rekening (mempelai pria & wanita).</li>
+<li>Tombol "salin nomor rekening" dengan feedback visual toast.</li>
+<li>Opsi sembunyikan/tampilkan bagian rekening.</li>
+</ul>
+<h3>4.5 Personalisasi Undangan per Tamu (Guest Path) <span class="tag">Personalisasi</span></h3>
+<ul>
+<li>Input daftar tamu (manual/import) berisi nama & opsional grup.</li>
+<li>Link unik per tamu, mis. <code>domain.com/acara?to=nama-tamu</code>.</li>
+<li>Sapaan personal otomatis dari parameter link.</li>
+<li>RSVP per tamu (hadir/tidak/jumlah orang) tersimpan & bisa direkap.</li>
+<li>Dashboard rekap: siapa sudah buka link, siapa sudah RSVP.</li>
+</ul>
+<h3 id="fitur46">4.6 Check-in Tamu via Barcode/QR <span class="tag">Kehadiran</span></h3>
+<p><strong>User story:</strong> Sebagai calon pengantin, saya ingin tahu berapa tamu yang benar-benar datang (bukan cuma RSVP "hadir"), dan resepsionis butuh cara cepat memverifikasi tamu di pintu masuk.</p>
+<ul>
+<li>Setiap link undangan per tamu (guest path) otomatis menghasilkan <strong>kode QR unik</strong> yang tampil di halaman undangan digital tamu tersebut.</li>
+<li>Resepsionis menggunakan halaman scanner (dibuka dari HP/tablet browser, tidak perlu instal aplikasi) untuk memindai QR saat tamu datang.</li>
+<li>Saat QR discan: sistem memverifikasi validitas (1 QR = 1 tamu/grup, tidak bisa dipakai dobel), lalu menandai status <em>checked-in</em> beserta waktu kedatangan.</li>
+<li>Dashboard pembuat undangan menampilkan rekap real-time: <strong>jumlah tamu diundang vs. RSVP hadir vs. benar-benar check-in di lokasi</strong>.</li>
+<li>Dukung mode offline-first sederhana di scanner (antre sinkron saat koneksi kembali) untuk antisipasi sinyal lemah di venue.</li>
+<li>Opsi multi-resepsionis (beberapa HP scan bersamaan di pintu berbeda) tanpa risiko QR yang sama tervalidasi dua kali.</li>
+</ul>
+
+<h2 id="alur">5. Alur Pengguna (Ringkas)</h2>
+<ol>
+<li>Daftar/login → buat undangan baru → isi data dasar (nama pasangan, tanggal, lokasi).</li>
+<li>Pilih tema → preview otomatis terisi data.</li>
+<li>Upload foto, video, backsound.</li>
+<li>Isi info rekening (pilih bank → logo otomatis).</li>
+<li>Tambah daftar tamu → generate link personal per tamu.</li>
+<li>Publish → bagikan link via WhatsApp/media sosial.</li>
+<li>Pantau RSVP & analitik kunjungan dari dashboard.</li>
+</ol>
+
+<h2 id="nonfungsional">6. Kebutuhan Non-Fungsional</h2>
+<table>
+<tr><th>Aspek</th><th>Kebutuhan</th></tr>
+<tr><td>Performa</td><td>Halaman tamu tetap ringan meski ada foto/video/musik — lazy-load & CDN</td></tr>
+<tr><td>Penyimpanan</td><td>Object storage dengan kuota per akun/paket</td></tr>
+<tr><td>Keamanan</td><td>Rekening & data tamu tidak terekspos selain lewat link yang dituju</td></tr>
+<tr><td>Skalabilitas tema</td><td>Tambah tema baru tanpa deploy ulang seluruh sistem</td></tr>
+<tr><td>Kompatibilitas</td><td>Optimal di mobile browser (mayoritas tamu dari WhatsApp)</td></tr>
+</table>
+
+<h2 id="metrik">7. Metrik Keberhasilan</h2>
+<ul>
+<li>Waktu rata-rata pembuatan undangan pertama (target &lt; 15 menit).</li>
+<li>Completion rate dari "mulai buat" sampai "publish".</li>
+<li>Rasio tamu yang membuka link personal & mengisi RSVP.</li>
+<li>Distribusi popularitas tema.</li>
+<li>Retensi: user membuat lebih dari satu undangan.</li>
+<li>Akurasi kehadiran: selisih antara jumlah RSVP "hadir" vs. jumlah check-in aktual di venue.</li>
+</ul>
+
+<h2 id="asumsi">8. Asumsi, Dependensi & Risiko</h2>
+<ul>
+<li><strong>Asumsi:</strong> mayoritas trafik tamu dari mobile via link WhatsApp.</li>
+<li><strong>Dependensi:</strong> katalog logo bank/e-wallet perlu dikurasi & diperbarui berkala.</li>
+<li><strong>Risiko hak cipta:</strong> musik upload user bisa melanggar hak cipta — perlu disclaimer & takedown.</li>
+<li><strong>Risiko performa:</strong> video/musik besar memperlambat loading — mitigasi kompresi & batas ukuran.</li>
+</ul>
+
+<h2 id="roadmap">9. Roadmap Bertahap</h2>
+<table>
+<tr><th>Fase</th><th>Fokus</th></tr>
+<tr><td>Fase 1 (MVP)</td><td>Upload foto/video, 5–10 tema awal, rekening + logo bank, link umum</td></tr>
+<tr><td>Fase 2</td><td>Upload backsound sendiri, katalog musik bawaan, dashboard RSVP dasar</td></tr>
+<tr><td>Fase 3</td><td>Personalisasi penuh per tamu (guest path), QR check-in + halaman scanner resepsionis, analitik kunjungan</td></tr>
+<tr><td>Fase 4</td><td>Ekspansi tema, tema premium, fitur kolaborasi WO</td></tr>
+</table>
+
+<hr>
+<div class="kicker">Bagian Design System</div>
+
+<h2 id="ds-fondasi">10. Design System — Fondasi & Token Global</h2>
+<table>
+<tr><th>Token</th><th>Nilai</th><th>Catatan</th></tr>
+<tr><td>Max Canvas Width</td><td>480px (center aligned di desktop)</td><td>Layout mobile tidak pecah di monitor</td></tr>
+<tr><td>Grid System</td><td>4-kolom, margin 16px, gutter 12px</td><td>Untuk kartu jadwal & profil pasangan</td></tr>
+<tr><td>Spacing Scale</td><td>4/8/12/16/24/32/48/64px</td><td>Kelipatan 8px untuk ritme vertikal</td></tr>
+<tr><td>Touch Target</td><td>Min 44x44px</td><td>Wajib untuk tombol RSVP, audio toggle</td></tr>
+<tr><td>Z-Index</td><td>BG(0), Content(10), Floating Dock(50), Modal(100)</td><td>Cegah tombol tertutup ornamen</td></tr>
+</table>
+
+<h2 id="ds-tema">11. Design System — Kurasi Tema Non-Mainstream</h2>
+<table>
+<tr><th>Tema</th><th>Palet</th><th>Tipografi</th><th>Karakteristik</th></tr>
+<tr><td>Editorial Brutalism</td><td><span class="swatch" style="background:#F4EFEA"></span>#F4EFEA <span class="swatch" style="background:#121212"></span>#121212 <span class="swatch" style="background:#D8FB38"></span>#D8FB38</td><td>Syne ExtraBold / Space Mono</td><td>Border tegas 2px, shadow tanpa blur, grid asimetris</td></tr>
+<tr><td>Raw Wabi-Sabi</td><td><span class="swatch" style="background:#EBE5DC"></span>#EBE5DC <span class="swatch" style="background:#A85A3C"></span>#A85A3C <span class="swatch" style="background:#BFA054"></span>#BFA054</td><td>Cormorant Garamond Italic / Plus Jakarta Sans</td><td>Sudut organik tak beraturan, tekstur grain halus</td></tr>
+<tr><td>Cyber-Celestial Noir</td><td><span class="swatch" style="background:#0C0E14"></span>#0C0E14 <span class="swatch" style="background:#00F5D4"></span>#00F5D4 <span class="swatch" style="background:#7B2CBF"></span>#7B2CBF</td><td>Cinzel Decorative / Outfit</td><td>Dark mode murni, glassmorphism, neon glow lembut</td></tr>
+<tr><td>70s Warm Groovy</td><td><span class="swatch" style="background:#FDF8EE"></span>#FDF8EE <span class="swatch" style="background:#D96B27"></span>#D96B27 <span class="swatch" style="background:#EBB035"></span>#EBB035</td><td>Fraunces Soft Serif / DM Sans</td><td>Bentuk pil tebal, wavy divider, badge stempel vintage</td></tr>
+</table>
+
+<h2 id="ds-komponen">12. Design System — Komponen Inti</h2>
+<ul>
+<li><strong>Cover/Gate:</strong> fullscreen dengan nama tamu dinamis (<code>?to=</code>); tombol "Buka Undangan" memicu scroll & audio via user-gesture.</li>
+<li><strong>Couple Profile:</strong> foto duotone/frame geometric; ikon sosial media monoline.</li>
+<li><strong>Countdown & Timeline:</strong> blok tanggal dengan zona waktu otomatis (WIB/WITA/WIT); tombol Add to Calendar (.ics).</li>
+<li><strong>Direct Gift/Angpau:</strong> kartu rekening dengan 1-click copy + toast; toggle QRIS statis/dinamis.</li>
+<li><strong>RSVP & Wishes:</strong> radio Hadir/Ragu/Tidak Hadir + selector pax; feed ucapan infinite scroll.</li>
+<li><strong>Floating Dock:</strong> bar melayang berisi play/pause audio & quick-jump ke RSVP.</li>
+<li><strong>QR Check-in Card:</strong> kode QR unik ditampilkan di halaman undangan tamu (mis. dekat bagian RSVP), dengan label "Tunjukkan QR ini saat kedatangan". Desain kartu QR tetap mengikuti gaya tema, tapi kode QR sendiri selalu di atas background putih solid agar tetap terscan dengan baik apa pun temanya.</li>
+<li><strong>Halaman Scanner Resepsionis:</strong> antarmuka terpisah (bukan bagian dari tema undangan) — tampilan netral, kamera fullscreen, indikator besar hijau/merah untuk hasil scan (valid/sudah dipakai/tidak valid), dan counter jumlah check-in berjalan.</li>
+</ul>
+<p><strong>Aksesibilitas:</strong> audio tidak autoplay sebelum gestur klik; <code>prefers-reduced-motion</code> mematikan parallax; kontras teks minimal 4.5:1 (WCAG AA); aset WebP/AVIF dengan initial bundle &lt; 1.8MB.</p>
+
+<h2 id="ds-kontrak">13. Design System — Kontrak Portabilitas Tema</h2>
+<p>Setiap tema baru wajib menyediakan slot berikut, apa pun gaya visualnya:</p>
+<table>
+<tr><th>Slot Wajib</th><th>Sumber Data</th><th>Boleh disembunyikan?</th></tr>
+<tr><td>Cover / Gate</td><td>Nama pasangan, nama tamu</td><td>Tidak</td></tr>
+<tr><td>Galeri Media</td><td>Foto & video upload user</td><td>Ya, jika kosong</td></tr>
+<tr><td>Cerita/Profil Pasangan</td><td>Teks + foto</td><td>Ya</td></tr>
+<tr><td>Jadwal Acara</td><td>Tanggal, lokasi, sesi</td><td>Tidak</td></tr>
+<tr><td>Kartu Rekening</td><td>Bank + nomor + logo otomatis</td><td>Ya (toggle user)</td></tr>
+<tr><td>RSVP</td><td>Form kehadiran + pax</td><td>Ya</td></tr>
+<tr><td>Ucapan/Wishes</td><td>Feed komentar tamu</td><td>Ya</td></tr>
+<tr><td>Audio Control</td><td>Backsound upload/pilihan</td><td>Ya</td></tr>
+<tr><td>QR Check-in</td><td>Kode QR unik per tamu (generated backend)</td><td>Ya (jika fitur check-in dimatikan)</td></tr>
+</table>
+<p>Tema baru diverifikasi terhadap tabel ini sebelum masuk katalog — bukan hanya dinilai dari keindahan visual.</p>
+
+<h2 id="ds-aset">14. Design System — Aset Logo Bank & Pembayaran</h2>
+<ul>
+<li>Logo disimpan sebagai SVG monokrom + versi warna asli; tema gelap pakai varian kontras.</li>
+<li>Ukuran konsisten: 32x32px di kartu rekening, 20x20px di list ringkas.</li>
+<li>Container logo berbackground netral agar tetap terbaca di tema gelap/bertekstur.</li>
+<li>Fallback: bank tak dikenal → badge inisial bulat, bukan logo pecah.</li>
+</ul>
+
+<h2 id="ds-upload">15. Design System — Media Upload & State</h2>
+<table>
+<tr><th>Elemen</th><th>Rasio/Ukuran</th><th>Catatan</th></tr>
+<tr><td>Foto cover</td><td>4:5, dicrop otomatis</td><td>Preview crop sebelum simpan</td></tr>
+<tr><td>Galeri foto</td><td>1:1 atau 4:5</td><td>Maks. ~300KB/foto setelah kompresi</td></tr>
+<tr><td>Video cover</td><td>9:16, maks 100MB/60 detik</td><td>Thumbnail dari frame pertama</td></tr>
+<tr><td>Audio backsound</td><td>Maks 10MB/5 menit</td><td>Fallback katalog musik bawaan</td></tr>
+</table>
+<p>State wajib di tiap tema: <em>empty state</em> (belum upload), <em>loading state</em> (kompresi berjalan), <em>error state</em> (format/ukuran salah + tombol coba lagi).</p>
+
+<h2 id="ds-lain">16. Design System — Komponen Tambahan & Catatan</h2>
+<ul>
+<li><strong>Tipografi dinamis:</strong> truncation nama tamu panjang (maks 2 baris + ellipsis); fluid type (<code>clamp()</code>) untuk judul; overlay gradient di atas foto user agar teks tetap kontras.</li>
+<li><strong>Tombol & CTA hierarchy:</strong> Primary ("Konfirmasi Hadir"), Secondary ("Lihat Peta"), Ghost/Text — konsisten struktur, gaya ikut tema.</li>
+<li><strong>Form field standar:</strong> input text, dropdown bank searchable, radio RSVP — DOM sama, styling ikut tema.</li>
+<li><strong>Toast/notifikasi:</strong> untuk salin rekening, RSVP terkirim, error upload.</li>
+<li><strong>Theme preview thumbnail:</strong> rasio 3:4 untuk katalog pemilihan tema.</li>
+<li><strong>Dark-mode lock:</strong> tema gelap (Cyber-Celestial Noir) mengunci palet sendiri, tidak ikut auto dark/light OS tamu.</li>
+<li><strong>Versioning tema:</strong> revisi tema lama tidak mengubah tampilan undangan yang sudah dipublish tiba-tiba.</li>
+<li><strong>QA checklist tema baru:</strong> kontras, kelengkapan slot wajib, ukuran file — sebelum rilis ke katalog.</li>
+</ul>
+
+<h2 id="pertanyaan">17. Pertanyaan Terbuka</h2>
+<ul>
+<li>Model bisnis: gratis, freemium, atau berbayar penuh per undangan?</li>
+<li>Perlu integrasi payment gateway, atau cukup tampilkan nomor rekening?</li>
+<li>Batas kuota penyimpanan media per akun/paket?</li>
+<li>Dukungan custom domain di fase awal atau nanti?</li>
+</ul>
+
+<hr>
+<p class="meta">Dokumen gabungan PRD + Design System — siap dikembangkan menjadi spesifikasi teknis atau wireframe per fitur.</p>
+</div>
+</body>
+</html>
