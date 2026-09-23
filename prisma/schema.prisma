@@ -25,6 +25,7 @@ model Invitation {
   groom_name   String
   bride_name   String
   event_date   DateTime
+  location     String?
   theme_id     String
   is_published Boolean       @default(false)
   created_at   DateTime      @default(now())
