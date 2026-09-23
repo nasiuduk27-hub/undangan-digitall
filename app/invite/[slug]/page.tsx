@@ -18,7 +18,7 @@ export default async function InvitePage({
       theme: true,
       media_assets: { orderBy: { order: "asc" } },
       bank_accounts: { include: { bank: true } },
-      guests: to ? { where: { slug_token: to }, take: 1 } : false,
+      guests: to ? { where: { slug_token: to }, include: { rsvp: true }, take: 1 } : false,
     },
   });
 
@@ -26,14 +26,19 @@ export default async function InvitePage({
     notFound();
   }
 
-  const guestName = Array.isArray(invitation.guests)
-    ? invitation.guests[0]?.name
-    : null;
+  const guest = Array.isArray(invitation.guests) ? invitation.guests[0] : null;
+
+  if (guest && !guest.is_opened) {
+    await prisma.guest.update({
+      where: { id: guest.id },
+      data: { is_opened: true, opened_at: new Date() },
+    });
+  }
 
   return (
     <div className="min-h-screen bg-[radial-gradient(circle_at_top,#D8FB38_0,#F4EFEA_34%,#121212_100%)] md:flex md:justify-center">
       <div className="min-h-screen w-full max-w-canvas bg-[#F4EFEA] shadow-2xl">
-        <EditorialBrutalismTheme invitation={invitation} guestName={guestName} />
+        <EditorialBrutalismTheme invitation={invitation} guest={guest} />
       </div>
     </div>
   );

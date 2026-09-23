@@ -170,6 +170,12 @@ export default function EditInvitationPage({
             >
               3. Info Rekening →
             </Link>
+            <Link
+              href={`/invitations/${resolvedParams.id}/guests`}
+              className="px-3 py-1.5 bg-[#faf7f2] hover:bg-[#f1e4d8] text-[#7a6f63] hover:text-[#2b2420] text-xs font-semibold rounded-lg transition-colors border border-[#e7ddd0]"
+            >
+              4. Tamu & RSVP →
+            </Link>
           </div>
         </div>
 

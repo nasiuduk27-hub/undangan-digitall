@@ -181,6 +181,12 @@ export default function DashboardPage() {
                     >
                       Rekening
                     </Link>
+                    <Link
+                      href={`/invitations/${inv.id}/guests`}
+                      className="inline-flex items-center gap-1.5 px-3 py-1.5 bg-[#faf7f2] hover:bg-[#f1e4d8] text-[#2b2420] text-xs font-semibold rounded-lg border border-[#e7ddd0] transition-colors"
+                    >
+                      Tamu
+                    </Link>
                   </div>
 
                   <button

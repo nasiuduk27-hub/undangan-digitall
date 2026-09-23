@@ -16,7 +16,9 @@ export async function GET(
         theme: true,
         media_assets: { orderBy: { order: "asc" } },
         bank_accounts: { include: { bank: true } },
-        guests: token ? { where: { slug_token: token }, take: 1 } : false,
+        guests: token
+          ? { where: { slug_token: token }, include: { rsvp: true }, take: 1 }
+          : false,
       },
     });
 
@@ -25,6 +27,13 @@ export async function GET(
         { error: "Undangan tidak ditemukan" },
         { status: 404 }
       );
+    }
+
+    if (Array.isArray(invitation.guests) && invitation.guests[0] && !invitation.guests[0].is_opened) {
+      await prisma.guest.update({
+        where: { id: invitation.guests[0].id },
+        data: { is_opened: true, opened_at: new Date() },
+      });
     }
 
     return NextResponse.json({ invitation });

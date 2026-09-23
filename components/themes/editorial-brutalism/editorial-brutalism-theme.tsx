@@ -1,6 +1,7 @@
 import { AudioControl } from "@/components/shared/audio-control";
 import { BankCard } from "@/components/shared/bank-card";
 import { QrCheckinPlaceholder } from "@/components/shared/qr-checkin-placeholder";
+import { RsvpForm } from "@/components/shared/rsvp-form";
 import { RsvpPlaceholder } from "@/components/shared/rsvp-placeholder";
 import { CalendarDays, MapPin } from "lucide-react";
 
@@ -32,13 +33,24 @@ type Invitation = {
   bank_accounts: BankAccount[];
 };
 
+type Guest = {
+  name: string;
+  slug_token: string;
+  rsvp?: null | {
+    attendance_status: string;
+    pax_count: number;
+    wish_message: string | null;
+  };
+};
+
 export function EditorialBrutalismTheme({
   invitation,
-  guestName,
+  guest,
 }: {
   invitation: Invitation;
-  guestName?: string | null;
+  guest?: Guest | null;
 }) {
+  const guestName = guest?.name;
   const photos = invitation.media_assets.filter((item) => item.type === "photo");
   const video = invitation.media_assets.find((item) => item.type === "video");
   const audio = invitation.media_assets.find((item) => item.type === "audio");
@@ -160,7 +172,18 @@ export function EditorialBrutalismTheme({
         </section>
 
         {/* RSVP - wajib */}
-        <RsvpPlaceholder guestName={guestName} />
+        {guest ? (
+          <RsvpForm
+            slug={invitation.slug}
+            token={guest.slug_token}
+            guestName={guest.name}
+            initialStatus={guest.rsvp?.attendance_status}
+            initialPax={guest.rsvp?.pax_count}
+            initialWish={guest.rsvp?.wish_message}
+          />
+        ) : (
+          <RsvpPlaceholder guestName={guestName} />
+        )}
 
         {/* Ucapan / Wishes - wajib */}
         <section className="border-2 border-black bg-white p-5 shadow-[6px_6px_0_#121212]">
