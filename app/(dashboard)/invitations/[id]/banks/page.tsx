@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState, use } from "react";
+import { useCallback, useEffect, useState, use } from "react";
 import Link from "next/link";
 import { ArrowLeft, PlusCircle, CreditCard, AlertCircle, CheckCircle2 } from "lucide-react";
 import { BankCard } from "@/components/shared/bank-card";
@@ -36,7 +36,7 @@ export default function BankAccountsPage({
   const [error, setError] = useState<string | null>(null);
   const [success, setSuccess] = useState<string | null>(null);
 
-  const fetchData = async () => {
+  const fetchData = useCallback(async () => {
     try {
       const [banksRes, accountsRes] = await Promise.all([
         fetch("/api/banks"),
@@ -60,11 +60,11 @@ export default function BankAccountsPage({
     } finally {
       setLoading(false);
     }
-  };
+  }, [resolvedParams.id, selectedBankCode]);
 
   useEffect(() => {
     fetchData();
-  }, [resolvedParams.id]);
+  }, [fetchData]);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();

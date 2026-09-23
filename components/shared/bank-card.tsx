@@ -1,7 +1,7 @@
 "use client";
 
 import { useState } from "react";
-import { Copy, Check, CreditCard } from "lucide-react";
+import { Copy, Check } from "lucide-react";
 
 interface BankCardProps {
   bankName: string;

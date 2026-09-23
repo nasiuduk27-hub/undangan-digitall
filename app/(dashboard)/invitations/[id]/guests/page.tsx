@@ -1,6 +1,6 @@
 "use client";
 
-import { use, useEffect, useState } from "react";
+import { use, useCallback, useEffect, useState } from "react";
 import Link from "next/link";
 import { ArrowLeft, Copy, QrCode, Trash2, Users } from "lucide-react";
 
@@ -28,7 +28,7 @@ export default function GuestsPage({ params }: { params: Promise<{ id: string }>
   const [saving, setSaving] = useState(false);
   const [stats, setStats] = useState({ totalGuests: 0, rsvpHadir: 0, checkedIn: 0 });
 
-  const load = async () => {
+  const load = useCallback(async () => {
     const res = await fetch(`/api/invitations/${id}/guests`);
     if (res.ok) {
       const data = await res.json();
@@ -38,11 +38,11 @@ export default function GuestsPage({ params }: { params: Promise<{ id: string }>
     const statsRes = await fetch(`/api/invitations/${id}/checkin-stats`);
     if (statsRes.ok) setStats(await statsRes.json());
     setLoading(false);
-  };
+  }, [id]);
 
   useEffect(() => {
     load();
-  }, [id]);
+  }, [load]);
 
   const addGuests = async (event: React.FormEvent) => {
     event.preventDefault();

@@ -2,7 +2,7 @@
 
 import { useEffect, useState } from "react";
 import Link from "next/link";
-import { PlusCircle, Calendar, MapPin, Eye, Edit3, Trash2, ExternalLink } from "lucide-react";
+import { PlusCircle, Calendar, MapPin, Eye, Edit3, Trash2 } from "lucide-react";
 
 interface Invitation {
   id: string;

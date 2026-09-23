@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState, use } from "react";
+import { useCallback, useEffect, useState, use } from "react";
 import Link from "next/link";
 import {
   ArrowLeft,
@@ -29,12 +29,11 @@ export default function MediaManagementPage({
 }) {
   const resolvedParams = use(params);
   const [mediaList, setMediaList] = useState<MediaAsset[]>([]);
-  const [loading, setLoading] = useState(true);
   const [uploading, setUploading] = useState<string | null>(null);
   const [error, setError] = useState<string | null>(null);
   const [success, setSuccess] = useState<string | null>(null);
 
-  const fetchMedia = async () => {
+  const fetchMedia = useCallback(async () => {
     try {
       const res = await fetch(`/api/invitations/${resolvedParams.id}/media`);
       if (res.ok) {
@@ -43,14 +42,12 @@ export default function MediaManagementPage({
       }
     } catch (err) {
       console.error(err);
-    } finally {
-      setLoading(false);
     }
-  };
+  }, [resolvedParams.id]);
 
   useEffect(() => {
     fetchMedia();
-  }, [resolvedParams.id]);
+  }, [fetchMedia]);
 
   const handleFileUpload = async (
     e: React.ChangeEvent<HTMLInputElement>,

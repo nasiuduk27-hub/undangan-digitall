@@ -1,7 +1,6 @@
 "use client";
 
 import { useEffect, useState, use } from "react";
-import { useRouter } from "next/navigation";
 import Link from "next/link";
 import { ArrowLeft, Check, ExternalLink } from "lucide-react";
 
@@ -34,7 +33,6 @@ export default function EditInvitationPage({
   params: Promise<{ id: string }>;
 }) {
   const resolvedParams = use(params);
-  const router = useRouter();
   const [groomName, setGroomName] = useState("");
   const [brideName, setBrideName] = useState("");
   const [eventDate, setEventDate] = useState("");

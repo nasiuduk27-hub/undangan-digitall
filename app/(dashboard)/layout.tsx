@@ -8,8 +8,6 @@ import {
   PlusCircle,
   LogOut,
   Heart,
-  QrCode,
-  User,
 } from "lucide-react";
 
 export default function DashboardLayout({
