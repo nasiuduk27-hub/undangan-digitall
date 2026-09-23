@@ -28,6 +28,7 @@ export default function ScanPage({
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({
         qr_token: qrToken.trim(),
+        invitation_id: invitationId,
         checked_in_by: `scanner:${invitationId}`,
       }),
     });

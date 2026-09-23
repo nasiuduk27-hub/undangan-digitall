@@ -81,12 +81,22 @@ type Guest = {
   };
 };
 
+type Wish = {
+  id: string;
+  wish_message: string | null;
+  guest: {
+    name: string;
+  };
+};
+
 export function EditorialBrutalismTheme({
   invitation,
   guest,
+  wishes,
 }: {
   invitation: Invitation;
   guest?: Guest | null;
+  wishes?: Wish[];
 }) {
   const guestName = guest?.name;
   const photos = invitation.media_assets.filter((item) => item.type === "photo");
@@ -238,7 +248,20 @@ export function EditorialBrutalismTheme({
         {/* Ucapan / Wishes - wajib */}
         <section className="border-2 border-[var(--theme-text)] bg-[var(--theme-card)] p-5 shadow-[6px_6px_0_var(--theme-text)]">
           <ThemeHeading number="06" title="Ucapan" />
-          <EmptySlot text="Feed ucapan tamu akan aktif bersama fitur RSVP." />
+          {wishes && wishes.length > 0 ? (
+            <div className="mt-4 space-y-3">
+              {wishes.map((wish) => (
+                <article key={wish.id} className="border-2 border-[var(--theme-text)] bg-[var(--theme-bg)] p-4">
+                  <p className="font-mono text-[10px] font-bold uppercase text-[var(--theme-muted)]">
+                    {wish.guest.name}
+                  </p>
+                  <p className="mt-2 text-sm leading-relaxed">{wish.wish_message}</p>
+                </article>
+              ))}
+            </div>
+          ) : (
+            <EmptySlot text="Belum ada ucapan dari tamu." />
+          )}
         </section>
 
         {/* QR Check-in - wajib */}

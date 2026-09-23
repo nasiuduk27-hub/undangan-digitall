@@ -4,7 +4,7 @@ import { verifyQrToken } from "@/lib/qr-token";
 
 export async function POST(req: Request) {
   try {
-    const { qr_token, checked_in_by } = await req.json();
+    const { qr_token, invitation_id, checked_in_by } = await req.json();
     if (!qr_token) return NextResponse.json({ status: "tidak-valid" }, { status: 400 });
 
     const slugToken = verifyQrToken(qr_token);
@@ -15,6 +15,9 @@ export async function POST(req: Request) {
       include: { invitation: true, check_in: true },
     });
     if (!guest) return NextResponse.json({ status: "tidak-valid" }, { status: 404 });
+    if (invitation_id && guest.invitation_id !== invitation_id) {
+      return NextResponse.json({ status: "tidak-valid" }, { status: 400 });
+    }
 
     if (guest.check_in) {
       return NextResponse.json({

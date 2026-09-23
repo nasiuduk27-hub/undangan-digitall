@@ -35,10 +35,20 @@ export default async function InvitePage({
     });
   }
 
+  const wishes = await prisma.rsvp.findMany({
+    where: {
+      wish_message: { not: null },
+      guest: { invitation_id: invitation.id },
+    },
+    include: { guest: true },
+    orderBy: { created_at: "desc" },
+    take: 20,
+  });
+
   return (
     <div className="min-h-screen bg-[radial-gradient(circle_at_top,#D8FB38_0,#F4EFEA_34%,#121212_100%)] md:flex md:justify-center">
       <div className="min-h-screen w-full max-w-canvas bg-[#F4EFEA] shadow-2xl">
-        <EditorialBrutalismTheme invitation={invitation} guest={guest} />
+        <EditorialBrutalismTheme invitation={invitation} guest={guest} wishes={wishes} />
       </div>
     </div>
   );
