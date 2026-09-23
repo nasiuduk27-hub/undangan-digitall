@@ -169,6 +169,12 @@ export default function DashboardPage() {
                       <Edit3 className="w-3.5 h-3.5 text-[#a9724f]" />
                       Edit
                     </Link>
+                    <Link
+                      href={`/invitations/${inv.id}/media`}
+                      className="inline-flex items-center gap-1.5 px-3 py-1.5 bg-[#faf7f2] hover:bg-[#f1e4d8] text-[#2b2420] text-xs font-semibold rounded-lg border border-[#e7ddd0] transition-colors"
+                    >
+                      Media
+                    </Link>
                   </div>
 
                   <button

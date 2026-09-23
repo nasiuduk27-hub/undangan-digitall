@@ -153,6 +153,18 @@ export default function EditInvitationPage({
           <p className="text-sm text-[#7a6f63] mt-1">
             Ubah informasi dasar, tema, atau status publikasi undangan Anda.
           </p>
+
+          <div className="flex flex-wrap gap-2 mt-4 pt-4 border-t border-[#e7ddd0]">
+            <span className="px-3 py-1.5 bg-[#f1e4d8] text-[#a9724f] text-xs font-semibold rounded-lg">
+              1. Data Dasar
+            </span>
+            <Link
+              href={`/invitations/${resolvedParams.id}/media`}
+              className="px-3 py-1.5 bg-[#faf7f2] hover:bg-[#f1e4d8] text-[#7a6f63] hover:text-[#2b2420] text-xs font-semibold rounded-lg transition-colors border border-[#e7ddd0]"
+            >
+              2. Kelola Media →
+            </Link>
+          </div>
         </div>
 
         {error && (
