@@ -2,7 +2,7 @@
 
 import { use, useCallback, useEffect, useState } from "react";
 import Link from "next/link";
-import { ArrowLeft, Copy, QrCode, Trash2, Users } from "lucide-react";
+import { ArrowLeft, Copy, QrCode, Trash2, Users, Share2 } from "lucide-react";
 
 type Guest = {
   id: string;
@@ -74,6 +74,13 @@ export default function GuestsPage({ params }: { params: Promise<{ id: string }>
   const copyLink = async (guest: Guest) => {
     const base = window.location.origin;
     await navigator.clipboard.writeText(`${base}/invite/${invitationSlug}?to=${guest.slug_token}`);
+  };
+
+  const shareWhatsApp = (guest: Guest) => {
+    const base = window.location.origin;
+    const inviteUrl = `${base}/invite/${invitationSlug}?to=${guest.slug_token}`;
+    const text = `Kepada Yth. ${guest.name}\n\nTanpa mengurangi rasa hormat, kami mengundang Bapak/Ibu/Saudara/i untuk menghadiri acara pernikahan kami.\n\nDetail undangan dapat dilihat pada tautan berikut:\n${inviteUrl}\n\nTerima kasih atas doa & restunya 🙏`;
+    window.open(`https://api.whatsapp.com/send?text=${encodeURIComponent(text)}`, "_blank");
   };
 
   return (
@@ -162,10 +169,13 @@ export default function GuestsPage({ params }: { params: Promise<{ id: string }>
                     )}
                   </div>
                   <div className="flex gap-2">
-                    <button onClick={() => copyLink(guest)} className="px-3 py-2 border border-[#e7ddd0] rounded-lg text-xs font-semibold hover:bg-[#f1e4d8] flex items-center gap-1">
+                    <button onClick={() => copyLink(guest)} title="Salin Tautan" className="px-3 py-2 border border-[#e7ddd0] rounded-lg text-xs font-semibold hover:bg-[#f1e4d8] flex items-center gap-1">
                       <Copy className="w-3.5 h-3.5" /> Link
                     </button>
-                    <button onClick={() => removeGuest(guest.id)} className="p-2 text-red-600 hover:bg-red-50 rounded-lg">
+                    <button onClick={() => shareWhatsApp(guest)} title="Bagikan ke WhatsApp" className="px-3 py-2 bg-green-600 hover:bg-green-700 text-white rounded-lg text-xs font-semibold flex items-center gap-1 transition-colors">
+                      <Share2 className="w-3.5 h-3.5" /> WA
+                    </button>
+                    <button onClick={() => removeGuest(guest.id)} title="Hapus Tamu" className="p-2 text-red-600 hover:bg-red-50 rounded-lg">
                       <Trash2 className="w-4 h-4" />
                     </button>
                   </div>
