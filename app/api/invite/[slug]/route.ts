@@ -9,6 +9,7 @@ export async function GET(
     const { slug } = await params;
     const { searchParams } = new URL(req.url);
     const token = searchParams.get("to");
+    const preview = searchParams.get("preview");
 
     const invitation = await prisma.invitation.findUnique({
       where: { slug },
@@ -17,12 +18,12 @@ export async function GET(
         media_assets: { orderBy: { order: "asc" } },
         bank_accounts: { include: { bank: true } },
         guests: token
-          ? { where: { slug_token: token }, include: { rsvp: true }, take: 1 }
+          ? { where: { OR: [{ slug_token: token }, { name: token }] }, include: { rsvp: true }, take: 1 }
           : false,
       },
     });
 
-    if (!invitation || !invitation.is_published) {
+    if (!invitation || (!invitation.is_published && preview !== "true")) {
       return NextResponse.json(
         { error: "Undangan tidak ditemukan" },
         { status: 404 }

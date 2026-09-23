@@ -21,12 +21,12 @@ export async function POST(
     }
 
     const invitation = await prisma.invitation.findUnique({ where: { slug } });
-    if (!invitation || !invitation.is_published) {
+    if (!invitation) {
       return NextResponse.json({ error: "Undangan tidak ditemukan" }, { status: 404 });
     }
 
     const guest = await prisma.guest.findFirst({
-      where: { invitation_id: invitation.id, slug_token: token },
+      where: { invitation_id: invitation.id, OR: [{ slug_token: token }, { name: token }] },
     });
     if (!guest) return NextResponse.json({ error: "Tamu tidak valid" }, { status: 404 });
 

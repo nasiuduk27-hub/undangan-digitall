@@ -73,12 +73,12 @@ export default function GuestsPage({ params }: { params: Promise<{ id: string }>
 
   const copyLink = async (guest: Guest) => {
     const base = window.location.origin;
-    await navigator.clipboard.writeText(`${base}/invite/${invitationSlug}?to=${guest.slug_token}`);
+    await navigator.clipboard.writeText(`${base}/u/${invitationSlug}?to=${guest.slug_token}`);
   };
 
   const shareWhatsApp = (guest: Guest) => {
     const base = window.location.origin;
-    const inviteUrl = `${base}/invite/${invitationSlug}?to=${guest.slug_token}`;
+    const inviteUrl = `${base}/u/${invitationSlug}?to=${guest.slug_token}`;
     const text = `Kepada Yth. ${guest.name}\n\nTanpa mengurangi rasa hormat, kami mengundang Bapak/Ibu/Saudara/i untuk menghadiri acara pernikahan kami.\n\nDetail undangan dapat dilihat pada tautan berikut:\n${inviteUrl}\n\nTerima kasih atas doa & restunya 🙏`;
     window.open(`https://api.whatsapp.com/send?text=${encodeURIComponent(text)}`, "_blank");
   };

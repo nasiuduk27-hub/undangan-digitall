@@ -155,7 +155,7 @@ export default function DashboardPage() {
                 <div className="mt-6 pt-4 border-t border-[#e7ddd0] flex items-center justify-between gap-2">
                   <div className="flex items-center gap-2">
                     <Link
-                      href={`/invite/${inv.slug}`}
+                      href={`/u/${inv.slug}${inv.is_published ? "" : "?preview=true"}`}
                       target="_blank"
                       className="inline-flex items-center gap-1.5 px-3 py-1.5 bg-[#faf7f2] hover:bg-[#f1e4d8] text-[#2b2420] text-xs font-semibold rounded-lg border border-[#e7ddd0] transition-colors"
                     >

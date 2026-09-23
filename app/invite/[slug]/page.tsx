@@ -7,10 +7,10 @@ export default async function InvitePage({
   searchParams,
 }: {
   params: Promise<{ slug: string }>;
-  searchParams: Promise<{ to?: string }>;
+  searchParams: Promise<{ to?: string; preview?: string }>;
 }) {
   const { slug } = await params;
-  const { to } = await searchParams;
+  const { to, preview } = await searchParams;
 
   const invitation = await prisma.invitation.findUnique({
     where: { slug },
@@ -18,11 +18,11 @@ export default async function InvitePage({
       theme: true,
       media_assets: { orderBy: { order: "asc" } },
       bank_accounts: { include: { bank: true } },
-      guests: to ? { where: { slug_token: to }, include: { rsvp: true }, take: 1 } : false,
+      guests: to ? { where: { OR: [{ slug_token: to }, { name: to }] }, include: { rsvp: true }, take: 1 } : false,
     },
   });
 
-  if (!invitation || !invitation.is_published) {
+  if (!invitation || (!invitation.is_published && preview !== "true")) {
     notFound();
   }
 
