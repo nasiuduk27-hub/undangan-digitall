@@ -1,10 +1,25 @@
 import { NextResponse } from "next/server";
+import { mkdir, writeFile } from "fs/promises";
+import path from "path";
 
 export async function PUT(req: Request) {
-  // Mock upload endpoint for local dev when S3/R2 is not connected
+  const key = new URL(req.url).searchParams.get("key");
+  if (
+    !key ||
+    !key.startsWith("invitations/") ||
+    key.includes("..") ||
+    key.includes("\\") ||
+    path.isAbsolute(key)
+  ) {
+    return NextResponse.json({ error: "Key upload tidak valid" }, { status: 400 });
+  }
+
+  const filePath = path.join(process.cwd(), "public", "uploads", key);
+  await mkdir(path.dirname(filePath), { recursive: true });
+  await writeFile(filePath, Buffer.from(await req.arrayBuffer()));
   return NextResponse.json({ ok: true });
 }
 
 export async function POST(req: Request) {
-  return NextResponse.json({ ok: true });
+  return PUT(req);
 }

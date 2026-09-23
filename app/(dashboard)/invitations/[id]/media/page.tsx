@@ -98,15 +98,16 @@ export default function MediaManagementPage({
 
       // 2. Upload file ke storage (PUT ke S3 presigned URL atau fallback mock)
       try {
-        await fetch(uploadUrl, {
+        const uploadRes = await fetch(uploadUrl, {
           method: "PUT",
           headers: {
             "Content-Type": file.type || "application/octet-stream",
           },
           body: file,
         });
+        if (!uploadRes.ok) throw new Error("Upload storage gagal");
       } catch {
-        console.warn("Storage upload fallback: saved mock publicUrl");
+        throw new Error("Gagal mengunggah file ke storage");
       }
 
       // 3. Konfirmasi simpan data ke database

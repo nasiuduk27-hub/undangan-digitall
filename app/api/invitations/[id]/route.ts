@@ -2,6 +2,7 @@ import { NextResponse } from "next/server";
 import { getServerSession } from "next-auth";
 import { authOptions } from "@/lib/auth";
 import { prisma } from "@/lib/db";
+import { getThemePreset } from "@/lib/themes";
 
 export async function GET(
   req: Request,
@@ -82,7 +83,22 @@ export async function PATCH(
     if (body.bride_name !== undefined) updateData.bride_name = body.bride_name.trim();
     if (body.event_date !== undefined) updateData.event_date = new Date(body.event_date);
     if (body.location !== undefined) updateData.location = body.location ? body.location.trim() : null;
-    if (body.theme_id !== undefined) updateData.theme_id = body.theme_id;
+    if (body.theme_id !== undefined) {
+      const themePreset = getThemePreset(body.theme_id);
+      if (!themePreset) {
+        return NextResponse.json({ error: "Tema tidak valid" }, { status: 400 });
+      }
+
+      await prisma.theme.upsert({
+        where: { id: body.theme_id },
+        update: {},
+        create: {
+          id: body.theme_id,
+          ...themePreset,
+        },
+      });
+      updateData.theme_id = body.theme_id;
+    }
     if (body.is_published !== undefined) updateData.is_published = Boolean(body.is_published);
 
     if (body.slug !== undefined && body.slug !== existing.slug) {

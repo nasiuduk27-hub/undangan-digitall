@@ -7,7 +7,7 @@ export async function GET(req: Request) {
     const { searchParams } = new URL(req.url);
     const search = searchParams.get("search")?.toLowerCase().trim();
 
-    let count = await prisma.bank.count();
+    const count = await prisma.bank.count();
     if (count === 0) {
       // Auto-seed banks on first query
       for (const bank of INITIAL_BANKS) {

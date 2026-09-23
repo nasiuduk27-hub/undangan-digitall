@@ -2,6 +2,7 @@ import { NextResponse } from "next/server";
 import { getServerSession } from "next-auth";
 import { authOptions } from "@/lib/auth";
 import { prisma } from "@/lib/db";
+import { getThemePreset } from "@/lib/themes";
 
 export async function GET() {
   try {
@@ -69,26 +70,20 @@ export async function POST(req: Request) {
       generatedSlug = `${generatedSlug}-${Date.now().toString().slice(-4)}`;
     }
 
-    // Pastikan tema tersedia (jika belum ada, buat tema default)
-    let selectedThemeId = theme_id;
-    if (!selectedThemeId) {
-      const defaultTheme = await prisma.theme.upsert({
-        where: { id: "editorial-brutalism" },
-        update: {},
-        create: {
-          id: "editorial-brutalism",
-          name: "Editorial Brutalism",
-          category: "Modern",
-          is_premium: false,
-          config_json: {
-            palette: ["#F4EFEA", "#121212", "#D8FB38"],
-            fontHeader: "Syne ExtraBold",
-            fontBody: "Space Mono",
-          },
-        },
-      });
-      selectedThemeId = defaultTheme.id;
+    const selectedThemeId = theme_id || "editorial-brutalism";
+    const themePreset = getThemePreset(selectedThemeId);
+    if (!themePreset) {
+      return NextResponse.json({ error: "Tema tidak valid" }, { status: 400 });
     }
+
+    await prisma.theme.upsert({
+      where: { id: selectedThemeId },
+      update: {},
+      create: {
+        id: selectedThemeId,
+        ...themePreset,
+      },
+    });
 
     const invitation = await prisma.invitation.create({
       data: {
