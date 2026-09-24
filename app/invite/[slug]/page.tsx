@@ -1,6 +1,6 @@
 import { notFound } from "next/navigation";
 import { prisma } from "@/lib/db";
-import { EditorialBrutalismTheme } from "@/components/themes/editorial-brutalism/editorial-brutalism-theme";
+import { ThemeRenderer } from "@/components/themes/theme-renderer";
 
 export default async function InvitePage({
   params,
@@ -61,10 +61,8 @@ export default async function InvitePage({
   });
 
   return (
-    <div className="min-h-screen bg-[radial-gradient(circle_at_top,#D8FB38_0,#F4EFEA_34%,#121212_100%)] md:flex md:justify-center">
-      <div className="min-h-screen w-full max-w-canvas bg-[#F4EFEA] shadow-2xl">
-        <EditorialBrutalismTheme invitation={invitation} guest={guest} wishes={wishes} />
-      </div>
+    <div className="min-h-screen w-full">
+      <ThemeRenderer invitation={invitation} guest={guest} wishes={wishes} />
     </div>
   );
 }

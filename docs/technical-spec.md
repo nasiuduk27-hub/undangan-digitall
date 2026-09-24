@@ -28,20 +28,25 @@ v1.0 · Pelengkap PRD & Design System · 23 September 2026
 | Autentikasi | **NextAuth.js / Auth.js** | Login email/Google, siap pakai dengan Next.js. |
 | Background Job | **BullMQ + Redis** | Untuk kompresi media & generate thumbnail secara async, tidak blocking upload. |
 | QR Code | **qrcode** (generate, server-side) + **html5-qrcode** atau **@zxing/browser** (scan via kamera browser) | Tidak perlu aplikasi native; scanner cukup dibuka lewat browser HP/tablet resepsionis. |
+| Animasi | **Framer Motion** (animasi umum React) + **GSAP** (khusus animasi kompleks: particle/constellation, ink-bleed SVG path, scroll-triggered) | Framer Motion cukup untuk 80% kasus; GSAP dipakai hanya untuk animasi signature tema yang butuh kontrol path/timeline lebih presisi (lihat prd-lengkap.md bagian 17). |
+| Device Preview Frame | Custom CSS/SVG bezel (bukan library pihak ketiga) — `<IPhoneFrame>` untuk mode Mobile (notch, tombol samping) dan `<BrowserFrame>` untuk mode Desktop (bar address bar sederhana) | Custom lebih ringan & mudah disesuaikan dibanding library device-mockup umum. BrowserFrame menegaskan preview desktop bukan lagi canvas sempit, tapi layout lebar sesungguhnya. |
 | Hosting | **Vercel** (frontend+API) + **Neon/Supabase** (Postgres) | Deploy cepat, auto-scaling, cocok untuk trafik tamu yang bisa lonjak mendadak (mis. H-1 acara). |
 
 Alternatif jika tim lebih familiar Vue: Nuxt 3 + Pinia bisa menggantikan Next.js dengan trade-off ekosistem sedikit lebih kecil untuk kasus media-heavy seperti ini.
 
 ## 2. Strategi Tampilan Desktop & Mobile
 
-Sesuai Design System, pendekatannya **bukan** "responsive penuh" (layout berubah total di breakpoint besar), melainkan **mobile-first canvas terpusat**:
+**Update:** pendekatan sebelumnya (canvas 480px di-center untuk semua ukuran layar) diganti menjadi **layout desktop yang benar-benar terpisah**, bukan skala dari versi mobile. Konsekuensinya, setiap tema perlu didesain 2 kali (mobile & desktop) — kompleksitas naik, tapi hasil di layar besar terasa proporsional, bukan sekadar kartu kecil terpusat.
 
-- Canvas undangan tetap `max-width: 480px`, di-center secara horizontal menggunakan flex/grid pada wrapper halaman.
-- Di layar desktop, area di luar canvas diberi background netral/blur/gradient dari tema (bukan konten kosong).
-- Semua unit pakai `rem`/relative, `touch target` minimal 44px tetap berlaku di desktop (klik mouse tetap nyaman).
-- Dashboard admin (tempat user mengelola undangan, upload media, lihat RSVP) sebaliknya dibuat **responsive penuh** — karena calon pengantin realistis akan mengelola dari laptop juga, bukan cuma HP.
+- **Mobile (\< `lg`/1024px):** layout 1 kolom, full-bleed hingga 480px, komponen stacked vertikal, floating dock di bawah layar, sesuai spesifikasi lama.
+- **Desktop (≥ `lg`/1024px):** layout memanfaatkan lebar layar — max-width konten 1200–1440px, komposisi multi-kolom (mis. hero split foto/teks, galeri grid multi-kolom, jadwal acara side-by-side dengan foto), sticky top nav menggantikan floating dock.
+- Implementasi teknis: gunakan breakpoint Tailwind (`lg:`) di komponen tema yang sama, ATAU pisahkan jadi sub-komponen `*.mobile.tsx` / `*.desktop.tsx` per slot bila perbedaan layout terlalu besar untuk diatur lewat class breakpoint saja (rekomendasi: mulai dengan Tailwind breakpoint dulu, pecah file hanya jika kompleksitas JSX-nya sudah berbeda jauh).
+- Data & konten (foto, teks, config tema) tetap satu sumber yang sama — yang berbeda hanya susunan/layout render-nya per breakpoint.
+- Dashboard admin (tempat user mengelola undangan) tetap **responsive penuh** seperti sebelumnya — tidak terpengaruh perubahan ini.
 
-**Kesimpulan:** Halaman undangan (yang dilihat tamu) = mobile-first, centered card. Dashboard pengelolaan (yang dipakai pembuat undangan) = responsive layout standar (sidebar di desktop, bottom nav di mobile).
+**Kesimpulan baru:** Halaman undangan tamu kini punya 2 layout nyata per tema: mobile (1 kolom, dock bawah) dan desktop (multi-kolom, nav atas, max-width 1200–1440px). Bukan lagi 1 layout yang cuma di-center di layar besar.
+
+Animasi signature per tema (constellation, particle, ink-bleed) wajib di-lazy-load dan dinonaktifkan otomatis jika `prefers-reduced-motion` aktif atau di koneksi lambat (deteksi via Network Information API bila tersedia), agar tidak membebani HP tamu dengan koneksi terbatas.
 
 ## 3. Arsitektur Sistem (Ringkas)
 
@@ -134,7 +139,16 @@ MAX_AUDIO_DURATION_SEC=300
   /scan/[invitationId]  → halaman scanner resepsionis (netral, kamera fullscreen)
   /api                  → route handlers
 /components
+  /editor
+    IPhoneFrame.tsx      → bezel iPhone (notch, tombol samping) untuk mode preview Mobile
+    BrowserFrame.tsx     → bezel browser sederhana untuk mode preview Desktop
+    PreviewToggle.tsx    → segmented control Desktop/Mobile
+/components
   /themes/editorial-brutalism
+    Hero.tsx             → gunakan breakpoint lg: internal untuk switch layout mobile/desktop
+    Gallery.tsx
+    ... (per slot, layout mobile & desktop diatur breakpoint di file yang sama;
+         pecah jadi Hero.desktop.tsx terpisah hanya jika JSX-nya sudah terlalu berbeda)
   /themes/raw-wabi-sabi
   /themes/cyber-celestial-noir
   /themes/70s-warm-groovy
