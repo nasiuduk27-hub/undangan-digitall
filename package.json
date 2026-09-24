@@ -9,18 +9,23 @@
     "lint": "eslint .",
     "test": "vitest run",
     "test:watch": "vitest",
+    "postinstall": "prisma generate",
+    "worker:start": "tsx worker.ts",
     "prisma:generate": "prisma generate",
-    "prisma:push": "prisma db push"
+    "prisma:push": "prisma db push",
+    "prisma:migrate:deploy": "prisma migrate deploy"
   },
   "dependencies": {
     "@aws-sdk/client-s3": "^3.1138.0",
     "@aws-sdk/s3-request-presigner": "^3.1138.0",
     "@prisma/client": "^6.4.1",
     "bcryptjs": "^3.0.3",
+    "bullmq": "^6.3.8",
     "clsx": "^2.1.1",
     "docx": "^9.7.2",
     "framer-motion": "^13.4.2",
     "gsap": "^3.15.0",
+    "ioredis": "^6.0.0",
     "jsqr": "^1.4.0",
     "lucide-react": "^1.16.0",
     "next": "^15.1.7",
@@ -35,6 +40,7 @@
     "@testing-library/react": "^16.1.0",
     "@testing-library/user-event": "^14.5.3",
     "@types/bcryptjs": "^2.4.6",
+    "@types/ioredis": "^4.28.10",
     "@types/node": "^22.13.4",
     "@types/qrcode": "^1.5.6",
     "@types/react": "^19.0.10",
@@ -48,6 +54,7 @@
     "postcss": "^8.5.2",
     "prisma": "^6.19.3",
     "tailwindcss": "^3.4.17",
+    "tsx": "^4.23.15",
     "typescript": "^5.7.3",
     "vitest": "^2.1.8"
   }
