@@ -2,7 +2,7 @@
 
 import { use, useCallback, useEffect, useState } from "react";
 import Link from "next/link";
-import { ArrowLeft, Copy, QrCode, Trash2, Users, Share2 } from "lucide-react";
+import { ArrowLeft, Copy, QrCode, Trash2, Users, Share2, Check, ExternalLink } from "lucide-react";
 
 type Guest = {
   id: string;
@@ -26,6 +26,7 @@ export default function GuestsPage({ params }: { params: Promise<{ id: string }>
   const [groupLabel, setGroupLabel] = useState("");
   const [loading, setLoading] = useState(true);
   const [saving, setSaving] = useState(false);
+  const [copiedGeneral, setCopiedGeneral] = useState(false);
   const [stats, setStats] = useState({ totalGuests: 0, rsvpHadir: 0, checkedIn: 0 });
 
   const load = useCallback(async () => {
@@ -76,6 +77,13 @@ export default function GuestsPage({ params }: { params: Promise<{ id: string }>
     await navigator.clipboard.writeText(`${base}/u/${invitationSlug}?to=${guest.slug_token}`);
   };
 
+  const copyGeneralLink = async () => {
+    const base = window.location.origin;
+    await navigator.clipboard.writeText(`${base}/u/${invitationSlug}`);
+    setCopiedGeneral(true);
+    setTimeout(() => setCopiedGeneral(false), 2000);
+  };
+
   const shareWhatsApp = (guest: Guest) => {
     const base = window.location.origin;
     const inviteUrl = `${base}/u/${invitationSlug}?to=${guest.slug_token}`;
@@ -106,14 +114,40 @@ export default function GuestsPage({ params }: { params: Promise<{ id: string }>
         <StatCard label="Check-in" value={stats.checkedIn} />
       </div>
 
-      <Link
-        href={`/scan/${id}`}
-        target="_blank"
-        className="mb-6 inline-flex items-center gap-2 rounded-xl bg-[#121212] px-4 py-2.5 text-xs font-semibold text-white hover:bg-black"
-      >
-        <QrCode className="w-4 h-4" />
-        Buka Scanner Resepsionis
-      </Link>
+      <div className="mb-6 flex flex-wrap items-center gap-3">
+        <Link
+          href={`/scan/${id}`}
+          target="_blank"
+          className="inline-flex items-center gap-2 rounded-xl bg-[#121212] px-4 py-2.5 text-xs font-semibold text-white hover:bg-black transition-colors"
+        >
+          <QrCode className="w-4 h-4 text-[#D8FB38]" />
+          Buka Scanner Resepsionis
+        </Link>
+        <button
+          onClick={copyGeneralLink}
+          className="inline-flex items-center gap-2 rounded-xl bg-white border border-[#e7ddd0] px-4 py-2.5 text-xs font-semibold text-[#2b2420] hover:bg-[#faf7f2] transition-colors"
+        >
+          {copiedGeneral ? (
+            <>
+              <Check className="w-4 h-4 text-green-600" />
+              Link Utama Tersalin!
+            </>
+          ) : (
+            <>
+              <Copy className="w-4 h-4 text-[#a9724f]" />
+              Salin Link Umum Undangan
+            </>
+          )}
+        </button>
+        <Link
+          href={`/u/${invitationSlug}`}
+          target="_blank"
+          className="inline-flex items-center gap-1.5 rounded-xl bg-white border border-[#e7ddd0] px-4 py-2.5 text-xs font-semibold text-[#a9724f] hover:bg-[#faf7f2] transition-colors"
+        >
+          <ExternalLink className="w-4 h-4" />
+          Buka Undangan (Web)
+        </Link>
+      </div>
 
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
         <form onSubmit={addGuests} className="bg-white border border-[#e7ddd0] rounded-2xl p-6 shadow-sm h-fit">

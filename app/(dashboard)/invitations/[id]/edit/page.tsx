@@ -2,7 +2,7 @@
 
 import { useEffect, useState, use } from "react";
 import Link from "next/link";
-import { ArrowLeft, Check, ExternalLink } from "lucide-react";
+import { ArrowLeft, Check, ExternalLink, Copy, QrCode } from "lucide-react";
 
 const THEMES = [
   {
@@ -42,6 +42,7 @@ export default function EditInvitationPage({
   const [isPublished, setIsPublished] = useState(false);
   const [error, setError] = useState("");
   const [success, setSuccess] = useState("");
+  const [copiedLink, setCopiedLink] = useState(false);
   const [loading, setLoading] = useState(false);
   const [fetching, setFetching] = useState(true);
 
@@ -115,6 +116,13 @@ export default function EditInvitationPage({
     }
   };
 
+  const handleCopyLink = async () => {
+    const origin = window.location.origin;
+    await navigator.clipboard.writeText(`${origin}/u/${slug}`);
+    setCopiedLink(true);
+    setTimeout(() => setCopiedLink(false), 2000);
+  };
+
   if (fetching) {
     return (
       <div className="py-20 text-center text-sm text-[#7a6f63]">
@@ -125,7 +133,7 @@ export default function EditInvitationPage({
 
   return (
     <div className="max-w-2xl mx-auto">
-      <div className="flex items-center justify-between mb-6">
+      <div className="flex flex-wrap items-center justify-between gap-3 mb-6">
         <Link
           href="/dashboard"
           className="inline-flex items-center gap-1.5 text-xs font-semibold text-[#7a6f63] hover:text-[#2b2420] transition-colors"
@@ -133,14 +141,40 @@ export default function EditInvitationPage({
           <ArrowLeft className="w-3.5 h-3.5" />
           Kembali ke Dashboard
         </Link>
-        <Link
-          href={`/invite/${slug}`}
-          target="_blank"
-          className="inline-flex items-center gap-1 text-xs text-[#a9724f] font-semibold hover:underline"
-        >
-          Lihat Halaman Tamu
-          <ExternalLink className="w-3.5 h-3.5" />
-        </Link>
+        <div className="flex items-center gap-2">
+          <button
+            onClick={handleCopyLink}
+            className="inline-flex items-center gap-1.5 px-3 py-1.5 bg-[#f1e4d8] hover:bg-[#e7ddd0] text-[#2b2420] text-xs font-semibold rounded-lg border border-[#e7ddd0] transition-colors"
+          >
+            {copiedLink ? (
+              <>
+                <Check className="w-3.5 h-3.5 text-green-600" />
+                Tersalin!
+              </>
+            ) : (
+              <>
+                <Copy className="w-3.5 h-3.5 text-[#a9724f]" />
+                Salin Link
+              </>
+            )}
+          </button>
+          <Link
+            href={`/scan/${resolvedParams.id}`}
+            target="_blank"
+            className="inline-flex items-center gap-1.5 px-3 py-1.5 bg-[#121212] hover:bg-black text-white text-xs font-semibold rounded-lg transition-colors"
+          >
+            <QrCode className="w-3.5 h-3.5 text-[#D8FB38]" />
+            Scan QR
+          </Link>
+          <Link
+            href={`/u/${slug}`}
+            target="_blank"
+            className="inline-flex items-center gap-1 text-xs text-[#a9724f] font-semibold hover:underline"
+          >
+            Lihat Halaman
+            <ExternalLink className="w-3.5 h-3.5" />
+          </Link>
+        </div>
       </div>
 
       <div className="bg-white border border-[#e7ddd0] rounded-2xl p-6 sm:p-8 shadow-sm">

@@ -2,7 +2,7 @@
 
 import { useEffect, useState } from "react";
 import Link from "next/link";
-import { PlusCircle, Calendar, MapPin, Eye, Edit3, Trash2 } from "lucide-react";
+import { PlusCircle, Calendar, MapPin, Eye, Edit3, Trash2, Copy, QrCode, Check } from "lucide-react";
 
 interface Invitation {
   id: string;
@@ -24,6 +24,7 @@ interface Invitation {
 export default function DashboardPage() {
   const [invitations, setInvitations] = useState<Invitation[]>([]);
   const [loading, setLoading] = useState(true);
+  const [copiedSlug, setCopiedSlug] = useState<string | null>(null);
 
   const fetchInvitations = async () => {
     try {
@@ -56,6 +57,13 @@ export default function DashboardPage() {
     } catch (err) {
       console.error(err);
     }
+  };
+
+  const handleCopyLink = async (slug: string) => {
+    const origin = window.location.origin;
+    await navigator.clipboard.writeText(`${origin}/u/${slug}`);
+    setCopiedSlug(slug);
+    setTimeout(() => setCopiedSlug(null), 2000);
   };
 
   return (
@@ -152,8 +160,8 @@ export default function DashboardPage() {
                   </div>
                 </div>
 
-                <div className="mt-6 pt-4 border-t border-[#e7ddd0] flex items-center justify-between gap-2">
-                  <div className="flex items-center gap-2">
+                <div className="mt-6 pt-4 border-t border-[#e7ddd0] flex flex-wrap items-center justify-between gap-2">
+                  <div className="flex flex-wrap items-center gap-1.5">
                     <Link
                       href={`/u/${inv.slug}${inv.is_published ? "" : "?preview=true"}`}
                       target="_blank"
@@ -162,24 +170,38 @@ export default function DashboardPage() {
                       <Eye className="w-3.5 h-3.5 text-[#a9724f]" />
                       Lihat
                     </Link>
+                    <button
+                      onClick={() => handleCopyLink(inv.slug)}
+                      className="inline-flex items-center gap-1.5 px-3 py-1.5 bg-[#f1e4d8] hover:bg-[#e7ddd0] text-[#2b2420] text-xs font-semibold rounded-lg border border-[#e7ddd0] transition-colors"
+                      title="Salin Link Publik"
+                    >
+                      {copiedSlug === inv.slug ? (
+                        <>
+                          <Check className="w-3.5 h-3.5 text-green-600" />
+                          Tersalin!
+                        </>
+                      ) : (
+                        <>
+                          <Copy className="w-3.5 h-3.5 text-[#a9724f]" />
+                          Salin Link
+                        </>
+                      )}
+                    </button>
+                    <Link
+                      href={`/scan/${inv.id}`}
+                      target="_blank"
+                      className="inline-flex items-center gap-1.5 px-3 py-1.5 bg-[#121212] hover:bg-black text-white text-xs font-semibold rounded-lg transition-colors"
+                      title="Buka Scanner QR Resepsionis"
+                    >
+                      <QrCode className="w-3.5 h-3.5 text-[#D8FB38]" />
+                      Scan QR
+                    </Link>
                     <Link
                       href={`/invitations/${inv.id}/edit`}
                       className="inline-flex items-center gap-1.5 px-3 py-1.5 bg-[#faf7f2] hover:bg-[#f1e4d8] text-[#2b2420] text-xs font-semibold rounded-lg border border-[#e7ddd0] transition-colors"
                     >
                       <Edit3 className="w-3.5 h-3.5 text-[#a9724f]" />
                       Edit
-                    </Link>
-                    <Link
-                      href={`/invitations/${inv.id}/media`}
-                      className="inline-flex items-center gap-1.5 px-3 py-1.5 bg-[#faf7f2] hover:bg-[#f1e4d8] text-[#2b2420] text-xs font-semibold rounded-lg border border-[#e7ddd0] transition-colors"
-                    >
-                      Media
-                    </Link>
-                    <Link
-                      href={`/invitations/${inv.id}/banks`}
-                      className="inline-flex items-center gap-1.5 px-3 py-1.5 bg-[#faf7f2] hover:bg-[#f1e4d8] text-[#2b2420] text-xs font-semibold rounded-lg border border-[#e7ddd0] transition-colors"
-                    >
-                      Rekening
                     </Link>
                     <Link
                       href={`/invitations/${inv.id}/guests`}
