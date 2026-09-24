@@ -10,7 +10,8 @@ export async function POST(
   try {
     const { slug } = await params;
     const body = await req.json();
-    let { token, attendance_status, pax_count, wish_message } = body;
+    const { token, pax_count, wish_message } = body;
+    let { attendance_status } = body;
 
     if (!token) {
       return NextResponse.json({ error: "Token tamu wajib diisi" }, { status: 400 });

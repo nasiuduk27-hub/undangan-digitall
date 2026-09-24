@@ -40,8 +40,6 @@ export function QuickRsvpDock({
   const [errorMessage, setErrorMessage] = useState<string>("");
   const [isPlayingAudio, setIsPlayingAudio] = useState<boolean>(false);
 
-  const audioRef = useState<HTMLAudioElement | null>(null)[0];
-
   const handleAudioToggle = () => {
     const el = document.querySelector<HTMLAudioElement>("audio");
     if (!el) return;
@@ -310,7 +308,6 @@ export function QuickRsvpDock({
     const isBrutalist = themeId === "editorial-brutalism";
     const isWabi = themeId === "raw-wabi-sabi";
     const isCyber = themeId === "cyber-celestial-noir";
-    const isGroovy = themeId === "70s-warm-groovy";
 
     return (
       <div className="fixed inset-0 z-50 flex items-end sm:items-center justify-center bg-black/60 backdrop-blur-sm p-4 animate-in fade-in duration-200">
