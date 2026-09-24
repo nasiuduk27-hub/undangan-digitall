@@ -6,11 +6,14 @@ export default async function InvitePage({
   params,
   searchParams,
 }: {
-  params: Promise<{ slug: string }>;
+  params: Promise<{ slug: string; guestSlug?: string }>;
   searchParams: Promise<{ to?: string; preview?: string }>;
 }) {
-  const { slug } = await params;
-  const { to, preview } = await searchParams;
+  const { slug, guestSlug } = await params;
+  const { to: queryTo, preview } = await searchParams;
+
+  const rawTo = guestSlug ? decodeURIComponent(guestSlug) : queryTo;
+  const to = rawTo ? rawTo.trim() : undefined;
 
   const invitation = await prisma.invitation.findUnique({
     where: { slug },
@@ -18,7 +21,19 @@ export default async function InvitePage({
       theme: true,
       media_assets: { orderBy: { order: "asc" } },
       bank_accounts: { include: { bank: true } },
-      guests: to ? { where: { OR: [{ slug_token: to }, { name: to }] }, include: { rsvp: true }, take: 1 } : false,
+      guests: to
+        ? {
+            where: {
+              OR: [
+                { slug_token: to },
+                { name: { equals: to, mode: "insensitive" } },
+                { name: { equals: to.replace(/-/g, " "), mode: "insensitive" } },
+              ],
+            },
+            include: { rsvp: true },
+            take: 1,
+          }
+        : false,
     },
   });
 

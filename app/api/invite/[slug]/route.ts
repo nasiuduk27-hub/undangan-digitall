@@ -18,7 +18,17 @@ export async function GET(
         media_assets: { orderBy: { order: "asc" } },
         bank_accounts: { include: { bank: true } },
         guests: token
-          ? { where: { OR: [{ slug_token: token }, { name: token }] }, include: { rsvp: true }, take: 1 }
+          ? {
+              where: {
+                OR: [
+                  { slug_token: token },
+                  { name: { equals: token, mode: "insensitive" } },
+                  { name: { equals: token.replace(/-/g, " "), mode: "insensitive" } },
+                ],
+              },
+              include: { rsvp: true },
+              take: 1,
+            }
           : false,
       },
     });

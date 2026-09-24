@@ -26,7 +26,14 @@ export async function POST(
     }
 
     const guest = await prisma.guest.findFirst({
-      where: { invitation_id: invitation.id, OR: [{ slug_token: token }, { name: token }] },
+      where: {
+        invitation_id: invitation.id,
+        OR: [
+          { slug_token: token },
+          { name: { equals: token, mode: "insensitive" } },
+          { name: { equals: token.replace(/-/g, " "), mode: "insensitive" } },
+        ],
+      },
     });
     if (!guest) return NextResponse.json({ error: "Tamu tidak valid" }, { status: 404 });
 
