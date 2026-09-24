@@ -2,6 +2,7 @@
 
 import { use, useEffect, useRef, useState, useCallback } from "react";
 import { Camera, CameraOff, RefreshCw } from "lucide-react";
+import jsQR from "jsqr";
 
 type VerifyResult = {
   status: "valid" | "sudah-dipakai" | "tidak-valid";
@@ -39,13 +40,27 @@ export default function ScanPage({
   const [cameraActive, setCameraActive] = useState(false);
   const [cameraError, setCameraError] = useState<string | null>(null);
   const videoRef = useRef<HTMLVideoElement | null>(null);
+  const canvasRef = useRef<HTMLCanvasElement | null>(null);
   const streamRef = useRef<MediaStream | null>(null);
   const animFrameRef = useRef<number | null>(null);
+  const lastScannedRef = useRef<{ code: string; time: number } | null>(null);
 
   const verifyToken = useCallback(
     async (tokenToVerify: string) => {
       const cleanToken = tokenToVerify.trim();
       if (!cleanToken) return;
+
+      // Anti-duplicate throttle (same token within 3s ignored)
+      const now = Date.now();
+      if (
+        lastScannedRef.current &&
+        lastScannedRef.current.code === cleanToken &&
+        now - lastScannedRef.current.time < 3000
+      ) {
+        return;
+      }
+      lastScannedRef.current = { code: cleanToken, time: now };
+
       setLoading(true);
 
       try {
@@ -93,43 +108,95 @@ export default function ScanPage({
   const startCamera = async () => {
     setCameraError(null);
     try {
+      if (!navigator.mediaDevices || !navigator.mediaDevices.getUserMedia) {
+        throw new Error("HTTPS_REQUIRED");
+      }
       const stream = await navigator.mediaDevices.getUserMedia({
         video: { facingMode: "environment", width: { ideal: 1280 }, height: { ideal: 720 } },
       });
       streamRef.current = stream;
-      if (videoRef.current) {
-        videoRef.current.srcObject = stream;
-        await videoRef.current.play();
-      }
       setCameraActive(true);
-
-      // Check if native BarcodeDetector API is supported
-      if (typeof window !== "undefined" && "BarcodeDetector" in window && window.BarcodeDetector) {
-        const detector = new window.BarcodeDetector({ formats: ["qr_code"] });
-        const scanLoop = async () => {
-          if (videoRef.current && videoRef.current.readyState === videoRef.current.HAVE_ENOUGH_DATA) {
-            try {
-              const barcodes = await detector.detect(videoRef.current);
-              if (barcodes.length > 0) {
-                const detectedQr = barcodes[0].rawValue;
-                if (detectedQr) {
-                  verifyToken(detectedQr);
-                }
-              }
-            } catch (e) {
-              console.warn("Barcode detection error:", e);
-            }
-          }
-          animFrameRef.current = requestAnimationFrame(scanLoop);
-        };
-        scanLoop();
-      }
-    } catch (err) {
+    } catch (err: unknown) {
       console.error("Camera access error:", err);
-      setCameraError("Kamera tidak dapat diakses. Pastikan izin kamera telah diberikan.");
+      if (err instanceof Error && err.message === "HTTPS_REQUIRED") {
+        setCameraError("Kamera membutuhkan koneksi HTTPS atau localhost. Akses via HTTP biasa diblokir browser.");
+      } else {
+        setCameraError("Kamera tidak dapat diakses. Pastikan izin kamera telah diberikan.");
+      }
       stopCamera();
     }
   };
+
+  // Effect to attach stream to video element and start scan loop when cameraActive is true
+  useEffect(() => {
+    if (!cameraActive || !streamRef.current || !videoRef.current) return;
+
+    const videoEl = videoRef.current;
+    videoEl.srcObject = streamRef.current;
+    videoEl.play().catch((err) => console.warn("Video play error:", err));
+
+    let nativeDetector: BarcodeDetectorInstance | null = null;
+    if (typeof window !== "undefined" && "BarcodeDetector" in window && window.BarcodeDetector) {
+      try {
+        nativeDetector = new window.BarcodeDetector({ formats: ["qr_code"] });
+      } catch {
+        nativeDetector = null;
+      }
+    }
+
+    const scanLoop = async () => {
+      if (videoEl && videoEl.readyState === videoEl.HAVE_ENOUGH_DATA) {
+        let detectedCode: string | null = null;
+
+        // Try native BarcodeDetector first
+        if (nativeDetector) {
+          try {
+            const barcodes = await nativeDetector.detect(videoEl);
+            if (barcodes.length > 0 && barcodes[0].rawValue) {
+              detectedCode = barcodes[0].rawValue;
+            }
+          } catch {
+            // Fallback to jsQR
+          }
+        }
+
+        // Fallback to jsQR via canvas
+        if (!detectedCode) {
+          if (!canvasRef.current) {
+            canvasRef.current = document.createElement("canvas");
+          }
+          const canvas = canvasRef.current;
+          canvas.width = videoEl.videoWidth;
+          canvas.height = videoEl.videoHeight;
+          const ctx = canvas.getContext("2d", { willReadFrequently: true });
+          if (ctx) {
+            ctx.drawImage(videoEl, 0, 0, canvas.width, canvas.height);
+            const imageData = ctx.getImageData(0, 0, canvas.width, canvas.height);
+            const code = jsQR(imageData.data, imageData.width, imageData.height, {
+              inversionAttempts: "dontInvert",
+            });
+            if (code && code.data) {
+              detectedCode = code.data;
+            }
+          }
+        }
+
+        if (detectedCode) {
+          verifyToken(detectedCode);
+        }
+      }
+      animFrameRef.current = requestAnimationFrame(scanLoop);
+    };
+
+    scanLoop();
+
+    return () => {
+      if (animFrameRef.current) {
+        cancelAnimationFrame(animFrameRef.current);
+        animFrameRef.current = null;
+      }
+    };
+  }, [cameraActive, verifyToken]);
 
   useEffect(() => {
     return () => {
