@@ -11,6 +11,7 @@ import {
   Trash2,
   AlertCircle,
   CheckCircle2,
+  Link2,
 } from "lucide-react";
 
 interface MediaAsset {
@@ -30,6 +31,8 @@ export default function MediaManagementPage({
   const resolvedParams = use(params);
   const [mediaList, setMediaList] = useState<MediaAsset[]>([]);
   const [uploading, setUploading] = useState<string | null>(null);
+  const [audioUrlInput, setAudioUrlInput] = useState("");
+  const [isSubmittingLink, setIsSubmittingLink] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [success, setSuccess] = useState<string | null>(null);
 
@@ -152,6 +155,48 @@ export default function MediaManagementPage({
       }
     } catch (err) {
       console.error(err);
+    }
+  };
+
+  const handleAudioUrlSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+    if (!audioUrlInput.trim()) return;
+
+    if (!/^https?:\/\/.+/i.test(audioUrlInput.trim())) {
+      setError("URL audio tidak valid. Harus diawali dengan http:// atau https://");
+      return;
+    }
+
+    setError(null);
+    setSuccess(null);
+    setIsSubmittingLink(true);
+
+    try {
+      const res = await fetch(`/api/invitations/${resolvedParams.id}/media`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          action: "confirm-upload",
+          type: "audio",
+          url: audioUrlInput.trim(),
+          order: mediaList.filter((m) => m.type === "audio").length,
+        }),
+      });
+
+      const data = await res.json();
+      if (!res.ok) {
+        throw new Error(data.error || "Gagal menyimpan URL audio");
+      }
+
+      setSuccess("Berhasil menambahkan tautan lagu!");
+      setAudioUrlInput("");
+      setTimeout(() => setSuccess(null), 3000);
+      fetchMedia();
+    } catch (err: unknown) {
+      if (err instanceof Error) setError(err.message);
+      else setError("Terjadi kesalahan saat menyimpan URL");
+    } finally {
+      setIsSubmittingLink(false);
     }
   };
 
@@ -324,7 +369,7 @@ export default function MediaManagementPage({
                 </h2>
               </div>
               <p className="text-xs text-[#7a6f63] mt-0.5">
-                Format MP3, WAV. Maks 10MB / 5 menit. Autoplay setelah klik pertama tamu.
+                Format MP3, WAV. Unggah file audio atau tautkan URL audio direct (Dropbox/S3/Cloudinary/dll).
               </p>
             </div>
             {audios.length === 0 && (
@@ -334,7 +379,7 @@ export default function MediaManagementPage({
                 <input
                   type="file"
                   accept="audio/mpeg,audio/mp3,audio/wav"
-                  disabled={uploading !== null}
+                  disabled={uploading !== null || isSubmittingLink}
                   onChange={(e) => handleFileUpload(e, "audio")}
                   className="hidden"
                 />
@@ -343,13 +388,38 @@ export default function MediaManagementPage({
           </div>
 
           {audios.length === 0 ? (
-            <div className="border-2 border-dashed border-[#e7ddd0] rounded-xl p-8 text-center text-xs text-[#7a6f63]">
-              Belum ada backsound lagu yang diunggah (opsional).
+            <div className="space-y-4">
+              <div className="border-2 border-dashed border-[#e7ddd0] rounded-xl p-6 text-center text-xs text-[#7a6f63]">
+                Belum ada backsound lagu. Silakan unggah file audio atau masukkan tautan direct URL MP3 di bawah.
+              </div>
+              <form onSubmit={handleAudioUrlSubmit} className="flex flex-col sm:flex-row gap-2">
+                <div className="relative flex-1">
+                  <Link2 className="w-4 h-4 text-[#7a6f63] absolute left-3 top-1/2 -translate-y-1/2" />
+                  <input
+                    type="url"
+                    placeholder="https://example.com/music.mp3"
+                    value={audioUrlInput}
+                    onChange={(e) => setAudioUrlInput(e.target.value)}
+                    disabled={isSubmittingLink || uploading !== null}
+                    className="w-full pl-9 pr-3 py-2 text-xs border border-[#e7ddd0] rounded-xl focus:outline-none focus:border-[#a9724f]"
+                  />
+                </div>
+                <button
+                  type="submit"
+                  disabled={!audioUrlInput.trim() || isSubmittingLink || uploading !== null}
+                  className="px-4 py-2 bg-[#2b2420] hover:bg-[#121212] text-white text-xs font-semibold rounded-xl disabled:opacity-50 transition-colors"
+                >
+                  {isSubmittingLink ? "Menyimpan..." : "Simpan Link"}
+                </button>
+              </form>
             </div>
           ) : (
             <div className="flex items-center justify-between gap-4 p-4 bg-[#faf7f2] border border-[#e7ddd0] rounded-xl">
               <div className="flex-1">
                 <audio src={audios[0].url} controls className="w-full h-8" />
+                <p className="text-[10px] text-[#7a6f63] mt-1 truncate">
+                  URL: {audios[0].url}
+                </p>
               </div>
               <button
                 onClick={() => handleDelete(audios[0].id)}
