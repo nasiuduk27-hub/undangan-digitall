@@ -2,6 +2,7 @@
 
 import { useAnimSettings } from "@/lib/use-anim-settings";
 import { AudioControl } from "@/components/shared/audio-control";
+import { QuickRsvpDock } from "@/components/shared/quick-rsvp-dock";
 import { BankCard } from "@/components/shared/bank-card";
 import { QrCheckinCard } from "@/components/shared/qr-checkin-card";
 import { QrCheckinPlaceholder } from "@/components/shared/qr-checkin-placeholder";
@@ -85,7 +86,16 @@ export function Groovy70sTheme({
         }`}
       />
 
-      <AudioControl audioUrl={audio?.url} />
+      <QuickRsvpDock
+        slug={invitation.slug}
+        token={guest?.slug_token}
+        guestName={guest?.name}
+        themeId="70s-warm-groovy"
+        initialStatus={guest?.rsvp?.attendance_status}
+        initialPax={guest?.rsvp?.pax_count}
+        initialWish={guest?.rsvp?.wish_message}
+        audioUrl={audio?.url}
+      />
 
       {/* Desktop Sticky Top Nav */}
       <header className="sticky top-0 z-40 hidden border-b-2 border-[#D96B27]/30 bg-[#FDF8EE]/90 backdrop-blur-md px-8 py-3.5 lg:flex items-center justify-between font-sans shadow-sm">
@@ -109,12 +119,16 @@ export function Groovy70sTheme({
             audioUrl={audio?.url}
             desktopClassName="hidden lg:inline-flex items-center gap-2 rounded-full border border-[#D96B27] bg-[#FFF2D0] px-3 py-1 font-sans text-xs font-bold text-[#D96B27] hover:bg-[#D96B27] hover:text-[#FDF8EE] transition"
           />
-          <a
-            href="#rsvp"
-            className="rounded-full bg-[#D96B27] px-4 py-1.5 font-sans text-xs font-bold uppercase tracking-wide text-[#FDF8EE] shadow-md hover:bg-[#3A2418] transition"
-          >
-            RSVP
-          </a>
+          <QuickRsvpDock
+            isDesktopNav
+            slug={invitation.slug}
+            token={guest?.slug_token}
+            guestName={guest?.name}
+            themeId="70s-warm-groovy"
+            initialStatus={guest?.rsvp?.attendance_status}
+            initialPax={guest?.rsvp?.pax_count}
+            initialWish={guest?.rsvp?.wish_message}
+          />
         </div>
       </header>
 

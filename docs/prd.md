@@ -197,8 +197,8 @@ Bagian Design System
 - **Couple Profile:** foto duotone/frame geometric; ikon sosial media monoline.
 - **Countdown & Timeline:** blok tanggal dengan zona waktu otomatis (WIB/WITA/WIT); tombol Add to Calendar (.ics).
 - **Direct Gift/Angpau:** kartu rekening dengan 1-click copy + toast; toggle QRIS statis/dinamis.
-- **RSVP & Wishes:** radio Hadir/Ragu/Tidak Hadir + selector pax; feed ucapan infinite scroll.
-- **Floating Dock (mobile):** bar melayang di bawah layar berisi play/pause audio & quick-jump ke RSVP. Di layout desktop, elemen ini digantikan **sticky top nav bar** (audio toggle + jump-link jadi bagian navigasi atas, bukan dock melayang) — pola UI mobile ini tidak dipaksakan ke desktop.
+- **RSVP & Wishes:** dua lapis interaksi — *Quick RSVP* (1 tap langsung dari Floating Dock/nav, lihat poin di bawah) untuk pilihan cepat Hadir/Tidak Hadir/Mungkin, lalu form detail (jumlah pax, pesan ucapan) muncul sebagai langkah kedua setelah quick pick dipilih — bukan form panjang di awal. Feed ucapan infinite scroll tetap ada di section terpisah.
+- **Floating Dock (mobile):** bar melayang di bawah layar berisi (a) play/pause audio, (b) **tombol Quick RSVP** — 3 opsi ringkas (Hadir/Tidak Hadir/Mungkin) yang bisa dipilih satu tap tanpa scroll ke section RSVP, mirip pola "pill bar" yang umum di banyak undangan digital tapi gaya visualnya tetap mengikuti tema (lihat variasi per tema di bawah), (c) quick-jump ke section RSVP lengkap. Di layout desktop, elemen ini digantikan **sticky top nav bar** dengan tombol Quick RSVP yang sama — pola UI mobile ini tidak dipaksakan ke desktop, tapi fungsinya tetap ada.
 - **QR Check-in Card:** kode QR unik ditampilkan di halaman undangan tamu (mis. dekat bagian RSVP), dengan label "Tunjukkan QR ini saat kedatangan". Desain kartu QR tetap mengikuti gaya tema, tapi kode QR sendiri selalu di atas background putih solid agar tetap terscan dengan baik apa pun temanya.
 - **Halaman Scanner Resepsionis:** antarmuka terpisah (bukan bagian dari tema undangan) — tampilan netral, kamera fullscreen, indikator besar hijau/merah untuk hasil scan (valid/sudah dipakai/tidak valid), dan counter jumlah check-in berjalan.
 
@@ -252,6 +252,7 @@ State wajib di tiap tema: *empty state* (belum upload), *loading state* (kompres
 - **Dark-mode lock:** tema gelap (Cyber-Celestial Noir) mengunci palet sendiri, tidak ikut auto dark/light OS tamu.
 - **Versioning tema:** revisi tema lama tidak mengubah tampilan undangan yang sudah dipublish tiba-tiba.
 - **QA checklist tema baru:** kontras, kelengkapan slot wajib, ukuran file — sebelum rilis ke katalog.
+- **Variasi Quick RSVP per tema** (agar tidak semua tema terlihat sama seperti pill bar generik): Editorial Brutalism — 3 kotak persegi bersebelahan dengan border tegas, teks besar tanpa emoji; Raw Wabi-Sabi — 3 pilihan dipisah garis tipis organik, ikon line-art minimal (bukan emoji); Cyber-Celestial Noir — pill dengan outline neon glow, ikon monoline; 70s Warm Groovy — pill tebal bulat (paling natural dengan gaya tema ini, boleh pakai emoji karena sesuai karakter playful-nya).
 
 ## 17. Design System — Animasi Signature per Tema
 

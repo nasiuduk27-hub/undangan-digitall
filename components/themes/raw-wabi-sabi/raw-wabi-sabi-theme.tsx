@@ -3,6 +3,7 @@
 import { useAnimSettings } from "@/lib/use-anim-settings";
 import { WabiSabiInkBleed } from "@/components/themes/animations/wabi-sabi-ink-bleed";
 import { AudioControl } from "@/components/shared/audio-control";
+import { QuickRsvpDock } from "@/components/shared/quick-rsvp-dock";
 import { BankCard } from "@/components/shared/bank-card";
 import { QrCheckinCard } from "@/components/shared/qr-checkin-card";
 import { QrCheckinPlaceholder } from "@/components/shared/qr-checkin-placeholder";
@@ -74,7 +75,16 @@ export function RawWabiSabiTheme({
         } as CSSProperties
       }
     >
-      <AudioControl audioUrl={audio?.url} />
+      <QuickRsvpDock
+        slug={invitation.slug}
+        token={guest?.slug_token}
+        guestName={guest?.name}
+        themeId="raw-wabi-sabi"
+        initialStatus={guest?.rsvp?.attendance_status}
+        initialPax={guest?.rsvp?.pax_count}
+        initialWish={guest?.rsvp?.wish_message}
+        audioUrl={audio?.url}
+      />
 
       {/* Desktop Sticky Top Nav */}
       <header className="sticky top-0 z-40 hidden border-b border-[#2E241D]/15 bg-[#EBE5DC]/90 backdrop-blur-md px-8 py-3.5 lg:flex items-center justify-between font-serif shadow-sm">
@@ -97,12 +107,16 @@ export function RawWabiSabiTheme({
             audioUrl={audio?.url}
             desktopClassName="hidden lg:inline-flex items-center gap-2 border border-[#2E241D]/30 bg-[#F7F0E8] px-3 py-1 font-serif text-xs italic text-[#2E241D] hover:bg-[#BFA054] hover:text-white transition"
           />
-          <a
-            href="#rsvp"
-            className="border border-[#2E241D] bg-[#2E241D] px-4 py-1.5 font-serif text-xs italic tracking-wide text-[#EBE5DC] hover:bg-[#BFA054] transition"
-          >
-            Konfirmasi RSVP
-          </a>
+          <QuickRsvpDock
+            isDesktopNav
+            slug={invitation.slug}
+            token={guest?.slug_token}
+            guestName={guest?.name}
+            themeId="raw-wabi-sabi"
+            initialStatus={guest?.rsvp?.attendance_status}
+            initialPax={guest?.rsvp?.pax_count}
+            initialWish={guest?.rsvp?.wish_message}
+          />
         </div>
       </header>
 

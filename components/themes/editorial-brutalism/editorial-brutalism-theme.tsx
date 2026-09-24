@@ -2,6 +2,7 @@
 
 import { useAnimSettings } from "@/lib/use-anim-settings";
 import { AudioControl } from "@/components/shared/audio-control";
+import { QuickRsvpDock } from "@/components/shared/quick-rsvp-dock";
 import { BankCard } from "@/components/shared/bank-card";
 import { QrCheckinCard } from "@/components/shared/qr-checkin-card";
 import { QrCheckinPlaceholder } from "@/components/shared/qr-checkin-placeholder";
@@ -130,7 +131,16 @@ export function EditorialBrutalismTheme({
         } as CSSProperties
       }
     >
-      <AudioControl audioUrl={audio?.url} />
+      <QuickRsvpDock
+        slug={invitation.slug}
+        token={guest?.slug_token}
+        guestName={guest?.name}
+        themeId="editorial-brutalism"
+        initialStatus={guest?.rsvp?.attendance_status}
+        initialPax={guest?.rsvp?.pax_count}
+        initialWish={guest?.rsvp?.wish_message}
+        audioUrl={audio?.url}
+      />
 
       {/* Sticky Top Nav Bar - Desktop Only (hidden lg:flex) */}
       <header className="sticky top-0 z-40 hidden border-b-4 border-[var(--theme-text)] bg-[var(--theme-bg)] px-8 py-3.5 lg:flex items-center justify-between shadow-[0_4px_0_var(--theme-text)]">
@@ -154,12 +164,16 @@ export function EditorialBrutalismTheme({
             audioUrl={audio?.url}
             desktopClassName="hidden lg:inline-flex items-center gap-2 border-2 border-[var(--theme-text)] bg-[var(--theme-card)] px-3 py-1 font-mono text-xs font-bold uppercase shadow-[2px_2px_0_var(--theme-text)] hover:bg-[var(--theme-accent)] transition"
           />
-          <a
-            href="#rsvp"
-            className="border-2 border-[var(--theme-text)] bg-[var(--theme-accent)] px-4 py-1.5 font-mono text-xs font-black uppercase shadow-[3px_3px_0_var(--theme-text)] hover:bg-[var(--theme-text)] hover:text-[var(--theme-bg)] transition"
-          >
-            RSVP
-          </a>
+          <QuickRsvpDock
+            isDesktopNav
+            slug={invitation.slug}
+            token={guest?.slug_token}
+            guestName={guest?.name}
+            themeId="editorial-brutalism"
+            initialStatus={guest?.rsvp?.attendance_status}
+            initialPax={guest?.rsvp?.pax_count}
+            initialWish={guest?.rsvp?.wish_message}
+          />
         </div>
       </header>
 

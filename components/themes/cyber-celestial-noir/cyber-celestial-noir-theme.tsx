@@ -3,6 +3,7 @@
 import { useAnimSettings } from "@/lib/use-anim-settings";
 import { CyberConstellation } from "@/components/themes/animations/cyber-constellation";
 import { AudioControl } from "@/components/shared/audio-control";
+import { QuickRsvpDock } from "@/components/shared/quick-rsvp-dock";
 import { BankCard } from "@/components/shared/bank-card";
 import { QrCheckinCard } from "@/components/shared/qr-checkin-card";
 import { QrCheckinPlaceholder } from "@/components/shared/qr-checkin-placeholder";
@@ -74,7 +75,16 @@ export function CyberCelestialNoirTheme({
         } as CSSProperties
       }
     >
-      <AudioControl audioUrl={audio?.url} />
+      <QuickRsvpDock
+        slug={invitation.slug}
+        token={guest?.slug_token}
+        guestName={guest?.name}
+        themeId="cyber-celestial-noir"
+        initialStatus={guest?.rsvp?.attendance_status}
+        initialPax={guest?.rsvp?.pax_count}
+        initialWish={guest?.rsvp?.wish_message}
+        audioUrl={audio?.url}
+      />
 
       {/* Desktop Sticky Top Nav */}
       <header className="sticky top-0 z-40 hidden border-b border-[#00F5D4]/30 bg-[#0C0E14]/90 backdrop-blur-md px-8 py-3 lg:flex items-center justify-between font-mono text-xs text-[#00F5D4] shadow-[0_0_15px_rgba(0,245,212,0.15)]">
@@ -98,12 +108,16 @@ export function CyberCelestialNoirTheme({
             audioUrl={audio?.url}
             desktopClassName="hidden lg:inline-flex items-center gap-2 border border-[#00F5D4] bg-[#151A24] px-3 py-1 font-mono text-xs font-bold text-[#00F5D4] hover:bg-[#00F5D4] hover:text-[#0C0E14] transition"
           />
-          <a
-            href="#rsvp"
-            className="rounded border border-[#00F5D4] bg-[#00F5D4] px-4 py-1.5 font-mono text-xs font-bold text-[#0C0E14] shadow-[0_0_10px_#00F5D4] hover:bg-white transition"
-          >
-            [ENTER RSVP]
-          </a>
+          <QuickRsvpDock
+            isDesktopNav
+            slug={invitation.slug}
+            token={guest?.slug_token}
+            guestName={guest?.name}
+            themeId="cyber-celestial-noir"
+            initialStatus={guest?.rsvp?.attendance_status}
+            initialPax={guest?.rsvp?.pax_count}
+            initialWish={guest?.rsvp?.wish_message}
+          />
         </div>
       </header>
 

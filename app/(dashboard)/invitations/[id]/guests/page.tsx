@@ -43,6 +43,8 @@ export default function GuestsPage({ params }: { params: Promise<{ id: string }>
 
   useEffect(() => {
     load();
+    const interval = setInterval(load, 5000);
+    return () => clearInterval(interval);
   }, [load]);
 
   const addGuests = async (event: React.FormEvent) => {
