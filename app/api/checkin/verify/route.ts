@@ -12,7 +12,7 @@ export async function POST(req: Request) {
 
     const guest = await prisma.guest.findUnique({
       where: { slug_token: slugToken },
-      include: { invitation: true, check_in: true },
+      include: { invitation: true, check_in: true, rsvp: true },
     });
     if (!guest) return NextResponse.json({ status: "tidak-valid" }, { status: 404 });
     if (invitation_id && guest.invitation_id !== invitation_id) {
@@ -35,6 +35,16 @@ export async function POST(req: Request) {
         checkin_status: "valid",
       },
     });
+
+    if (!guest.rsvp) {
+      await prisma.rsvp.create({
+        data: {
+          guest_id: guest.id,
+          attendance_status: "hadir",
+          pax_count: 1,
+        },
+      });
+    }
 
     return NextResponse.json({
       status: "valid",

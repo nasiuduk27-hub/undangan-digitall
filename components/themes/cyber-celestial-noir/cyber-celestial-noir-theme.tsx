@@ -7,8 +7,6 @@ import { QuickRsvpDock } from "@/components/shared/quick-rsvp-dock";
 import { BankCard } from "@/components/shared/bank-card";
 import { QrCheckinCard } from "@/components/shared/qr-checkin-card";
 import { QrCheckinPlaceholder } from "@/components/shared/qr-checkin-placeholder";
-import { RsvpForm } from "@/components/shared/rsvp-form";
-import { RsvpPlaceholder } from "@/components/shared/rsvp-placeholder";
 import { CalendarDays, MapPin, Cpu } from "lucide-react";
 import type { CSSProperties } from "react";
 import { motion } from "framer-motion";
@@ -100,7 +98,6 @@ export function CyberCelestialNoirTheme({
           <a href="#profile" className="hover:text-[#F4F7FB] transition">{"// PROFIL"}</a>
           <a href="#schedule" className="hover:text-[#F4F7FB] transition">{"// JADWAL"}</a>
           <a href="#bank" className="hover:text-[#F4F7FB] transition">{"// REKENING"}</a>
-          <a href="#rsvp" className="hover:text-[#F4F7FB] transition">{"// RSVP"}</a>
         </nav>
 
         <div className="flex items-center gap-4">
@@ -254,54 +251,28 @@ export function CyberCelestialNoirTheme({
           </div>
         </motion.section>
 
-        {/* Rekening & RSVP Desktop Multi-Column */}
-        <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
-          {/* Rekening */}
-          {invitation.bank_accounts.length > 0 && (
-            <motion.section
-              id="bank"
-              initial={disableHeavyAnim ? false : { opacity: 0, y: 30 }}
-              whileInView={disableHeavyAnim ? undefined : { opacity: 1, y: 0 }}
-              viewport={{ once: true }}
-              className="lg:col-span-5 space-y-4"
-            >
-              <div className="font-mono text-xs uppercase text-[#00F5D4]">{"// GIFT_GATEWAY"}</div>
-              {invitation.bank_accounts.map((account) => (
-                <BankCard
-                  key={account.id}
-                  bankName={account.bank.name}
-                  bankCode={account.bank_code}
-                  accountNumber={account.account_number}
-                  accountHolder={account.account_holder}
-                  logoUrl={account.bank.logo_url}
-                />
-              ))}
-            </motion.section>
-          )}
-
-          {/* RSVP */}
+        {/* Rekening */}
+        {invitation.bank_accounts.length > 0 && (
           <motion.section
-            id="rsvp"
+            id="bank"
             initial={disableHeavyAnim ? false : { opacity: 0, y: 30 }}
             whileInView={disableHeavyAnim ? undefined : { opacity: 1, y: 0 }}
             viewport={{ once: true }}
-            className={invitation.bank_accounts.length > 0 ? "lg:col-span-7" : "lg:col-span-12"}
+            className="space-y-4"
           >
-            {guest ? (
-              <RsvpForm
-                slug={invitation.slug}
-                token={guest.slug_token}
-                guestName={guest.name}
-                initialStatus={guest.rsvp?.attendance_status}
-                initialPax={guest.rsvp?.pax_count}
-                initialWish={guest.rsvp?.wish_message}
-                themeId="cyber-celestial-noir"
+            <div className="font-mono text-xs uppercase text-[#00F5D4]">{"// GIFT_GATEWAY"}</div>
+            {invitation.bank_accounts.map((account) => (
+              <BankCard
+                key={account.id}
+                bankName={account.bank.name}
+                bankCode={account.bank_code}
+                accountNumber={account.account_number}
+                accountHolder={account.account_holder}
+                logoUrl={account.bank.logo_url}
               />
-            ) : (
-              <RsvpPlaceholder guestName={guestName} themeId="cyber-celestial-noir" />
-            )}
+            ))}
           </motion.section>
-        </div>
+        )}
 
         {/* Ucapan & QR Check-in Desktop Multi-Column */}
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">

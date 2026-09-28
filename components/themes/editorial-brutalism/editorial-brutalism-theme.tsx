@@ -6,8 +6,6 @@ import { QuickRsvpDock } from "@/components/shared/quick-rsvp-dock";
 import { BankCard } from "@/components/shared/bank-card";
 import { QrCheckinCard } from "@/components/shared/qr-checkin-card";
 import { QrCheckinPlaceholder } from "@/components/shared/qr-checkin-placeholder";
-import { RsvpForm } from "@/components/shared/rsvp-form";
-import { RsvpPlaceholder } from "@/components/shared/rsvp-placeholder";
 import { CalendarDays, MapPin } from "lucide-react";
 import type { CSSProperties } from "react";
 import { motion } from "framer-motion";
@@ -156,7 +154,6 @@ export function EditorialBrutalismTheme({
           <a href="#profile" className="hover:bg-[var(--theme-accent)] px-2 py-1 border border-transparent hover:border-[var(--theme-text)] transition">02 Profil</a>
           <a href="#schedule" className="hover:bg-[var(--theme-accent)] px-2 py-1 border border-transparent hover:border-[var(--theme-text)] transition">03 Jadwal</a>
           <a href="#bank" className="hover:bg-[var(--theme-accent)] px-2 py-1 border border-transparent hover:border-[var(--theme-text)] transition">04 Rekening</a>
-          <a href="#rsvp" className="hover:bg-[var(--theme-accent)] px-2 py-1 border border-transparent hover:border-[var(--theme-text)] transition">05 RSVP</a>
         </nav>
 
         <div className="flex items-center gap-4">
@@ -342,60 +339,33 @@ export function EditorialBrutalismTheme({
           </div>
         </motion.section>
 
-        {/* Kartu Rekening & RSVP Desktop Multi-Column */}
-        <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
-          {/* Kartu Rekening */}
-          <motion.section
-            id="bank"
-            initial={disableHeavyAnim ? false : { opacity: 0, y: 30 }}
-            whileInView={disableHeavyAnim ? undefined : { opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            transition={{ duration: 0.1, ease: "linear" }}
-            className="lg:col-span-5 space-y-4"
-          >
-            <ThemeHeading number="04" title="Kartu Rekening" />
-            {invitation.bank_accounts.length > 0 ? (
-              <div className="space-y-4">
-                {invitation.bank_accounts.map((account) => (
-                  <BankCard
-                    key={account.id}
-                    bankName={account.bank.name}
-                    bankCode={account.bank_code}
-                    accountNumber={account.account_number}
-                    accountHolder={account.account_holder}
-                    logoUrl={account.bank.logo_url}
-                  />
-                ))}
-              </div>
-            ) : (
-              <EmptySlot text="Info rekening belum ditambahkan." />
-            )}
-          </motion.section>
-
-          {/* RSVP */}
-          <motion.section
-            id="rsvp"
-            initial={disableHeavyAnim ? false : { opacity: 0, x: -30 }}
-            whileInView={disableHeavyAnim ? undefined : { opacity: 1, x: 0 }}
-            viewport={{ once: true }}
-            transition={{ duration: 0.1, ease: "linear" }}
-            className="lg:col-span-7"
-          >
-            {guest ? (
-              <RsvpForm
-                slug={invitation.slug}
-                token={guest.slug_token}
-                guestName={guest.name}
-                initialStatus={guest.rsvp?.attendance_status}
-                initialPax={guest.rsvp?.pax_count}
-                initialWish={guest.rsvp?.wish_message}
-                themeId="editorial-brutalism"
-              />
-            ) : (
-              <RsvpPlaceholder guestName={guestName} themeId="editorial-brutalism" />
-            )}
-          </motion.section>
-        </div>
+        {/* Kartu Rekening */}
+        <motion.section
+          id="bank"
+          initial={disableHeavyAnim ? false : { opacity: 0, y: 30 }}
+          whileInView={disableHeavyAnim ? undefined : { opacity: 1, y: 0 }}
+          viewport={{ once: true }}
+          transition={{ duration: 0.1, ease: "linear" }}
+          className="space-y-4"
+        >
+          <ThemeHeading number="04" title="Kartu Rekening" />
+          {invitation.bank_accounts.length > 0 ? (
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+              {invitation.bank_accounts.map((account) => (
+                <BankCard
+                  key={account.id}
+                  bankName={account.bank.name}
+                  bankCode={account.bank_code}
+                  accountNumber={account.account_number}
+                  accountHolder={account.account_holder}
+                  logoUrl={account.bank.logo_url}
+                />
+              ))}
+            </div>
+          ) : (
+            <EmptySlot text="Info rekening belum ditambahkan." />
+          )}
+        </motion.section>
 
         {/* Ucapan & QR Check-in Desktop Multi-Column */}
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">

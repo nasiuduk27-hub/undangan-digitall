@@ -7,8 +7,6 @@ import { QuickRsvpDock } from "@/components/shared/quick-rsvp-dock";
 import { BankCard } from "@/components/shared/bank-card";
 import { QrCheckinCard } from "@/components/shared/qr-checkin-card";
 import { QrCheckinPlaceholder } from "@/components/shared/qr-checkin-placeholder";
-import { RsvpForm } from "@/components/shared/rsvp-form";
-import { RsvpPlaceholder } from "@/components/shared/rsvp-placeholder";
 import { CalendarDays, MapPin } from "lucide-react";
 import type { CSSProperties } from "react";
 import { motion } from "framer-motion";
@@ -99,7 +97,6 @@ export function RawWabiSabiTheme({
           <a href="#profile" className="hover:text-[#BFA054] transition">Profil</a>
           <a href="#schedule" className="hover:text-[#BFA054] transition">Jadwal</a>
           <a href="#bank" className="hover:text-[#BFA054] transition">Hadiah</a>
-          <a href="#rsvp" className="hover:text-[#BFA054] transition">RSVP</a>
         </nav>
 
         <div className="flex items-center gap-4">
@@ -253,54 +250,28 @@ export function RawWabiSabiTheme({
           </div>
         </motion.section>
 
-        {/* Hadiah & RSVP Desktop Multi-Column */}
-        <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
-          {/* Rekening */}
-          {invitation.bank_accounts.length > 0 && (
-            <motion.section
-              id="bank"
-              initial={disableHeavyAnim ? false : { opacity: 0, y: 20 }}
-              whileInView={disableHeavyAnim ? undefined : { opacity: 1, y: 0 }}
-              viewport={{ once: true }}
-              className="lg:col-span-5 space-y-4"
-            >
-              <h2 className="font-serif text-xl italic text-[#BFA054]">Hadiah Undangan</h2>
-              {invitation.bank_accounts.map((account) => (
-                <BankCard
-                  key={account.id}
-                  bankName={account.bank.name}
-                  bankCode={account.bank_code}
-                  accountNumber={account.account_number}
-                  accountHolder={account.account_holder}
-                  logoUrl={account.bank.logo_url}
-                />
-              ))}
-            </motion.section>
-          )}
-
-          {/* RSVP */}
+        {/* Rekening */}
+        {invitation.bank_accounts.length > 0 && (
           <motion.section
-            id="rsvp"
+            id="bank"
             initial={disableHeavyAnim ? false : { opacity: 0, y: 20 }}
             whileInView={disableHeavyAnim ? undefined : { opacity: 1, y: 0 }}
             viewport={{ once: true }}
-            className={invitation.bank_accounts.length > 0 ? "lg:col-span-7" : "lg:col-span-12"}
+            className="space-y-4"
           >
-            {guest ? (
-              <RsvpForm
-                slug={invitation.slug}
-                token={guest.slug_token}
-                guestName={guest.name}
-                initialStatus={guest.rsvp?.attendance_status}
-                initialPax={guest.rsvp?.pax_count}
-                initialWish={guest.rsvp?.wish_message}
-                themeId="raw-wabi-sabi"
+            <h2 className="font-serif text-xl italic text-[#BFA054]">Hadiah Undangan</h2>
+            {invitation.bank_accounts.map((account) => (
+              <BankCard
+                key={account.id}
+                bankName={account.bank.name}
+                bankCode={account.bank_code}
+                accountNumber={account.account_number}
+                accountHolder={account.account_holder}
+                logoUrl={account.bank.logo_url}
               />
-            ) : (
-              <RsvpPlaceholder guestName={guestName} themeId="raw-wabi-sabi" />
-            )}
+            ))}
           </motion.section>
-        </div>
+        )}
 
         {/* Ucapan & QR Check-in Desktop Multi-Column */}
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
