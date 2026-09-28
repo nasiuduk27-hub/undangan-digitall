@@ -7,6 +7,7 @@ import { QuickRsvpDock } from "@/components/shared/quick-rsvp-dock";
 import { BankCard } from "@/components/shared/bank-card";
 import { QrCheckinCard } from "@/components/shared/qr-checkin-card";
 import { QrCheckinPlaceholder } from "@/components/shared/qr-checkin-placeholder";
+import { WishesForm } from "@/components/shared/wishes-form";
 import { CalendarDays, MapPin, Cpu } from "lucide-react";
 import type { CSSProperties } from "react";
 import { motion } from "framer-motion";
@@ -284,6 +285,12 @@ export function CyberCelestialNoirTheme({
             className="lg:col-span-7 space-y-4"
           >
             <div className="font-mono text-xs uppercase text-[#00F5D4]">{"// INCOMING_MESSAGES"}</div>
+            <WishesForm
+              slug={invitation.slug}
+              guestName={guest?.name}
+              token={guest?.slug_token}
+              themeId="cyber-celestial-noir"
+            />
             {wishes && wishes.length > 0 ? (
               <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
                 {wishes.map((wish) => (

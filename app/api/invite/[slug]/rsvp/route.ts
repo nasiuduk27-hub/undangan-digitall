@@ -26,7 +26,7 @@ export async function POST(
       return NextResponse.json({ error: "Undangan tidak ditemukan" }, { status: 404 });
     }
 
-    let targetToken = token || "tamu-umum";
+    const targetToken = token || "tamu-umum";
     let guest = null;
 
     if (targetToken && targetToken !== "tamu-umum") {

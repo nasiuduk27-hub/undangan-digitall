@@ -7,6 +7,7 @@ import { QuickRsvpDock } from "@/components/shared/quick-rsvp-dock";
 import { BankCard } from "@/components/shared/bank-card";
 import { QrCheckinCard } from "@/components/shared/qr-checkin-card";
 import { QrCheckinPlaceholder } from "@/components/shared/qr-checkin-placeholder";
+import { WishesForm } from "@/components/shared/wishes-form";
 import { CalendarDays, MapPin } from "lucide-react";
 import type { CSSProperties } from "react";
 import { motion } from "framer-motion";
@@ -283,6 +284,12 @@ export function RawWabiSabiTheme({
             className="lg:col-span-7 space-y-4"
           >
             <h2 className="font-serif text-xl italic text-[#BFA054]">Doa &amp; Ucapan</h2>
+            <WishesForm
+              slug={invitation.slug}
+              guestName={guest?.name}
+              token={guest?.slug_token}
+              themeId="raw-wabi-sabi"
+            />
             {wishes && wishes.length > 0 ? (
               <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
                 {wishes.map((wish) => (

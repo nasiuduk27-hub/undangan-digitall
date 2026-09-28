@@ -28,7 +28,6 @@ export function WishesForm({
   const isCyber = themeId === "cyber-celestial-noir";
   const isGroovy = themeId === "70s-warm-groovy";
   const isWabi = themeId === "raw-wabi-sabi";
-  const isBrutalist = themeId === "editorial-brutalism" || (!isCyber && !isGroovy && !isWabi);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
