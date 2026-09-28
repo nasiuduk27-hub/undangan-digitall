@@ -18,14 +18,16 @@ describe("RsvpForm", () => {
     mockFetch.mockClear();
   });
 
-  it("renders the form with guest name", () => {
+  it("renders the component with guest name and quick pick buttons", () => {
     render(<RsvpForm {...defaultProps} />);
 
     expect(screen.getByText("Halo Budi, mohon konfirmasi kehadiran Anda.")).toBeInTheDocument();
-    expect(screen.getByRole("button", { name: "Kirim RSVP" })).toBeInTheDocument();
+    expect(screen.getByRole("button", { name: /hadir/i })).toBeInTheDocument();
+    expect(screen.getByRole("button", { name: /ragu/i })).toBeInTheDocument();
+    expect(screen.getByRole("button", { name: /tidak/i })).toBeInTheDocument();
   });
 
-  it("shows success message after successful submission", async () => {
+  it("triggers quick pick and opens modal on click", async () => {
     mockFetch.mockResolvedValueOnce({
       ok: true,
       json: async () => ({}),
@@ -33,11 +35,11 @@ describe("RsvpForm", () => {
 
     render(<RsvpForm {...defaultProps} />);
 
-    const submitBtn = screen.getByRole("button", { name: "Kirim RSVP" });
-    await userEvent.click(submitBtn);
+    const hadirBtn = screen.getByRole("button", { name: /hadir/i });
+    await userEvent.click(hadirBtn);
 
     await waitFor(() => {
-      expect(screen.getByText("RSVP tersimpan")).toBeInTheDocument();
+      expect(screen.getByRole("button", { name: "Kirim RSVP" })).toBeInTheDocument();
     });
 
     expect(mockFetch).toHaveBeenCalledWith(
@@ -48,8 +50,6 @@ describe("RsvpForm", () => {
         body: JSON.stringify({
           token: "test-token",
           attendance_status: "hadir",
-          pax_count: 1,
-          wish_message: "",
         }),
       })
     );
@@ -63,29 +63,31 @@ describe("RsvpForm", () => {
 
     render(<RsvpForm {...defaultProps} />);
 
-    const submitBtn = screen.getByRole("button", { name: "Kirim RSVP" });
-    await userEvent.click(submitBtn);
+    const hadirBtn = screen.getByRole("button", { name: /hadir/i });
+    await userEvent.click(hadirBtn);
 
     await waitFor(() => {
       expect(screen.getByText("Gagal menyimpan RSVP")).toBeInTheDocument();
     });
   });
 
-  it("allows selecting different attendance status", async () => {
+  it("submits modal detail form successfully", async () => {
+    mockFetch.mockResolvedValue({
+      ok: true,
+      json: async () => ({}),
+    });
+
     render(<RsvpForm {...defaultProps} />);
 
-    const radioButtons = screen.getAllByRole("radio");
-    expect(radioButtons).toHaveLength(3);
+    // Step 1: Click quick pick button
+    const hadirBtn = screen.getByRole("button", { name: /hadir/i });
+    await userEvent.click(hadirBtn);
 
-    // Click "tidak" radio
-    await userEvent.click(radioButtons[2]);
-    expect(radioButtons[2]).toBeChecked();
-    expect(radioButtons[0]).not.toBeChecked();
-  });
+    await waitFor(() => {
+      expect(screen.getByRole("button", { name: "Kirim RSVP" })).toBeInTheDocument();
+    });
 
-  it("allows typing pax count and wish message", async () => {
-    render(<RsvpForm {...defaultProps} />);
-
+    // Step 2: Fill modal detail form
     const paxInput = screen.getByLabelText("Jumlah pax");
     const wishInput = screen.getByLabelText("Ucapan");
 
@@ -95,7 +97,11 @@ describe("RsvpForm", () => {
     });
     await userEvent.type(wishInput, "Selamat ya!");
 
-    expect(paxInput).toHaveValue(3);
-    expect(wishInput).toHaveValue("Selamat ya!");
+    const submitModalBtn = screen.getByRole("button", { name: "Kirim RSVP" });
+    await userEvent.click(submitModalBtn);
+
+    await waitFor(() => {
+      expect(screen.getByText("RSVP tersimpan")).toBeInTheDocument();
+    });
   });
 });
