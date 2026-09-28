@@ -389,9 +389,10 @@ export function EditorialBrutalismTheme({
                 initialStatus={guest.rsvp?.attendance_status}
                 initialPax={guest.rsvp?.pax_count}
                 initialWish={guest.rsvp?.wish_message}
+                themeId="editorial-brutalism"
               />
             ) : (
-              <RsvpPlaceholder guestName={guestName} />
+              <RsvpPlaceholder guestName={guestName} themeId="editorial-brutalism" />
             )}
           </motion.section>
         </div>

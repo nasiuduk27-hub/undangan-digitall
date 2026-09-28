@@ -294,9 +294,10 @@ export function RawWabiSabiTheme({
                 initialStatus={guest.rsvp?.attendance_status}
                 initialPax={guest.rsvp?.pax_count}
                 initialWish={guest.rsvp?.wish_message}
+                themeId="raw-wabi-sabi"
               />
             ) : (
-              <RsvpPlaceholder guestName={guestName} />
+              <RsvpPlaceholder guestName={guestName} themeId="raw-wabi-sabi" />
             )}
           </motion.section>
         </div>

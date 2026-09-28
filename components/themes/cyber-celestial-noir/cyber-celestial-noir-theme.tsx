@@ -295,9 +295,10 @@ export function CyberCelestialNoirTheme({
                 initialStatus={guest.rsvp?.attendance_status}
                 initialPax={guest.rsvp?.pax_count}
                 initialWish={guest.rsvp?.wish_message}
+                themeId="cyber-celestial-noir"
               />
             ) : (
-              <RsvpPlaceholder guestName={guestName} />
+              <RsvpPlaceholder guestName={guestName} themeId="cyber-celestial-noir" />
             )}
           </motion.section>
         </div>

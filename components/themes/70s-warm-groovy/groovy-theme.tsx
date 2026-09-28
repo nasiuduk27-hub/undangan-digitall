@@ -317,9 +317,10 @@ export function Groovy70sTheme({
                 initialStatus={guest.rsvp?.attendance_status}
                 initialPax={guest.rsvp?.pax_count}
                 initialWish={guest.rsvp?.wish_message}
+                themeId="70s-warm-groovy"
               />
             ) : (
-              <RsvpPlaceholder guestName={guestName} />
+              <RsvpPlaceholder guestName={guestName} themeId="70s-warm-groovy" />
             )}
           </motion.section>
         </div>
