@@ -118,6 +118,7 @@ MAX_AUDIO_DURATION_SEC=300
 
 | Endpoint | Fungsi |
 | --- | --- |
+| `GET /api/themes` | Daftar tema publik (nama, kategori, thumbnail, gratis/premium) untuk katalog di landing page; tanpa autentikasi, boleh di-cache |
 | `POST /api/invitations` | Buat undangan baru |
 | `PATCH /api/invitations/:id` | Update data dasar & pilihan tema |
 | `POST /api/invitations/:id/media` | Upload foto/video/audio (presigned URL ke object storage) |
@@ -136,6 +137,8 @@ MAX_AUDIO_DURATION_SEC=300
 /app
   /(dashboard)          → halaman pengelolaan (responsive penuh)
   /invite/[slug]        → halaman undangan publik (mobile-first canvas)
+  /(marketing)          → landing page (/) dan katalog tema publik
+  /tema/[slug]          → pratinjau tema publik dengan data contoh (tanpa login)
   /scan/[invitationId]  → halaman scanner resepsionis (netral, kamera fullscreen)
   /api                  → route handlers
 /components

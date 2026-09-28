@@ -84,6 +84,7 @@ Undangan pernikahan digital saat ini banyak yang bersifat template statis dengan
 - Setiap tema punya set komponen standar agar konten user portable antar tema.
 - Arsitektur tema modular — tema baru = kumpulan style + layout config, bukan ubah logika inti.
 - Filter tema gratis vs premium (jika ada monetisasi berjenjang).
+- Filter kategori: Non-Mainstream vs Klasik/Adat — dua koleksi dengan positioning berbeda, ditampilkan jelas terpisah agar user tidak bingung saat browsing katalog.
 
 ### 4.4 Info Rekening dengan Logo Bank Otomatis Konten
 
@@ -122,9 +123,21 @@ Undangan pernikahan digital saat ini banyak yang bersifat template statis dengan
 - Konten di dalam frame HP tetap interaktif & scrollable, termasuk audio backsound dan animasi signature tema bisa dicoba langsung dari preview ini.
 - Perubahan yang diedit user (ganti tema, ganti foto, dll) langsung ter-refresh di kedua mode preview tanpa reload halaman.
 
+### 4.8 Landing Page & Katalog Tema Publik Marketing
+
+**User story:** Sebagai calon pengguna yang baru datang, saya ingin melihat dan mencoba pratinjau tema-tema undangan dulu tanpa harus daftar, supaya saya yakin sebelum membuat akun.
+
+- Halaman utama (`/`) berubah dari halaman polos menjadi **landing page pemasaran** dengan urutan: hero (judul, sub-judul, tombol *Masuk* dan *Daftar* tetap ada di navbar dan hero), katalog tema, keunggulan fitur, cara kerja singkat, FAQ, footer.
+- **Katalog tema publik** berupa grid kartu: thumbnail tema, nama, kategori (Non-Mainstream / Klasik-Adat), label gratis/premium, dan tombol *Pratinjau*. Ada filter kategori dan pencarian sederhana.
+- **Halaman pratinjau tema** (mis. `/tema/[slug]`) tanpa login: menampilkan tema dengan **data contoh** (nama pasangan, foto, jadwal, rekening dummy), dengan toggle **Desktop / Mobile (frame iPhone)** yang sama seperti preview editor (fitur 4.7), plus tombol *Gunakan Tema Ini*.
+- Tombol *Gunakan Tema Ini*: jika belum login diarahkan ke Daftar/Masuk, lalu setelah login langsung membuat undangan baru dengan tema terpilih (tema tidak hilang selama alur daftar).
+- Data contoh di pratinjau bersifat statis (bukan data user mana pun) dan tidak menyimpan apa pun ke database; RSVP/QR di mode pratinjau hanya demo non-fungsional.
+- Landing dan katalog harus cepat dimuat dan ramah SEO (di-render server/statis), karena ini pintu masuk utama pengguna baru.
+- Tombol *Dashboard* di halaman saat ini hanya tampil untuk pengguna yang sudah login (yang belum login hanya melihat Masuk dan Daftar).
+
 ## 5. Alur Pengguna (Ringkas)
 
-1. Daftar/login → buat undangan baru → isi data dasar (nama pasangan, tanggal, lokasi).
+1. Buka landing page → jelajahi katalog tema dan coba pratinjau (tanpa login) → pilih tema → daftar/login → buat undangan baru dengan tema itu → isi data dasar (nama pasangan, tanggal, lokasi).
 2. Pilih tema → preview otomatis terisi data.
 3. Upload foto, video, backsound.
 4. Isi info rekening (pilih bank → logo otomatis).
@@ -162,7 +175,7 @@ Undangan pernikahan digital saat ini banyak yang bersifat template statis dengan
 
 | Fase | Fokus |
 | --- | --- |
-| Fase 1 (MVP) | Upload foto/video, 5–10 tema awal, rekening + logo bank, link umum |
+| Fase 1 (MVP) | Landing page + katalog tema publik dengan pratinjau, upload foto/video, 5–10 tema awal (campuran non-mainstream & minimal 1 tema klasik/adat), rekening + logo bank, link umum |
 | Fase 2 | Upload backsound sendiri, katalog musik bawaan, dashboard RSVP dasar |
 | Fase 3 | Personalisasi penuh per tamu (guest path), QR check-in + halaman scanner resepsionis, analitik kunjungan |
 | Fase 4 | Ekspansi tema, tema premium, preview frame Desktop/Mobile (iPhone) di editor, fitur kolaborasi WO |
@@ -182,7 +195,11 @@ Bagian Design System
 | Touch Target | Min 44x44px | Wajib untuk tombol RSVP, audio toggle |
 | Z-Index | BG(0), Content(10), Floating Dock(50), Modal(100) | Cegah tombol tertutup ornamen |
 
-## 11. Design System — Kurasi Tema Non-Mainstream
+## 11. Design System — Kurasi Tema
+
+Katalog terdiri dari 2 kategori dengan tujuan berbeda: **Non-Mainstream** (4 tema di bawah) untuk pengguna yang ingin tampil beda, dan **Klasik/Adat** (kategori baru) untuk pengguna yang justru mencari nuansa familiar — floral, motif adat Nusantara, warna emas — karena pasar undangan digital di Indonesia tetap didominasi selera ini. Filter kategori di halaman pemilihan tema (fitur 4.3) memisahkan keduanya dengan jelas.
+
+### 11.1 Kategori Non-Mainstream
 
 | Tema | Palet | Tipografi | Karakteristik |
 | --- | --- | --- | --- |
@@ -190,6 +207,15 @@ Bagian Design System
 | Raw Wabi-Sabi | #EBE5DC #A85A3C #BFA054 | Cormorant Garamond Italic / Plus Jakarta Sans | Sudut organik tak beraturan, tekstur grain halus |
 | Cyber-Celestial Noir | #0C0E14 #00F5D4 #7B2CBF | Cinzel Decorative / Outfit | Dark mode murni, glassmorphism, neon glow lembut |
 | 70s Warm Groovy | #FDF8EE #D96B27 #EBB035 | Fraunces Soft Serif / DM Sans | Bentuk pil tebal, wavy divider, badge stempel vintage |
+
+### 11.2 Kategori Klasik/Adat (Mainstream, Floral)
+
+| Tema | Palet | Tipografi | Karakteristik |
+| --- | --- | --- | --- |
+| Melati Kencana | #FFFCF5 #B8860B #5C1A1A | Playfair Display (Italic) / Lora | Bingkai bunga melati & mawar watercolor, garis emas tipis (gold foil), inisial pasangan dalam monogram melingkar, ornamen sudut khas undangan klasik |
+| Sekar Jagad Nusantara | #FAF3E8 #8B2E2E #C9A34E | Cormorant / Plus Jakarta Sans | Motif batik/kain adat sebagai border & divider, ornamen ukiran khas daerah (dapat disesuaikan per adat: Jawa/Sunda/Bali), warna maroon-emas tradisional |
+
+Kedua tema klasik ini tetap wajib mengikuti seluruh Kontrak Portabilitas Tema (bagian 13) dan aturan aksesibilitas/kontras yang sama — hanya gaya visualnya yang berbeda dari koleksi non-mainstream.
 
 ## 12. Design System — Komponen Inti
 

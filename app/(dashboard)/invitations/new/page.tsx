@@ -1,7 +1,7 @@
 "use client";
 
-import { useState } from "react";
-import { useRouter } from "next/navigation";
+import { Suspense, useState, useEffect } from "react";
+import { useRouter, useSearchParams } from "next/navigation";
 import Link from "next/link";
 import { ArrowLeft } from "lucide-react";
 
@@ -36,16 +36,25 @@ const THEMES = [
   },
 ];
 
-export default function NewInvitationPage() {
+function NewInvitationForm() {
   const router = useRouter();
+  const searchParams = useSearchParams();
+  const themeParam = searchParams.get("theme");
+
   const [groomName, setGroomName] = useState("");
   const [brideName, setBrideName] = useState("");
   const [eventDate, setEventDate] = useState("");
   const [location, setLocation] = useState("");
   const [slug, setSlug] = useState("");
-  const [selectedTheme, setSelectedTheme] = useState("editorial-brutalism");
+  const [selectedTheme, setSelectedTheme] = useState(themeParam || "editorial-brutalism");
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
+
+  useEffect(() => {
+    if (themeParam && THEMES.some((t) => t.id === themeParam)) {
+      setSelectedTheme(themeParam);
+    }
+  }, [themeParam]);
 
   // Auto preview slug
   const cleanGroom = groomName.toLowerCase().replace(/\s+/g, "");
@@ -256,5 +265,13 @@ export default function NewInvitationPage() {
         </form>
       </div>
     </div>
+  );
+}
+
+export default function NewInvitationPage() {
+  return (
+    <Suspense fallback={<div className="text-xs text-[#7a6f63]">Memuat...</div>}>
+      <NewInvitationForm />
+    </Suspense>
   );
 }
