@@ -6,6 +6,7 @@ import { QuickRsvpDock } from "@/components/shared/quick-rsvp-dock";
 import { BankCard } from "@/components/shared/bank-card";
 import { QrCheckinCard } from "@/components/shared/qr-checkin-card";
 import { QrCheckinPlaceholder } from "@/components/shared/qr-checkin-placeholder";
+import { WishesForm } from "@/components/shared/wishes-form";
 import { CalendarDays, MapPin } from "lucide-react";
 import type { CSSProperties } from "react";
 import { motion } from "framer-motion";
@@ -378,8 +379,18 @@ export function EditorialBrutalismTheme({
             className="lg:col-span-7 border-2 border-[var(--theme-text)] bg-[var(--theme-card)] p-5 lg:p-8 shadow-[6px_6px_0_var(--theme-text)]"
           >
             <ThemeHeading number="05" title="Ucapan &amp; Doa" />
+            
+            <div className="mt-4 mb-6">
+              <WishesForm
+                slug={invitation.slug}
+                guestName={guest?.name}
+                token={guest?.slug_token}
+                themeId="editorial-brutalism"
+              />
+            </div>
+
             {wishes && wishes.length > 0 ? (
-              <div className="mt-4 grid grid-cols-1 md:grid-cols-2 gap-3">
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
                 {wishes.map((wish) => (
                   <article key={wish.id} className="border-2 border-[var(--theme-text)] bg-[var(--theme-bg)] p-4">
                     <p className="font-mono text-[10px] font-bold uppercase text-[var(--theme-muted)]">

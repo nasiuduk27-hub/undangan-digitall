@@ -10,12 +10,8 @@ export async function POST(
   try {
     const { slug } = await params;
     const body = await req.json();
-    const { token, pax_count, wish_message } = body;
+    const { token, sender_name, is_anonymous, pax_count, wish_message } = body;
     let { attendance_status } = body;
-
-    if (!token) {
-      return NextResponse.json({ error: "Token tamu wajib diisi" }, { status: 400 });
-    }
 
     if (attendance_status === "mungkin") {
       attendance_status = "ragu";
@@ -30,18 +26,47 @@ export async function POST(
       return NextResponse.json({ error: "Undangan tidak ditemukan" }, { status: 404 });
     }
 
-    const guest = await prisma.guest.findFirst({
-      where: {
-        invitation_id: invitation.id,
-        OR: [
-          { slug_token: token },
-          { name: { equals: token, mode: "insensitive" } },
-          { name: { equals: token.replace(/-/g, " "), mode: "insensitive" } },
-        ],
-      },
-      include: { rsvp: true },
-    });
-    if (!guest) return NextResponse.json({ error: "Tamu tidak valid" }, { status: 404 });
+    let targetToken = token || "tamu-umum";
+    let guest = null;
+
+    if (targetToken && targetToken !== "tamu-umum") {
+      guest = await prisma.guest.findFirst({
+        where: {
+          invitation_id: invitation.id,
+          OR: [
+            { slug_token: targetToken },
+            { name: { equals: targetToken, mode: "insensitive" } },
+            { name: { equals: targetToken.replace(/-/g, " "), mode: "insensitive" } },
+          ],
+        },
+        include: { rsvp: true },
+      });
+    }
+
+    if (!guest) {
+      let displayName = "Anonim";
+      if (!is_anonymous && sender_name && sender_name.trim()) {
+        displayName = sender_name.trim();
+      } else if (!is_anonymous && targetToken && targetToken !== "tamu-umum") {
+        displayName = targetToken;
+      }
+
+      const uniqueSlug = `pub-${Math.random().toString(36).substring(2, 8)}-${Date.now().toString(36)}`;
+      guest = await prisma.guest.create({
+        data: {
+          invitation_id: invitation.id,
+          name: displayName,
+          slug_token: uniqueSlug,
+        },
+        include: { rsvp: true },
+      });
+    } else if (!is_anonymous && sender_name && sender_name.trim() && guest.name !== sender_name.trim()) {
+      guest = await prisma.guest.update({
+        where: { id: guest.id },
+        data: { name: sender_name.trim() },
+        include: { rsvp: true },
+      });
+    }
 
     const existingRsvp = guest.rsvp;
     const finalStatus = attendance_status || existingRsvp?.attendance_status || "hadir";
@@ -69,7 +94,7 @@ export async function POST(
       },
     });
 
-    return NextResponse.json({ rsvp });
+    return NextResponse.json({ rsvp, guest });
   } catch (error) {
     console.error("RSVP error:", error);
     return NextResponse.json({ error: "Gagal menyimpan RSVP" }, { status: 500 });

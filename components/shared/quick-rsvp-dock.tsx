@@ -126,12 +126,12 @@ export function QuickRsvpDock({
     switch (themeId) {
       case "raw-wabi-sabi":
         return (
-          <div className="flex items-center divide-x divide-[#2E241D]/20 border border-[#2E241D]/30 rounded-lg bg-[#F7F0E8]/95 p-1 shadow-sm">
+          <div className="grid grid-cols-3 divide-x divide-[#2E241D]/20 border border-[#2E241D]/30 rounded-lg bg-[#F7F0E8]/95 p-1 shadow-sm w-full">
             <button
               type="button"
               onClick={() => handleQuickPick("hadir")}
               disabled={isSavingQuick}
-              className={`flex items-center gap-1.5 px-3 py-1.5 font-serif text-xs transition ${
+              className={`flex items-center justify-center gap-1.5 px-2 py-1.5 font-serif text-xs transition ${
                 selectedStatus === "hadir"
                   ? "bg-[#2E241D] text-[#EBE5DC] font-medium rounded-md"
                   : "text-[#2E241D]/80 hover:text-[#2E241D] hover:bg-[#2E241D]/10"
@@ -144,7 +144,7 @@ export function QuickRsvpDock({
               type="button"
               onClick={() => handleQuickPick("tidak")}
               disabled={isSavingQuick}
-              className={`flex items-center gap-1.5 px-3 py-1.5 font-serif text-xs transition ${
+              className={`flex items-center justify-center gap-1.5 px-2 py-1.5 font-serif text-xs transition ${
                 selectedStatus === "tidak"
                   ? "bg-[#2E241D] text-[#EBE5DC] font-medium rounded-md"
                   : "text-[#2E241D]/80 hover:text-[#2E241D] hover:bg-[#2E241D]/10"
@@ -157,7 +157,7 @@ export function QuickRsvpDock({
               type="button"
               onClick={() => handleQuickPick("ragu")}
               disabled={isSavingQuick}
-              className={`flex items-center gap-1.5 px-3 py-1.5 font-serif text-xs transition ${
+              className={`flex items-center justify-center gap-1.5 px-2 py-1.5 font-serif text-xs transition ${
                 selectedStatus === "ragu"
                   ? "bg-[#2E241D] text-[#EBE5DC] font-medium rounded-md"
                   : "text-[#2E241D]/80 hover:text-[#2E241D] hover:bg-[#2E241D]/10"
@@ -171,12 +171,12 @@ export function QuickRsvpDock({
 
       case "cyber-celestial-noir":
         return (
-          <div className="flex items-center gap-1.5 p-1 rounded-full border border-[#00F5D4]/40 bg-[#0C0E14]/90 backdrop-blur-md shadow-[0_0_12px_rgba(0,245,212,0.25)]">
+          <div className="grid grid-cols-3 gap-1 p-1 rounded-full border border-[#00F5D4]/40 bg-[#0C0E14]/90 backdrop-blur-md shadow-[0_0_12px_rgba(0,245,212,0.25)] w-full">
             <button
               type="button"
               onClick={() => handleQuickPick("hadir")}
               disabled={isSavingQuick}
-              className={`flex items-center gap-1.5 px-3 py-1.5 rounded-full font-mono text-xs transition ${
+              className={`flex items-center justify-center gap-1.5 px-2 py-1.5 rounded-full font-mono text-xs transition ${
                 selectedStatus === "hadir"
                   ? "bg-[#00F5D4] text-[#0C0E14] font-bold shadow-[0_0_10px_#00F5D4]"
                   : "text-[#F4F7FB]/80 hover:text-[#00F5D4] hover:bg-[#00F5D4]/10"
@@ -189,7 +189,7 @@ export function QuickRsvpDock({
               type="button"
               onClick={() => handleQuickPick("tidak")}
               disabled={isSavingQuick}
-              className={`flex items-center gap-1.5 px-3 py-1.5 rounded-full font-mono text-xs transition ${
+              className={`flex items-center justify-center gap-1.5 px-2 py-1.5 rounded-full font-mono text-xs transition ${
                 selectedStatus === "tidak"
                   ? "bg-rose-500 text-white font-bold shadow-[0_0_10px_rgba(244,63,94,0.6)]"
                   : "text-[#F4F7FB]/80 hover:text-rose-400 hover:bg-rose-500/10"
@@ -202,7 +202,7 @@ export function QuickRsvpDock({
               type="button"
               onClick={() => handleQuickPick("ragu")}
               disabled={isSavingQuick}
-              className={`flex items-center gap-1.5 px-3 py-1.5 rounded-full font-mono text-xs transition ${
+              className={`flex items-center justify-center gap-1.5 px-2 py-1.5 rounded-full font-mono text-xs transition ${
                 selectedStatus === "ragu"
                   ? "bg-amber-400 text-[#0C0E14] font-bold shadow-[0_0_10px_rgba(251,191,36,0.6)]"
                   : "text-[#F4F7FB]/80 hover:text-amber-300 hover:bg-amber-400/10"
@@ -216,12 +216,12 @@ export function QuickRsvpDock({
 
       case "70s-warm-groovy":
         return (
-          <div className="flex items-center gap-1.5 p-1.5 rounded-full border-2 border-[#D96B27] bg-[#FFF2D0] shadow-[3px_3px_0_#D96B27]">
+          <div className="grid grid-cols-3 gap-1 p-1.5 rounded-full border-2 border-[#D96B27] bg-[#FFF2D0] shadow-[3px_3px_0_#D96B27] w-full">
             <button
               type="button"
               onClick={() => handleQuickPick("hadir")}
               disabled={isSavingQuick}
-              className={`flex items-center gap-1 px-3 py-1.5 rounded-full font-sans text-xs font-bold transition ${
+              className={`flex items-center justify-center gap-1 px-2 py-1.5 rounded-full font-sans text-xs font-bold transition ${
                 selectedStatus === "hadir"
                   ? "bg-[#D96B27] text-white shadow-sm scale-105"
                   : "text-[#3A2418] hover:bg-[#D96B27]/15"
@@ -233,7 +233,7 @@ export function QuickRsvpDock({
               type="button"
               onClick={() => handleQuickPick("tidak")}
               disabled={isSavingQuick}
-              className={`flex items-center gap-1 px-3 py-1.5 rounded-full font-sans text-xs font-bold transition ${
+              className={`flex items-center justify-center gap-1 px-2 py-1.5 rounded-full font-sans text-xs font-bold transition ${
                 selectedStatus === "tidak"
                   ? "bg-[#D96B27] text-white shadow-sm scale-105"
                   : "text-[#3A2418] hover:bg-[#D96B27]/15"
@@ -245,7 +245,7 @@ export function QuickRsvpDock({
               type="button"
               onClick={() => handleQuickPick("ragu")}
               disabled={isSavingQuick}
-              className={`flex items-center gap-1 px-3 py-1.5 rounded-full font-sans text-xs font-bold transition ${
+              className={`flex items-center justify-center gap-1 px-2 py-1.5 rounded-full font-sans text-xs font-bold transition ${
                 selectedStatus === "ragu"
                   ? "bg-[#D96B27] text-white shadow-sm scale-105"
                   : "text-[#3A2418] hover:bg-[#D96B27]/15"
@@ -259,12 +259,12 @@ export function QuickRsvpDock({
       case "editorial-brutalism":
       default:
         return (
-          <div className="grid grid-cols-3 gap-1 border-2 border-black bg-white p-1 shadow-[3px_3px_0_#121212]">
+          <div className="grid grid-cols-3 gap-1 border-2 border-black bg-white p-1 shadow-[3px_3px_0_#121212] w-full">
             <button
               type="button"
               onClick={() => handleQuickPick("hadir")}
               disabled={isSavingQuick}
-              className={`border-2 border-black px-2.5 py-1 font-mono text-xs font-black uppercase transition ${
+              className={`flex items-center justify-center border-2 border-black px-2.5 py-1 font-mono text-xs font-black uppercase transition ${
                 selectedStatus === "hadir"
                   ? "bg-[#D8FB38] text-black shadow-[1px_1px_0_#121212]"
                   : "bg-[#F4EFEA] text-black hover:bg-[#D8FB38]"
@@ -276,7 +276,7 @@ export function QuickRsvpDock({
               type="button"
               onClick={() => handleQuickPick("tidak")}
               disabled={isSavingQuick}
-              className={`border-2 border-black px-2.5 py-1 font-mono text-xs font-black uppercase transition ${
+              className={`flex items-center justify-center border-2 border-black px-2.5 py-1 font-mono text-xs font-black uppercase transition ${
                 selectedStatus === "tidak"
                   ? "bg-rose-400 text-black shadow-[1px_1px_0_#121212]"
                   : "bg-[#F4EFEA] text-black hover:bg-rose-200"
@@ -288,7 +288,7 @@ export function QuickRsvpDock({
               type="button"
               onClick={() => handleQuickPick("ragu")}
               disabled={isSavingQuick}
-              className={`border-2 border-black px-2.5 py-1 font-mono text-xs font-black uppercase transition ${
+              className={`flex items-center justify-center border-2 border-black px-2.5 py-1 font-mono text-xs font-black uppercase transition ${
                 selectedStatus === "ragu"
                   ? "bg-amber-300 text-black shadow-[1px_1px_0_#121212]"
                   : "bg-[#F4EFEA] text-black hover:bg-amber-200"
@@ -451,7 +451,7 @@ export function QuickRsvpDock({
         className={`fixed bottom-4 left-4 right-4 z-40 flex items-center justify-between gap-2 lg:hidden ${className}`}
       >
         {/* Quick RSVP Buttons Container */}
-        <div className="flex-1 overflow-x-auto py-1">
+        <div className="flex-1 py-1">
           {renderQuickButtons()}
         </div>
 
