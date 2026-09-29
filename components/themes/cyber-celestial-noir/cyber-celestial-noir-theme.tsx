@@ -11,7 +11,7 @@ import { WishesForm } from "@/components/shared/wishes-form";
 import { WishesFeed } from "@/components/shared/wishes-feed";
 import { CalendarDays, MapPin, Cpu } from "lucide-react";
 import type { CSSProperties } from "react";
-import { motion } from "framer-motion";
+import { motion, AnimatePresence } from "framer-motion";
 
 type MediaAsset = { id: string; type: string; url: string; status: string };
 type BankAccount = {
@@ -65,29 +65,17 @@ export function CyberCelestialNoirTheme({
 
   const handleOpenInvitation = (e: React.SyntheticEvent) => {
     e.preventDefault();
+    e.stopPropagation();
     const audioEl = document.querySelector<HTMLAudioElement>("audio");
-    if (audioEl && audioEl.paused) {
+    if (audioEl) {
       audioEl.play().catch(() => {});
     }
     setIsOpened(true);
-    requestAnimationFrame(() => {
-      const target = document.getElementById("gallery") || document.getElementById("schedule");
-      if (target) {
-        const rect = target.getBoundingClientRect();
-        const scrollTop = window.pageYOffset || document.documentElement.scrollTop;
-        const targetTop = rect.top + scrollTop;
-        try {
-          window.scrollTo({ top: targetTop, behavior: "smooth" });
-        } catch {
-          target.scrollIntoView({ behavior: "smooth" });
-        }
-      }
-    });
   };
 
   return (
     <main
-      className="min-h-screen overflow-x-hidden bg-[#0C0E14] text-[#F4F7FB]"
+      className="min-h-screen bg-[#0C0E14] text-[#F4F7FB]"
       style={
         {
           "--theme-bg": "#0C0E14",
@@ -98,6 +86,38 @@ export function CyberCelestialNoirTheme({
         } as CSSProperties
       }
     >
+      <AnimatePresence>
+        {!isOpened && (
+          <motion.div
+            initial={{ opacity: 1, y: 0 }}
+            exit={{ opacity: 0, y: "-100%" }}
+            transition={{ duration: 0.5, ease: "easeInOut" }}
+            className="fixed inset-0 z-50 flex flex-col justify-between overflow-y-auto bg-[#0C0E14] text-[#F4F7FB] p-6 text-center font-mono"
+          >
+            <div className="relative z-10 max-w-lg mx-auto w-full my-auto space-y-6">
+              <div className="flex items-center justify-between border-b border-[#00F5D4]/30 pb-2 text-xs text-[#00F5D4]">
+                <div className="flex items-center gap-1">
+                  <Cpu className="h-3.5 w-3.5" />
+                  <span>CELESTIAL.SYS</span>
+                </div>
+                <span>{guestName ? `[TARGET: ${guestName}]` : "[PUBLIC ACCESS]"}</span>
+              </div>
+
+              <CyberConstellation groomName={invitation.groom_name} brideName={invitation.bride_name} />
+
+              <div className="h-0.5 w-full bg-gradient-to-r from-transparent via-[#00F5D4] to-transparent shadow-[0_0_8px_#00F5D4]" />
+
+              <button
+                type="button"
+                onClick={handleOpenInvitation}
+                className="inline-block min-h-12 w-full sm:w-auto px-8 rounded-lg border border-[#00F5D4] bg-[#151A24] py-3.5 font-mono text-sm font-bold uppercase tracking-widest text-[#00F5D4] shadow-[0_0_15px_rgba(0,245,212,0.4)] transition hover:bg-[#00F5D4] hover:text-[#0C0E14] cursor-pointer active:scale-95 touch-manipulation"
+              >
+                Enter Protocol (Buka Undangan)
+              </button>
+            </div>
+          </motion.div>
+        )}
+      </AnimatePresence>
       {isOpened && (
         <QuickRsvpDock
           slug={invitation.slug}

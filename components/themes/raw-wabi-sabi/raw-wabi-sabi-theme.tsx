@@ -11,7 +11,7 @@ import { WishesForm } from "@/components/shared/wishes-form";
 import { WishesFeed } from "@/components/shared/wishes-feed";
 import { CalendarDays, MapPin } from "lucide-react";
 import type { CSSProperties } from "react";
-import { motion } from "framer-motion";
+import { motion, AnimatePresence } from "framer-motion";
 
 type MediaAsset = { id: string; type: string; url: string; status: string };
 type BankAccount = {
@@ -65,29 +65,17 @@ export function RawWabiSabiTheme({
 
   const handleOpenInvitation = (e: React.SyntheticEvent) => {
     e.preventDefault();
+    e.stopPropagation();
     const audioEl = document.querySelector<HTMLAudioElement>("audio");
-    if (audioEl && audioEl.paused) {
+    if (audioEl) {
       audioEl.play().catch(() => {});
     }
     setIsOpened(true);
-    requestAnimationFrame(() => {
-      const target = document.getElementById("gallery") || document.getElementById("schedule");
-      if (target) {
-        const rect = target.getBoundingClientRect();
-        const scrollTop = window.pageYOffset || document.documentElement.scrollTop;
-        const targetTop = rect.top + scrollTop;
-        try {
-          window.scrollTo({ top: targetTop, behavior: "smooth" });
-        } catch {
-          target.scrollIntoView({ behavior: "smooth" });
-        }
-      }
-    });
   };
 
   return (
     <main
-      className="min-h-screen overflow-x-hidden bg-[#EBE5DC] text-[#2E241D]"
+      className="min-h-screen bg-[#EBE5DC] text-[#2E241D]"
       style={
         {
           "--theme-bg": "#EBE5DC",
@@ -98,6 +86,36 @@ export function RawWabiSabiTheme({
         } as CSSProperties
       }
     >
+      <AnimatePresence>
+        {!isOpened && (
+          <motion.div
+            initial={{ opacity: 1, y: 0 }}
+            exit={{ opacity: 0, y: "-100%" }}
+            transition={{ duration: 0.5, ease: "easeInOut" }}
+            className="fixed inset-0 z-50 flex flex-col justify-between overflow-y-auto bg-[#EBE5DC] text-[#2E241D] p-6 text-center"
+          >
+            <div className="relative z-10 max-w-lg mx-auto w-full my-auto space-y-6">
+              <div className="font-mono text-xs uppercase tracking-widest text-[#BFA054]">
+                {guestName ? `To: ${guestName}` : "Undangan Pernikahan"}
+              </div>
+
+              <WabiSabiInkBleed groomName={invitation.groom_name} brideName={invitation.bride_name} />
+
+              <p className="mx-auto max-w-sm font-serif text-sm italic text-[#2E241D]/75 leading-relaxed">
+                &ldquo;Keindahan dalam kesederhanaan, keabadian dalam ketulusan.&rdquo;
+              </p>
+
+              <button
+                type="button"
+                onClick={handleOpenInvitation}
+                className="inline-block min-h-12 w-full sm:w-auto px-8 border border-[#2E241D] bg-[#F7F0E8] py-3.5 font-serif text-sm italic tracking-wide text-[#2E241D] shadow-sm transition hover:bg-[#BFA054] hover:text-white cursor-pointer active:scale-95 touch-manipulation"
+              >
+                ✉ Buka Undangan
+              </button>
+            </div>
+          </motion.div>
+        )}
+      </AnimatePresence>
       {isOpened && (
         <QuickRsvpDock
           slug={invitation.slug}

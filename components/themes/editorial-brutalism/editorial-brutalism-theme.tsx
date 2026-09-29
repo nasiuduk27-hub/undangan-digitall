@@ -10,7 +10,7 @@ import { WishesForm } from "@/components/shared/wishes-form";
 import { WishesFeed } from "@/components/shared/wishes-feed";
 import { CalendarDays, MapPin } from "lucide-react";
 import type { CSSProperties } from "react";
-import { motion } from "framer-motion";
+import { motion, AnimatePresence } from "framer-motion";
 
 const THEME_SKINS = {
   "editorial-brutalism": {
@@ -121,29 +121,17 @@ export function EditorialBrutalismTheme({
 
   const handleOpenInvitation = (e: React.SyntheticEvent) => {
     e.preventDefault();
+    e.stopPropagation();
     const audioEl = document.querySelector<HTMLAudioElement>("audio");
-    if (audioEl && audioEl.paused) {
+    if (audioEl) {
       audioEl.play().catch(() => {});
     }
     setIsOpened(true);
-    requestAnimationFrame(() => {
-      const target = document.getElementById("gallery") || document.getElementById("schedule");
-      if (target) {
-        const rect = target.getBoundingClientRect();
-        const scrollTop = window.pageYOffset || document.documentElement.scrollTop;
-        const targetTop = rect.top + scrollTop;
-        try {
-          window.scrollTo({ top: targetTop, behavior: "smooth" });
-        } catch {
-          target.scrollIntoView({ behavior: "smooth" });
-        }
-      }
-    });
   };
 
   return (
     <main
-      className="min-h-screen overflow-x-hidden bg-[var(--theme-bg)] text-[var(--theme-text)]"
+      className="min-h-screen bg-[var(--theme-bg)] text-[var(--theme-text)]"
       style={
         {
           "--theme-bg": skin.bg,
@@ -154,6 +142,52 @@ export function EditorialBrutalismTheme({
         } as CSSProperties
       }
     >
+      <AnimatePresence>
+        {!isOpened && (
+          <motion.div
+            initial={{ opacity: 1, y: 0 }}
+            exit={{ opacity: 0, y: "-100%" }}
+            transition={{ duration: 0.5, ease: "easeInOut" }}
+            className="fixed inset-0 z-50 flex flex-col justify-between overflow-y-auto bg-[var(--theme-bg)] text-[var(--theme-text)] p-6 text-center border-8 border-[var(--theme-text)]"
+            style={
+              {
+                "--theme-bg": skin.bg,
+                "--theme-text": skin.text,
+                "--theme-accent": skin.accent,
+              } as CSSProperties
+            }
+          >
+            <div className="relative z-10 max-w-lg mx-auto w-full my-auto space-y-6">
+              <div className="flex justify-between border-b-2 border-[var(--theme-text)] pb-3 font-mono text-xs font-bold uppercase tracking-[0.18em]">
+                <span>Wedding Invite</span>
+                <span>{guestName ? `To: ${guestName}` : "Public"}</span>
+              </div>
+
+              <div className="py-6">
+                <p className="inline-block border-4 border-[var(--theme-text)] bg-[var(--theme-accent)] px-3 py-1 font-mono text-xs font-black uppercase text-[var(--theme-text)] shadow-[4px_4px_0_var(--theme-text)] -rotate-3">
+                  ★ OFFICIAL INVITATION ★
+                </p>
+
+                <h1 className="mt-6 text-[clamp(2.5rem,7vw,5rem)] font-black uppercase leading-[0.85] tracking-[-0.08em]">
+                  {invitation.groom_name} &amp; {invitation.bride_name}
+                </h1>
+
+                <p className="mt-6 max-w-md mx-auto border-l-4 border-[var(--theme-text)] pl-4 font-mono text-xs uppercase leading-relaxed text-[var(--theme-muted)] text-left">
+                  {skin.intro}
+                </p>
+              </div>
+
+              <button
+                type="button"
+                onClick={handleOpenInvitation}
+                className="inline-block min-h-12 w-full sm:w-auto border-4 border-[var(--theme-text)] bg-[var(--theme-text)] px-8 py-3.5 font-mono text-sm font-black uppercase text-[var(--theme-bg)] shadow-[6px_6px_0_var(--theme-accent)] transition hover:bg-[var(--theme-accent)] hover:text-[var(--theme-text)] active:translate-x-1 active:translate-y-1 cursor-pointer touch-manipulation"
+              >
+                ✉ Buka Undangan
+              </button>
+            </div>
+          </motion.div>
+        )}
+      </AnimatePresence>
       {isOpened && (
         <QuickRsvpDock
           slug={invitation.slug}

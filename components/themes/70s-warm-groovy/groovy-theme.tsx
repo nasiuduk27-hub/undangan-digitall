@@ -10,7 +10,7 @@ import { WishesForm } from "@/components/shared/wishes-form";
 import { WishesFeed } from "@/components/shared/wishes-feed";
 import { CalendarDays, MapPin, Disc } from "lucide-react";
 import type { CSSProperties } from "react";
-import { motion } from "framer-motion";
+import { motion, AnimatePresence } from "framer-motion";
 
 type MediaAsset = { id: string; type: string; url: string; status: string };
 type BankAccount = {
@@ -64,29 +64,17 @@ export function Groovy70sTheme({
 
   const handleOpenInvitation = (e: React.SyntheticEvent) => {
     e.preventDefault();
+    e.stopPropagation();
     const audioEl = document.querySelector<HTMLAudioElement>("audio");
-    if (audioEl && audioEl.paused) {
+    if (audioEl) {
       audioEl.play().catch(() => {});
     }
     setIsOpened(true);
-    requestAnimationFrame(() => {
-      const target = document.getElementById("gallery") || document.getElementById("schedule");
-      if (target) {
-        const rect = target.getBoundingClientRect();
-        const scrollTop = window.pageYOffset || document.documentElement.scrollTop;
-        const targetTop = rect.top + scrollTop;
-        try {
-          window.scrollTo({ top: targetTop, behavior: "smooth" });
-        } catch {
-          target.scrollIntoView({ behavior: "smooth" });
-        }
-      }
-    });
   };
 
   return (
     <main
-      className="relative min-h-screen overflow-x-hidden bg-[#FDF8EE] text-[#3A2418]"
+      className="relative min-h-screen bg-[#FDF8EE] text-[#3A2418]"
       style={
         {
           "--theme-bg": "#FDF8EE",
@@ -108,6 +96,54 @@ export function Groovy70sTheme({
           disableHeavyAnim ? "" : "animate-[ping_15s_cubic-bezier(0,0,0.2,1)_infinite]"
         }`}
       />
+
+      <AnimatePresence>
+        {!isOpened && (
+          <motion.div
+            initial={{ opacity: 1, y: 0 }}
+            exit={{ opacity: 0, y: "-100%" }}
+            transition={{ duration: 0.5, ease: "easeInOut" }}
+            className="fixed inset-0 z-50 flex flex-col justify-between overflow-y-auto bg-[#FDF8EE] text-[#3A2418] p-6 text-center"
+          >
+            <div
+              className={`pointer-events-none absolute -top-16 -left-16 h-72 w-72 rounded-full bg-[#EBB035] opacity-30 blur-2xl ${
+                disableHeavyAnim ? "" : "animate-[spin_20s_linear_infinite]"
+              }`}
+            />
+            <div
+              className={`pointer-events-none absolute top-1/2 -right-16 h-80 w-80 rounded-full bg-[#D96B27] opacity-25 blur-2xl ${
+                disableHeavyAnim ? "" : "animate-[ping_15s_cubic-bezier(0,0,0.2,1)_infinite]"
+              }`}
+            />
+
+            <div className="relative z-10 max-w-lg mx-auto w-full my-auto space-y-6">
+              <div className="inline-block rounded-full bg-[#D96B27] px-4 py-1.5 font-sans font-bold text-xs uppercase tracking-wider text-[#FDF8EE]">
+                {guestName ? `For You: ${guestName}` : "Special Invitation"}
+              </div>
+
+              <h1 className="font-serif text-5xl lg:text-6xl font-extrabold tracking-tight text-[#D96B27]">
+                {invitation.groom_name}
+                <span className="block text-3xl font-normal text-[#EBB035]">&amp;</span>
+                {invitation.bride_name}
+              </h1>
+
+              <WavyDivider disableHeavyAnim={disableHeavyAnim} />
+
+              <p className="mx-auto max-w-sm text-sm leading-relaxed text-[#3A2418]/80">
+                Hangat, retro, dan penuh cinta. Bergabunglah merayakan hari kebahagiaan kami!
+              </p>
+
+              <button
+                type="button"
+                onClick={handleOpenInvitation}
+                className="inline-block min-h-12 w-full sm:w-auto px-10 rounded-full bg-[#D96B27] py-3.5 font-sans text-sm font-bold uppercase text-[#FDF8EE] shadow-lg transition hover:bg-[#3A2418] active:scale-95 cursor-pointer touch-manipulation"
+              >
+                ✉ Buka Undangan
+              </button>
+            </div>
+          </motion.div>
+        )}
+      </AnimatePresence>
 
       {isOpened && (
         <QuickRsvpDock
