@@ -180,14 +180,6 @@ export function CyberCelestialNoirTheme({
             <CyberConstellation groomName={invitation.groom_name} brideName={invitation.bride_name} />
 
             <div className="h-0.5 w-full bg-gradient-to-r from-transparent via-[#00F5D4] to-transparent shadow-[0_0_8px_#00F5D4]" />
-
-            <a
-              href="#gallery"
-              onClick={handleOpenInvitation}
-              className="inline-block min-h-12 w-full lg:w-auto px-8 rounded-lg border border-[#00F5D4] bg-[#151A24] py-3 text-center font-mono text-sm font-bold uppercase tracking-widest text-[#00F5D4] shadow-[0_0_12px_rgba(0,245,212,0.3)] transition hover:bg-[#00F5D4] hover:text-[#0C0E14] cursor-pointer active:scale-95 touch-manipulation"
-            >
-              Enter Protocol (Buka Undangan)
-            </a>
           </div>
 
           {/* Right side - Holographic Cyber Frame for Desktop */}

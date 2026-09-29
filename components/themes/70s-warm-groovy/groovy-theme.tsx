@@ -219,14 +219,6 @@ export function Groovy70sTheme({
             <p className="mx-auto lg:mx-0 max-w-sm text-sm leading-relaxed text-[#3A2418]/80">
               Hangat, retro, dan penuh cinta. Bergabunglah merayakan hari kebahagiaan kami!
             </p>
-
-            <a
-              href="#gallery"
-              onClick={handleOpenInvitation}
-              className="inline-block min-h-12 w-full lg:w-auto px-8 rounded-full bg-[#D96B27] py-3 font-sans text-sm font-bold uppercase text-[#FDF8EE] shadow-md transition hover:bg-[#3A2418] text-center cursor-pointer active:scale-95 touch-manipulation"
-            >
-              Buka Undangan
-            </a>
           </div>
 
           {/* Right Side - Vintage Groovy Desktop Media */}

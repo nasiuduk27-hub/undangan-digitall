@@ -176,14 +176,6 @@ export function RawWabiSabiTheme({
             <p className="mx-auto lg:mx-0 max-w-sm font-serif text-sm italic text-[#2E241D]/75 leading-relaxed">
               &ldquo;Keindahan dalam kesederhanaan, keabadian dalam ketulusan.&rdquo;
             </p>
-
-            <a
-              href="#gallery"
-              onClick={handleOpenInvitation}
-              className="inline-block min-h-12 w-full lg:w-auto px-8 border border-[#2E241D] bg-[#F7F0E8] py-3 font-serif text-sm italic tracking-wide text-[#2E241D] shadow-sm transition hover:bg-[#BFA054] hover:text-white text-center cursor-pointer active:scale-95 touch-manipulation"
-            >
-              Buka Undangan
-            </a>
           </div>
 
           {/* Right Side - Featured Desktop Frame */}

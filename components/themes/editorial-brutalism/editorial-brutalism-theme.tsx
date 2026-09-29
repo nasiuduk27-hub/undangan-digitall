@@ -270,14 +270,6 @@ export function EditorialBrutalismTheme({
                 {skin.intro}
               </p>
             </div>
-
-            <a
-              href="#gallery"
-              onClick={handleOpenInvitation}
-              className="inline-block min-h-11 border-2 border-[var(--theme-text)] bg-[var(--theme-text)] px-6 py-3 text-center font-mono text-sm font-bold uppercase text-[var(--theme-bg)] shadow-[6px_6px_0_var(--theme-accent)] transition-transform active:translate-x-1 active:translate-y-1 lg:w-fit cursor-pointer touch-manipulation"
-            >
-              Buka Undangan
-            </a>
           </div>
 
           {/* Right Column - Desktop Poster/Featured Media */}
