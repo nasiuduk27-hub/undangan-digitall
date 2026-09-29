@@ -5,8 +5,7 @@ import { CyberConstellation } from "@/components/themes/animations/cyber-constel
 import { AudioControl } from "@/components/shared/audio-control";
 import { QuickRsvpDock } from "@/components/shared/quick-rsvp-dock";
 import { BankCard } from "@/components/shared/bank-card";
-import { QrCheckinCard } from "@/components/shared/qr-checkin-card";
-import { QrCheckinPlaceholder } from "@/components/shared/qr-checkin-placeholder";
+import { QrCheckinModal } from "@/components/shared/qr-checkin-modal";
 import { WishesForm } from "@/components/shared/wishes-form";
 import { CalendarDays, MapPin, Cpu } from "lucide-react";
 import type { CSSProperties } from "react";
@@ -319,22 +318,15 @@ export function CyberCelestialNoirTheme({
               </div>
             )}
           </motion.section>
-
-          {/* QR Check-in */}
-          <motion.section
-            initial={disableHeavyAnim ? false : { opacity: 0, y: 30 }}
-            whileInView={disableHeavyAnim ? undefined : { opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            className="lg:col-span-5"
-          >
-            {guest ? (
-              <QrCheckinCard slug={invitation.slug} token={guest.slug_token} />
-            ) : (
-              <QrCheckinPlaceholder />
-            )}
-          </motion.section>
         </div>
       </div>
+
+      <QrCheckinModal
+        slug={invitation.slug}
+        token={guest?.slug_token}
+        guestName={guest?.name}
+        themeId="cyber-celestial-noir"
+      />
     </main>
   );
 }
