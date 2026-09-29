@@ -60,9 +60,21 @@ export function Groovy70sTheme({
     minute: "2-digit",
   }).format(new Date(invitation.event_date));
 
+  const handleOpenInvitation = (e: React.MouseEvent<HTMLAnchorElement>) => {
+    e.preventDefault();
+    const audioEl = document.querySelector<HTMLAudioElement>("audio");
+    if (audioEl && audioEl.paused) {
+      audioEl.play().catch(() => {});
+    }
+    const target = document.getElementById("gallery") || document.getElementById("schedule");
+    if (target) {
+      target.scrollIntoView({ behavior: "smooth" });
+    }
+  };
+
   return (
     <main
-      className="relative min-h-screen overflow-hidden bg-[#FDF8EE] text-[#3A2418]"
+      className="relative min-h-screen overflow-x-hidden bg-[#FDF8EE] text-[#3A2418]"
       style={
         {
           "--theme-bg": "#FDF8EE",
@@ -139,7 +151,7 @@ export function Groovy70sTheme({
       </div>
 
       {/* Cover / Gate */}
-      <section className="relative z-10 flex min-h-[85vh] flex-col justify-between p-6 lg:p-12 text-center lg:text-left">
+      <section className="relative z-10 flex min-h-[85vh] flex-col justify-between p-6 pb-28 lg:p-12 text-center lg:text-left">
         <div className="max-w-7xl mx-auto w-full my-auto lg:grid lg:grid-cols-12 lg:gap-12 lg:items-center">
           <div className="lg:col-span-6 space-y-6">
             <div className="inline-block rounded-full bg-[#D96B27] px-4 py-1.5 font-sans font-bold text-xs uppercase tracking-wider text-[#FDF8EE]">
@@ -159,8 +171,9 @@ export function Groovy70sTheme({
             </p>
 
             <a
-              href="#schedule"
-              className="inline-block min-h-12 w-full lg:w-auto px-8 rounded-full bg-[#D96B27] py-3 font-sans text-sm font-bold uppercase text-[#FDF8EE] shadow-md transition hover:bg-[#3A2418] text-center"
+              href="#gallery"
+              onClick={handleOpenInvitation}
+              className="inline-block min-h-12 w-full lg:w-auto px-8 rounded-full bg-[#D96B27] py-3 font-sans text-sm font-bold uppercase text-[#FDF8EE] shadow-md transition hover:bg-[#3A2418] text-center cursor-pointer active:scale-95"
             >
               Buka Undangan
             </a>

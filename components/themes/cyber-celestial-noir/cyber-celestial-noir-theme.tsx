@@ -61,9 +61,21 @@ export function CyberCelestialNoirTheme({
     minute: "2-digit",
   }).format(new Date(invitation.event_date));
 
+  const handleOpenInvitation = (e: React.MouseEvent<HTMLAnchorElement>) => {
+    e.preventDefault();
+    const audioEl = document.querySelector<HTMLAudioElement>("audio");
+    if (audioEl && audioEl.paused) {
+      audioEl.play().catch(() => {});
+    }
+    const target = document.getElementById("gallery") || document.getElementById("schedule");
+    if (target) {
+      target.scrollIntoView({ behavior: "smooth" });
+    }
+  };
+
   return (
     <main
-      className="min-h-screen bg-[#0C0E14] text-[#F4F7FB]"
+      className="min-h-screen overflow-x-hidden bg-[#0C0E14] text-[#F4F7FB]"
       style={
         {
           "--theme-bg": "#0C0E14",
@@ -120,7 +132,7 @@ export function CyberCelestialNoirTheme({
       </header>
 
       {/* Cover / Gate */}
-      <section className="flex min-h-[85vh] flex-col justify-between p-6 lg:p-12">
+      <section className="flex min-h-[85vh] flex-col justify-between p-6 pb-28 lg:p-12">
         <div className="max-w-7xl mx-auto w-full my-auto lg:grid lg:grid-cols-12 lg:gap-12 lg:items-center">
           <div className="lg:col-span-7 space-y-6">
             <div className="flex items-center justify-between border-b border-[#00F5D4]/30 pb-2 font-mono text-xs text-[#00F5D4]">
@@ -136,8 +148,9 @@ export function CyberCelestialNoirTheme({
             <div className="h-0.5 w-full bg-gradient-to-r from-transparent via-[#00F5D4] to-transparent shadow-[0_0_8px_#00F5D4]" />
 
             <a
-              href="#schedule"
-              className="inline-block min-h-12 w-full lg:w-auto px-8 rounded-lg border border-[#00F5D4] bg-[#151A24] py-3 text-center font-mono text-sm font-bold uppercase tracking-widest text-[#00F5D4] shadow-[0_0_12px_rgba(0,245,212,0.3)] transition hover:bg-[#00F5D4] hover:text-[#0C0E14]"
+              href="#gallery"
+              onClick={handleOpenInvitation}
+              className="inline-block min-h-12 w-full lg:w-auto px-8 rounded-lg border border-[#00F5D4] bg-[#151A24] py-3 text-center font-mono text-sm font-bold uppercase tracking-widest text-[#00F5D4] shadow-[0_0_12px_rgba(0,245,212,0.3)] transition hover:bg-[#00F5D4] hover:text-[#0C0E14] cursor-pointer active:scale-95"
             >
               Enter Protocol (Buka Undangan)
             </a>

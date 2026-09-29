@@ -117,9 +117,21 @@ export function EditorialBrutalismTheme({
     minute: "2-digit",
   }).format(new Date(invitation.event_date));
 
+  const handleOpenInvitation = (e: React.MouseEvent<HTMLAnchorElement>) => {
+    e.preventDefault();
+    const audioEl = document.querySelector<HTMLAudioElement>("audio");
+    if (audioEl && audioEl.paused) {
+      audioEl.play().catch(() => {});
+    }
+    const target = document.getElementById("gallery") || document.getElementById("schedule");
+    if (target) {
+      target.scrollIntoView({ behavior: "smooth" });
+    }
+  };
+
   return (
     <main
-      className="min-h-screen bg-[var(--theme-bg)] text-[var(--theme-text)]"
+      className="min-h-screen overflow-x-hidden bg-[var(--theme-bg)] text-[var(--theme-text)]"
       style={
         {
           "--theme-bg": skin.bg,
@@ -176,7 +188,7 @@ export function EditorialBrutalismTheme({
       </header>
 
       {/* Cover / Gate */}
-      <section className="border-x-2 border-b-2 border-[var(--theme-text)] bg-[var(--theme-bg)] p-5 lg:p-12">
+      <section className="border-x-2 border-b-2 border-[var(--theme-text)] bg-[var(--theme-bg)] p-5 pb-28 lg:p-12">
         <div className="max-w-7xl mx-auto flex flex-col justify-between min-h-[85vh] lg:grid lg:grid-cols-12 lg:gap-12 lg:items-center lg:min-h-[75vh]">
           {/* Left Column (Main Info) */}
           <div className="lg:col-span-7 flex flex-col justify-between lg:justify-center">
@@ -212,8 +224,9 @@ export function EditorialBrutalismTheme({
             </div>
 
             <a
-              href="#schedule"
-              className="inline-block min-h-11 border-2 border-[var(--theme-text)] bg-[var(--theme-text)] px-6 py-3 text-center font-mono text-sm font-bold uppercase text-[var(--theme-bg)] shadow-[6px_6px_0_var(--theme-accent)] transition-transform active:translate-x-1 active:translate-y-1 lg:w-fit"
+              href="#gallery"
+              onClick={handleOpenInvitation}
+              className="inline-block min-h-11 border-2 border-[var(--theme-text)] bg-[var(--theme-text)] px-6 py-3 text-center font-mono text-sm font-bold uppercase text-[var(--theme-bg)] shadow-[6px_6px_0_var(--theme-accent)] transition-transform active:translate-x-1 active:translate-y-1 lg:w-fit cursor-pointer"
             >
               Buka Undangan
             </a>

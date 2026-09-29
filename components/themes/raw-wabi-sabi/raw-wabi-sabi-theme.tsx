@@ -61,9 +61,21 @@ export function RawWabiSabiTheme({
     minute: "2-digit",
   }).format(new Date(invitation.event_date));
 
+  const handleOpenInvitation = (e: React.MouseEvent<HTMLAnchorElement>) => {
+    e.preventDefault();
+    const audioEl = document.querySelector<HTMLAudioElement>("audio");
+    if (audioEl && audioEl.paused) {
+      audioEl.play().catch(() => {});
+    }
+    const target = document.getElementById("gallery") || document.getElementById("schedule");
+    if (target) {
+      target.scrollIntoView({ behavior: "smooth" });
+    }
+  };
+
   return (
     <main
-      className="min-h-screen bg-[#EBE5DC] text-[#2E241D]"
+      className="min-h-screen overflow-x-hidden bg-[#EBE5DC] text-[#2E241D]"
       style={
         {
           "--theme-bg": "#EBE5DC",
@@ -119,7 +131,7 @@ export function RawWabiSabiTheme({
       </header>
 
       {/* Cover / Gate */}
-      <section className="flex min-h-[85vh] flex-col justify-between p-6 lg:p-12 text-center lg:text-left">
+      <section className="flex min-h-[85vh] flex-col justify-between p-6 pb-28 lg:p-12 text-center lg:text-left">
         <div className="max-w-7xl mx-auto w-full my-auto lg:grid lg:grid-cols-12 lg:gap-12 lg:items-center">
           {/* Left Side */}
           <div className="lg:col-span-6 space-y-6">
@@ -134,8 +146,9 @@ export function RawWabiSabiTheme({
             </p>
 
             <a
-              href="#schedule"
-              className="inline-block min-h-12 w-full lg:w-auto px-8 border border-[#2E241D] bg-[#F7F0E8] py-3 font-serif text-sm italic tracking-wide text-[#2E241D] shadow-sm transition hover:bg-[#BFA054] hover:text-white text-center"
+              href="#gallery"
+              onClick={handleOpenInvitation}
+              className="inline-block min-h-12 w-full lg:w-auto px-8 border border-[#2E241D] bg-[#F7F0E8] py-3 font-serif text-sm italic tracking-wide text-[#2E241D] shadow-sm transition hover:bg-[#BFA054] hover:text-white text-center cursor-pointer active:scale-95"
             >
               Buka Undangan
             </a>
