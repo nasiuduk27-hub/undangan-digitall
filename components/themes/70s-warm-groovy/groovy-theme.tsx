@@ -7,6 +7,7 @@ import { QuickRsvpDock } from "@/components/shared/quick-rsvp-dock";
 import { BankCard } from "@/components/shared/bank-card";
 import { QrCheckinModal } from "@/components/shared/qr-checkin-modal";
 import { WishesForm } from "@/components/shared/wishes-form";
+import { WishesFeed } from "@/components/shared/wishes-feed";
 import { CalendarDays, MapPin, Disc } from "lucide-react";
 import type { CSSProperties } from "react";
 import { motion } from "framer-motion";
@@ -61,19 +62,26 @@ export function Groovy70sTheme({
     minute: "2-digit",
   }).format(new Date(invitation.event_date));
 
-  const handleOpenInvitation = (e: React.MouseEvent<HTMLAnchorElement | HTMLButtonElement>) => {
+  const handleOpenInvitation = (e: React.SyntheticEvent) => {
     e.preventDefault();
-    setIsOpened(true);
     const audioEl = document.querySelector<HTMLAudioElement>("audio");
     if (audioEl && audioEl.paused) {
       audioEl.play().catch(() => {});
     }
-    setTimeout(() => {
+    setIsOpened(true);
+    requestAnimationFrame(() => {
       const target = document.getElementById("gallery") || document.getElementById("schedule");
       if (target) {
-        target.scrollIntoView({ behavior: "smooth" });
+        const rect = target.getBoundingClientRect();
+        const scrollTop = window.pageYOffset || document.documentElement.scrollTop;
+        const targetTop = rect.top + scrollTop;
+        try {
+          window.scrollTo({ top: targetTop, behavior: "smooth" });
+        } catch {
+          target.scrollIntoView({ behavior: "smooth" });
+        }
       }
-    }, 100);
+    });
   };
 
   return (
@@ -179,7 +187,7 @@ export function Groovy70sTheme({
             <a
               href="#gallery"
               onClick={handleOpenInvitation}
-              className="inline-block min-h-12 w-full lg:w-auto px-8 rounded-full bg-[#D96B27] py-3 font-sans text-sm font-bold uppercase text-[#FDF8EE] shadow-md transition hover:bg-[#3A2418] text-center cursor-pointer active:scale-95"
+              className="inline-block min-h-12 w-full lg:w-auto px-8 rounded-full bg-[#D96B27] py-3 font-sans text-sm font-bold uppercase text-[#FDF8EE] shadow-md transition hover:bg-[#3A2418] text-center cursor-pointer active:scale-95 touch-manipulation"
             >
               Buka Undangan
             </a>
@@ -317,37 +325,27 @@ export function Groovy70sTheme({
         )}
 
         {/* Ucapan & QR Check-in Desktop Multi-Column */}
-        <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
-          {/* Ucapan */}
-          <motion.section
-            initial={disableHeavyAnim ? false : { opacity: 0, y: 20 }}
-            whileInView={disableHeavyAnim ? undefined : { opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            className="lg:col-span-7 space-y-4"
-          >
-            <h2 className="font-serif text-xl font-bold text-[#D96B27]">Ucapan &amp; Doa Restu</h2>
-            <WishesForm
-              slug={invitation.slug}
-              guestName={guest?.name}
-              token={guest?.slug_token}
-              themeId="70s-warm-groovy"
-            />
-            {wishes && wishes.length > 0 ? (
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
-                {wishes.map((wish) => (
-                  <article key={wish.id} className="rounded-2xl border border-[#EBB035] bg-[#FFF2D0] p-4 shadow-sm">
-                    <p className="font-sans text-xs font-bold text-[#D96B27]">{wish.guest.name}</p>
-                    <p className="mt-1 font-sans text-xs text-[#3A2418]">{wish.wish_message}</p>
-                  </article>
-                ))}
-              </div>
-            ) : (
-              <div className="rounded-2xl border-2 border-dashed border-[#D96B27]/40 p-4 text-center text-xs text-[#3A2418]/60">
-                Belum ada ucapan.
-              </div>
-            )}
-          </motion.section>
-        </div>
+        <motion.section
+          initial={disableHeavyAnim ? false : { opacity: 0, y: 20 }}
+          whileInView={disableHeavyAnim ? undefined : { opacity: 1, y: 0 }}
+          viewport={{ once: true }}
+          className="space-y-4"
+        >
+          <h2 className="font-serif text-xl font-bold text-[#D96B27]">Ucapan &amp; Doa Restu</h2>
+          <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
+            <div className="lg:col-span-5">
+              <WishesForm
+                slug={invitation.slug}
+                guestName={guest?.name}
+                token={guest?.slug_token}
+                themeId="70s-warm-groovy"
+              />
+            </div>
+            <div className="lg:col-span-7">
+              <WishesFeed wishes={wishes} themeId="70s-warm-groovy" />
+            </div>
+          </div>
+        </motion.section>
       </div>
 
       <QrCheckinModal

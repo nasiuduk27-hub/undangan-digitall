@@ -8,6 +8,7 @@ import { QuickRsvpDock } from "@/components/shared/quick-rsvp-dock";
 import { BankCard } from "@/components/shared/bank-card";
 import { QrCheckinModal } from "@/components/shared/qr-checkin-modal";
 import { WishesForm } from "@/components/shared/wishes-form";
+import { WishesFeed } from "@/components/shared/wishes-feed";
 import { CalendarDays, MapPin, Cpu } from "lucide-react";
 import type { CSSProperties } from "react";
 import { motion } from "framer-motion";
@@ -62,19 +63,26 @@ export function CyberCelestialNoirTheme({
     minute: "2-digit",
   }).format(new Date(invitation.event_date));
 
-  const handleOpenInvitation = (e: React.MouseEvent<HTMLAnchorElement | HTMLButtonElement>) => {
+  const handleOpenInvitation = (e: React.SyntheticEvent) => {
     e.preventDefault();
-    setIsOpened(true);
     const audioEl = document.querySelector<HTMLAudioElement>("audio");
     if (audioEl && audioEl.paused) {
       audioEl.play().catch(() => {});
     }
-    setTimeout(() => {
+    setIsOpened(true);
+    requestAnimationFrame(() => {
       const target = document.getElementById("gallery") || document.getElementById("schedule");
       if (target) {
-        target.scrollIntoView({ behavior: "smooth" });
+        const rect = target.getBoundingClientRect();
+        const scrollTop = window.pageYOffset || document.documentElement.scrollTop;
+        const targetTop = rect.top + scrollTop;
+        try {
+          window.scrollTo({ top: targetTop, behavior: "smooth" });
+        } catch {
+          target.scrollIntoView({ behavior: "smooth" });
+        }
       }
-    }, 100);
+    });
   };
 
   return (
@@ -156,7 +164,7 @@ export function CyberCelestialNoirTheme({
             <a
               href="#gallery"
               onClick={handleOpenInvitation}
-              className="inline-block min-h-12 w-full lg:w-auto px-8 rounded-lg border border-[#00F5D4] bg-[#151A24] py-3 text-center font-mono text-sm font-bold uppercase tracking-widest text-[#00F5D4] shadow-[0_0_12px_rgba(0,245,212,0.3)] transition hover:bg-[#00F5D4] hover:text-[#0C0E14] cursor-pointer active:scale-95"
+              className="inline-block min-h-12 w-full lg:w-auto px-8 rounded-lg border border-[#00F5D4] bg-[#151A24] py-3 text-center font-mono text-sm font-bold uppercase tracking-widest text-[#00F5D4] shadow-[0_0_12px_rgba(0,245,212,0.3)] transition hover:bg-[#00F5D4] hover:text-[#0C0E14] cursor-pointer active:scale-95 touch-manipulation"
             >
               Enter Protocol (Buka Undangan)
             </a>
@@ -295,37 +303,27 @@ export function CyberCelestialNoirTheme({
         )}
 
         {/* Ucapan & QR Check-in Desktop Multi-Column */}
-        <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
-          {/* Ucapan */}
-          <motion.section
-            initial={disableHeavyAnim ? false : { opacity: 0, y: 30 }}
-            whileInView={disableHeavyAnim ? undefined : { opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            className="lg:col-span-7 space-y-4"
-          >
-            <div className="font-mono text-xs uppercase text-[#00F5D4]">{"// INCOMING_MESSAGES"}</div>
-            <WishesForm
-              slug={invitation.slug}
-              guestName={guest?.name}
-              token={guest?.slug_token}
-              themeId="cyber-celestial-noir"
-            />
-            {wishes && wishes.length > 0 ? (
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
-                {wishes.map((wish) => (
-                  <article key={wish.id} className="rounded-lg border border-[#00F5D4]/30 bg-[#151A24] p-4 font-mono">
-                    <p className="text-xs text-[#00F5D4]">[FROM: {wish.guest.name}]</p>
-                    <p className="mt-2 text-xs text-[#F4F7FB]/90 leading-relaxed">{wish.wish_message}</p>
-                  </article>
-                ))}
-              </div>
-            ) : (
-              <div className="rounded-lg border border-dashed border-[#00F5D4]/30 bg-[#151A24] p-4 text-center font-mono text-xs text-[#F4F7FB]/50">
-                [NO MESSAGES RECEIVED]
-              </div>
-            )}
-          </motion.section>
-        </div>
+        <motion.section
+          initial={disableHeavyAnim ? false : { opacity: 0, y: 30 }}
+          whileInView={disableHeavyAnim ? undefined : { opacity: 1, y: 0 }}
+          viewport={{ once: true }}
+          className="space-y-4"
+        >
+          <div className="font-mono text-xs uppercase text-[#00F5D4]">{"// INCOMING_MESSAGES"}</div>
+          <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
+            <div className="lg:col-span-5">
+              <WishesForm
+                slug={invitation.slug}
+                guestName={guest?.name}
+                token={guest?.slug_token}
+                themeId="cyber-celestial-noir"
+              />
+            </div>
+            <div className="lg:col-span-7">
+              <WishesFeed wishes={wishes} themeId="cyber-celestial-noir" />
+            </div>
+          </div>
+        </motion.section>
       </div>
 
       <QrCheckinModal

@@ -7,6 +7,7 @@ import { QuickRsvpDock } from "@/components/shared/quick-rsvp-dock";
 import { BankCard } from "@/components/shared/bank-card";
 import { QrCheckinModal } from "@/components/shared/qr-checkin-modal";
 import { WishesForm } from "@/components/shared/wishes-form";
+import { WishesFeed } from "@/components/shared/wishes-feed";
 import { CalendarDays, MapPin } from "lucide-react";
 import type { CSSProperties } from "react";
 import { motion } from "framer-motion";
@@ -118,19 +119,26 @@ export function EditorialBrutalismTheme({
     minute: "2-digit",
   }).format(new Date(invitation.event_date));
 
-  const handleOpenInvitation = (e: React.MouseEvent<HTMLAnchorElement | HTMLButtonElement>) => {
+  const handleOpenInvitation = (e: React.SyntheticEvent) => {
     e.preventDefault();
-    setIsOpened(true);
     const audioEl = document.querySelector<HTMLAudioElement>("audio");
     if (audioEl && audioEl.paused) {
       audioEl.play().catch(() => {});
     }
-    setTimeout(() => {
+    setIsOpened(true);
+    requestAnimationFrame(() => {
       const target = document.getElementById("gallery") || document.getElementById("schedule");
       if (target) {
-        target.scrollIntoView({ behavior: "smooth" });
+        const rect = target.getBoundingClientRect();
+        const scrollTop = window.pageYOffset || document.documentElement.scrollTop;
+        const targetTop = rect.top + scrollTop;
+        try {
+          window.scrollTo({ top: targetTop, behavior: "smooth" });
+        } catch {
+          target.scrollIntoView({ behavior: "smooth" });
+        }
       }
-    }, 100);
+    });
   };
 
   return (
@@ -232,7 +240,7 @@ export function EditorialBrutalismTheme({
             <a
               href="#gallery"
               onClick={handleOpenInvitation}
-              className="inline-block min-h-11 border-2 border-[var(--theme-text)] bg-[var(--theme-text)] px-6 py-3 text-center font-mono text-sm font-bold uppercase text-[var(--theme-bg)] shadow-[6px_6px_0_var(--theme-accent)] transition-transform active:translate-x-1 active:translate-y-1 lg:w-fit cursor-pointer"
+              className="inline-block min-h-11 border-2 border-[var(--theme-text)] bg-[var(--theme-text)] px-6 py-3 text-center font-mono text-sm font-bold uppercase text-[var(--theme-bg)] shadow-[6px_6px_0_var(--theme-accent)] transition-transform active:translate-x-1 active:translate-y-1 lg:w-fit cursor-pointer touch-manipulation"
             >
               Buka Undangan
             </a>
@@ -388,18 +396,17 @@ export function EditorialBrutalismTheme({
         </motion.section>
 
         {/* Ucapan & QR Check-in Desktop Multi-Column */}
-        <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
-          {/* Ucapan */}
-          <motion.section
-            initial={disableHeavyAnim ? false : { opacity: 0, y: 30 }}
-            whileInView={disableHeavyAnim ? undefined : { opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            transition={{ duration: 0.1, ease: "linear" }}
-            className="lg:col-span-7 border-2 border-[var(--theme-text)] bg-[var(--theme-card)] p-5 lg:p-8 shadow-[6px_6px_0_var(--theme-text)]"
-          >
-            <ThemeHeading number="05" title="Ucapan &amp; Doa" />
-            
-            <div className="mt-4 mb-6">
+        <motion.section
+          initial={disableHeavyAnim ? false : { opacity: 0, y: 30 }}
+          whileInView={disableHeavyAnim ? undefined : { opacity: 1, y: 0 }}
+          viewport={{ once: true }}
+          transition={{ duration: 0.1, ease: "linear" }}
+          className="border-2 border-[var(--theme-text)] bg-[var(--theme-card)] p-5 lg:p-8 shadow-[6px_6px_0_var(--theme-text)]"
+        >
+          <ThemeHeading number="05" title="Ucapan &amp; Doa" />
+
+          <div className="mt-6 grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
+            <div className="lg:col-span-5">
               <WishesForm
                 slug={invitation.slug}
                 guestName={guest?.name}
@@ -407,23 +414,11 @@ export function EditorialBrutalismTheme({
                 themeId="editorial-brutalism"
               />
             </div>
-
-            {wishes && wishes.length > 0 ? (
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
-                {wishes.map((wish) => (
-                  <article key={wish.id} className="border-2 border-[var(--theme-text)] bg-[var(--theme-bg)] p-4">
-                    <p className="font-mono text-[10px] font-bold uppercase text-[var(--theme-muted)]">
-                      {wish.guest.name}
-                    </p>
-                    <p className="mt-2 text-sm leading-relaxed">{wish.wish_message}</p>
-                  </article>
-                ))}
-              </div>
-            ) : (
-              <EmptySlot text="Belum ada ucapan dari tamu." />
-            )}
-          </motion.section>
-        </div>
+            <div className="lg:col-span-7">
+              <WishesFeed wishes={wishes} themeId="editorial-brutalism" />
+            </div>
+          </div>
+        </motion.section>
       </div>
 
       <QrCheckinModal
