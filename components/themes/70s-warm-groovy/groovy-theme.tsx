@@ -1,5 +1,6 @@
 "use client";
 
+import { useState } from "react";
 import { useAnimSettings } from "@/lib/use-anim-settings";
 import { AudioControl } from "@/components/shared/audio-control";
 import { QuickRsvpDock } from "@/components/shared/quick-rsvp-dock";
@@ -44,6 +45,7 @@ export function Groovy70sTheme({
   guest?: Guest | null;
   wishes?: Wish[];
 }) {
+  const [isOpened, setIsOpened] = useState(false);
   const { disableHeavyAnim } = useAnimSettings();
   const guestName = guest?.name;
   const photos = invitation.media_assets.filter((item) => item.type === "photo");
@@ -59,16 +61,19 @@ export function Groovy70sTheme({
     minute: "2-digit",
   }).format(new Date(invitation.event_date));
 
-  const handleOpenInvitation = (e: React.MouseEvent<HTMLAnchorElement>) => {
+  const handleOpenInvitation = (e: React.MouseEvent<HTMLAnchorElement | HTMLButtonElement>) => {
     e.preventDefault();
+    setIsOpened(true);
     const audioEl = document.querySelector<HTMLAudioElement>("audio");
     if (audioEl && audioEl.paused) {
       audioEl.play().catch(() => {});
     }
-    const target = document.getElementById("gallery") || document.getElementById("schedule");
-    if (target) {
-      target.scrollIntoView({ behavior: "smooth" });
-    }
+    setTimeout(() => {
+      const target = document.getElementById("gallery") || document.getElementById("schedule");
+      if (target) {
+        target.scrollIntoView({ behavior: "smooth" });
+      }
+    }, 100);
   };
 
   return (
@@ -96,16 +101,18 @@ export function Groovy70sTheme({
         }`}
       />
 
-      <QuickRsvpDock
-        slug={invitation.slug}
-        token={guest?.slug_token}
-        guestName={guest?.name}
-        themeId="70s-warm-groovy"
-        initialStatus={guest?.rsvp?.attendance_status}
-        initialPax={guest?.rsvp?.pax_count}
-        initialWish={guest?.rsvp?.wish_message}
-        audioUrl={audio?.url}
-      />
+      {isOpened && (
+        <QuickRsvpDock
+          slug={invitation.slug}
+          token={guest?.slug_token}
+          guestName={guest?.name}
+          themeId="70s-warm-groovy"
+          initialStatus={guest?.rsvp?.attendance_status}
+          initialPax={guest?.rsvp?.pax_count}
+          initialWish={guest?.rsvp?.wish_message}
+          audioUrl={audio?.url}
+        />
+      )}
 
       {/* Desktop Sticky Top Nav */}
       <header className="sticky top-0 z-40 hidden border-b-2 border-[#D96B27]/30 bg-[#FDF8EE]/90 backdrop-blur-md px-8 py-3.5 lg:flex items-center justify-between font-sans shadow-sm">

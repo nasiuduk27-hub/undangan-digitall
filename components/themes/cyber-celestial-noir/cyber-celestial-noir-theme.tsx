@@ -1,5 +1,6 @@
 "use client";
 
+import { useState } from "react";
 import { useAnimSettings } from "@/lib/use-anim-settings";
 import { CyberConstellation } from "@/components/themes/animations/cyber-constellation";
 import { AudioControl } from "@/components/shared/audio-control";
@@ -45,6 +46,7 @@ export function CyberCelestialNoirTheme({
   guest?: Guest | null;
   wishes?: Wish[];
 }) {
+  const [isOpened, setIsOpened] = useState(false);
   const { disableHeavyAnim } = useAnimSettings();
   const guestName = guest?.name;
   const photos = invitation.media_assets.filter((item) => item.type === "photo");
@@ -60,16 +62,19 @@ export function CyberCelestialNoirTheme({
     minute: "2-digit",
   }).format(new Date(invitation.event_date));
 
-  const handleOpenInvitation = (e: React.MouseEvent<HTMLAnchorElement>) => {
+  const handleOpenInvitation = (e: React.MouseEvent<HTMLAnchorElement | HTMLButtonElement>) => {
     e.preventDefault();
+    setIsOpened(true);
     const audioEl = document.querySelector<HTMLAudioElement>("audio");
     if (audioEl && audioEl.paused) {
       audioEl.play().catch(() => {});
     }
-    const target = document.getElementById("gallery") || document.getElementById("schedule");
-    if (target) {
-      target.scrollIntoView({ behavior: "smooth" });
-    }
+    setTimeout(() => {
+      const target = document.getElementById("gallery") || document.getElementById("schedule");
+      if (target) {
+        target.scrollIntoView({ behavior: "smooth" });
+      }
+    }, 100);
   };
 
   return (
@@ -85,16 +90,18 @@ export function CyberCelestialNoirTheme({
         } as CSSProperties
       }
     >
-      <QuickRsvpDock
-        slug={invitation.slug}
-        token={guest?.slug_token}
-        guestName={guest?.name}
-        themeId="cyber-celestial-noir"
-        initialStatus={guest?.rsvp?.attendance_status}
-        initialPax={guest?.rsvp?.pax_count}
-        initialWish={guest?.rsvp?.wish_message}
-        audioUrl={audio?.url}
-      />
+      {isOpened && (
+        <QuickRsvpDock
+          slug={invitation.slug}
+          token={guest?.slug_token}
+          guestName={guest?.name}
+          themeId="cyber-celestial-noir"
+          initialStatus={guest?.rsvp?.attendance_status}
+          initialPax={guest?.rsvp?.pax_count}
+          initialWish={guest?.rsvp?.wish_message}
+          audioUrl={audio?.url}
+        />
+      )}
 
       {/* Desktop Sticky Top Nav */}
       <header className="sticky top-0 z-40 hidden border-b border-[#00F5D4]/30 bg-[#0C0E14]/90 backdrop-blur-md px-8 py-3 lg:flex items-center justify-between font-mono text-xs text-[#00F5D4] shadow-[0_0_15px_rgba(0,245,212,0.15)]">

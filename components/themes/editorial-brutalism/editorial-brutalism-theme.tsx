@@ -1,5 +1,6 @@
 "use client";
 
+import { useState } from "react";
 import { useAnimSettings } from "@/lib/use-anim-settings";
 import { AudioControl } from "@/components/shared/audio-control";
 import { QuickRsvpDock } from "@/components/shared/quick-rsvp-dock";
@@ -101,6 +102,7 @@ export function EditorialBrutalismTheme({
   guest?: Guest | null;
   wishes?: Wish[];
 }) {
+  const [isOpened, setIsOpened] = useState(false);
   const { disableHeavyAnim } = useAnimSettings();
   const guestName = guest?.name;
   const photos = invitation.media_assets.filter((item) => item.type === "photo");
@@ -116,16 +118,19 @@ export function EditorialBrutalismTheme({
     minute: "2-digit",
   }).format(new Date(invitation.event_date));
 
-  const handleOpenInvitation = (e: React.MouseEvent<HTMLAnchorElement>) => {
+  const handleOpenInvitation = (e: React.MouseEvent<HTMLAnchorElement | HTMLButtonElement>) => {
     e.preventDefault();
+    setIsOpened(true);
     const audioEl = document.querySelector<HTMLAudioElement>("audio");
     if (audioEl && audioEl.paused) {
       audioEl.play().catch(() => {});
     }
-    const target = document.getElementById("gallery") || document.getElementById("schedule");
-    if (target) {
-      target.scrollIntoView({ behavior: "smooth" });
-    }
+    setTimeout(() => {
+      const target = document.getElementById("gallery") || document.getElementById("schedule");
+      if (target) {
+        target.scrollIntoView({ behavior: "smooth" });
+      }
+    }, 100);
   };
 
   return (
@@ -141,16 +146,18 @@ export function EditorialBrutalismTheme({
         } as CSSProperties
       }
     >
-      <QuickRsvpDock
-        slug={invitation.slug}
-        token={guest?.slug_token}
-        guestName={guest?.name}
-        themeId="editorial-brutalism"
-        initialStatus={guest?.rsvp?.attendance_status}
-        initialPax={guest?.rsvp?.pax_count}
-        initialWish={guest?.rsvp?.wish_message}
-        audioUrl={audio?.url}
-      />
+      {isOpened && (
+        <QuickRsvpDock
+          slug={invitation.slug}
+          token={guest?.slug_token}
+          guestName={guest?.name}
+          themeId="editorial-brutalism"
+          initialStatus={guest?.rsvp?.attendance_status}
+          initialPax={guest?.rsvp?.pax_count}
+          initialWish={guest?.rsvp?.wish_message}
+          audioUrl={audio?.url}
+        />
+      )}
 
       {/* Sticky Top Nav Bar - Desktop Only (hidden lg:flex) */}
       <header className="sticky top-0 z-40 hidden border-b-4 border-[var(--theme-text)] bg-[var(--theme-bg)] px-8 py-3.5 lg:flex items-center justify-between shadow-[0_4px_0_var(--theme-text)]">
