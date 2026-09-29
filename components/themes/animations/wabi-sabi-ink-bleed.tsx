@@ -84,20 +84,14 @@ export function WabiSabiInkBleed({ groomName, brideName }: { groomName: string; 
     <div ref={containerRef} className="relative flex flex-col items-center justify-center py-6">
       <canvas ref={canvasRef} className="pointer-events-none absolute inset-0 h-full w-full opacity-60" />
       <svg className="h-16 w-64" viewBox="0 0 300 80">
-        <defs>
-          <filter id="ink-bleed-filter">
-            <feTurbulence type="fractalNoise" baseFrequency="0.04" numOctaves="3" result="noise" />
-            <feDisplacementMap in="SourceGraphic" in2="noise" scale="6" xChannelSelector="R" yChannelSelector="G" />
-          </filter>
-        </defs>
         <path
           ref={pathRef}
           d="M 20 40 Q 75 10 150 40 T 280 40"
           fill="none"
           stroke="#A85A3C"
-          strokeWidth="6"
+          strokeWidth="5"
           strokeLinecap="round"
-          filter="url(#ink-bleed-filter)"
+          strokeOpacity="0.85"
         />
       </svg>
       <h1 className="relative mt-[-40px] font-serif text-4xl italic tracking-wide text-[#2E241D]">

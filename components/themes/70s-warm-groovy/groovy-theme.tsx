@@ -74,7 +74,7 @@ export function Groovy70sTheme({
 
   return (
     <main
-      className="relative min-h-screen bg-[#FDF8EE] text-[#3A2418]"
+      className="relative min-h-screen bg-[#FDF8EE] text-[#3A2418] overflow-x-hidden gpu-layer"
       style={
         {
           "--theme-bg": "#FDF8EE",
@@ -87,12 +87,12 @@ export function Groovy70sTheme({
     >
       {/* Morphing Blob background */}
       <div
-        className={`pointer-events-none absolute -top-16 -left-16 h-72 w-72 rounded-full bg-[#EBB035] opacity-30 blur-2xl ${
+        className={`pointer-events-none absolute -top-16 -left-16 h-72 w-72 rounded-full bg-[radial-gradient(circle,rgba(235,176,53,0.4)_0%,transparent_70%)] ${
           disableHeavyAnim ? "" : "animate-[spin_20s_linear_infinite]"
         }`}
       />
       <div
-        className={`pointer-events-none absolute top-1/2 -right-16 h-80 w-80 rounded-full bg-[#D96B27] opacity-25 blur-2xl ${
+        className={`pointer-events-none absolute top-1/2 -right-16 h-80 w-80 rounded-full bg-[radial-gradient(circle,rgba(217,107,39,0.35)_0%,transparent_70%)] ${
           disableHeavyAnim ? "" : "animate-[ping_15s_cubic-bezier(0,0,0.2,1)_infinite]"
         }`}
       />
@@ -103,15 +103,15 @@ export function Groovy70sTheme({
             initial={{ opacity: 1, y: 0 }}
             exit={{ opacity: 0, y: "-100%" }}
             transition={{ duration: 0.5, ease: "easeInOut" }}
-            className="fixed inset-0 z-50 flex flex-col justify-between overflow-y-auto bg-[#FDF8EE] text-[#3A2418] p-6 text-center"
+            className="fixed inset-0 z-50 flex flex-col justify-between overflow-y-auto bg-[#FDF8EE] text-[#3A2418] p-6 text-center gpu-layer"
           >
             <div
-              className={`pointer-events-none absolute -top-16 -left-16 h-72 w-72 rounded-full bg-[#EBB035] opacity-30 blur-2xl ${
+              className={`pointer-events-none absolute -top-16 -left-16 h-72 w-72 rounded-full bg-[radial-gradient(circle,rgba(235,176,53,0.4)_0%,transparent_70%)] ${
                 disableHeavyAnim ? "" : "animate-[spin_20s_linear_infinite]"
               }`}
             />
             <div
-              className={`pointer-events-none absolute top-1/2 -right-16 h-80 w-80 rounded-full bg-[#D96B27] opacity-25 blur-2xl ${
+              className={`pointer-events-none absolute top-1/2 -right-16 h-80 w-80 rounded-full bg-[radial-gradient(circle,rgba(217,107,39,0.35)_0%,transparent_70%)] ${
                 disableHeavyAnim ? "" : "animate-[ping_15s_cubic-bezier(0,0,0.2,1)_infinite]"
               }`}
             />

@@ -131,7 +131,7 @@ export function EditorialBrutalismTheme({
 
   return (
     <main
-      className="min-h-screen bg-[var(--theme-bg)] text-[var(--theme-text)]"
+      className="min-h-screen bg-[var(--theme-bg)] text-[var(--theme-text)] overflow-x-hidden gpu-layer"
       style={
         {
           "--theme-bg": skin.bg,
@@ -148,7 +148,7 @@ export function EditorialBrutalismTheme({
             initial={{ opacity: 1, y: 0 }}
             exit={{ opacity: 0, y: "-100%" }}
             transition={{ duration: 0.5, ease: "easeInOut" }}
-            className="fixed inset-0 z-50 flex flex-col justify-between overflow-y-auto bg-[var(--theme-bg)] text-[var(--theme-text)] p-6 text-center border-8 border-[var(--theme-text)]"
+            className="fixed inset-0 z-50 flex flex-col justify-between overflow-y-auto bg-[var(--theme-bg)] text-[var(--theme-text)] p-6 text-center border-8 border-[var(--theme-text)] gpu-layer"
             style={
               {
                 "--theme-bg": skin.bg,

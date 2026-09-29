@@ -263,7 +263,7 @@ export function RsvpForm({
 
       {/* Modal RSVP */}
       {isModalOpen && (
-        <div className="fixed inset-0 z-50 flex items-end sm:items-center justify-center bg-black/60 backdrop-blur-sm p-4 animate-in fade-in duration-200">
+        <div className="fixed inset-0 z-50 flex items-end sm:items-center justify-center bg-black/60 backdrop-blur-sm p-4 animate-in fade-in duration-200 gpu-layer">
           <div
             className={`w-full max-w-md p-6 ${
               isBrutalist

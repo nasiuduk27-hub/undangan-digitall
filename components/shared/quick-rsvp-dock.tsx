@@ -310,7 +310,7 @@ export function QuickRsvpDock({
     const isCyber = themeId === "cyber-celestial-noir";
 
     return (
-      <div className="fixed inset-0 z-50 flex items-end sm:items-center justify-center bg-black/60 backdrop-blur-sm p-4 animate-in fade-in duration-200">
+      <div className="fixed inset-0 z-50 flex items-end sm:items-center justify-center bg-black/60 backdrop-blur-sm p-4 animate-in fade-in duration-200 gpu-layer">
         <div
           className={`w-full max-w-md p-6 ${
             isBrutalist
@@ -448,7 +448,7 @@ export function QuickRsvpDock({
   return (
     <>
       <div
-        className={`fixed bottom-4 left-4 right-4 z-40 flex items-center justify-between gap-2 lg:hidden ${className}`}
+        className={`fixed bottom-4 left-4 right-4 z-40 flex items-center justify-between gap-2 lg:hidden gpu-layer ${className}`}
       >
         {/* Quick RSVP Buttons Container */}
         <div className="flex-1 py-1">

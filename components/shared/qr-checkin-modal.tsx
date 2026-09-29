@@ -67,7 +67,7 @@ export function QrCheckinModal({
       </button>
 
       {isOpen && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/60 p-4 backdrop-blur-sm animate-in fade-in duration-200">
+        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/60 p-4 backdrop-blur-sm animate-in fade-in duration-200 gpu-layer">
           <div className={`relative w-full max-w-sm p-6 ${modalStyle}`}>
             <button
               type="button"

@@ -75,7 +75,7 @@ export function RawWabiSabiTheme({
 
   return (
     <main
-      className="min-h-screen bg-[#EBE5DC] text-[#2E241D]"
+      className="min-h-screen bg-[#EBE5DC] text-[#2E241D] overflow-x-hidden gpu-layer"
       style={
         {
           "--theme-bg": "#EBE5DC",
@@ -92,7 +92,7 @@ export function RawWabiSabiTheme({
             initial={{ opacity: 1, y: 0 }}
             exit={{ opacity: 0, y: "-100%" }}
             transition={{ duration: 0.5, ease: "easeInOut" }}
-            className="fixed inset-0 z-50 flex flex-col justify-between overflow-y-auto bg-[#EBE5DC] text-[#2E241D] p-6 text-center"
+            className="fixed inset-0 z-50 flex flex-col justify-between overflow-y-auto bg-[#EBE5DC] text-[#2E241D] p-6 text-center gpu-layer"
           >
             <div className="relative z-10 max-w-lg mx-auto w-full my-auto space-y-6">
               <div className="font-mono text-xs uppercase tracking-widest text-[#BFA054]">

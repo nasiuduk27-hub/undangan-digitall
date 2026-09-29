@@ -14,3 +14,21 @@ body {
   min-height: 100vh;
   -webkit-overflow-scrolling: touch;
 }
+
+/* Fix iOS WebKit GPU backdrop-filter & heavy blur rendering bugs */
+.gpu-layer {
+  isolation: isolate;
+  -webkit-backface-visibility: hidden;
+  backface-visibility: hidden;
+  -webkit-transform: translateZ(0);
+  transform: translateZ(0);
+}
+
+@supports (-webkit-backdrop-filter: none) {
+  .backdrop-blur-md {
+    -webkit-backdrop-filter: blur(12px);
+  }
+  .backdrop-blur-sm {
+    -webkit-backdrop-filter: blur(4px);
+  }
+}
