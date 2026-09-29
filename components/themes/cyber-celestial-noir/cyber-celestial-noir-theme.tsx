@@ -75,7 +75,7 @@ export function CyberCelestialNoirTheme({
 
   return (
     <main
-      className="min-h-screen bg-[#0C0E14] text-[#F4F7FB] overflow-x-hidden gpu-layer"
+      className="min-h-screen bg-[#0C0E14] text-[#F4F7FB]"
       style={
         {
           "--theme-bg": "#0C0E14",
@@ -92,7 +92,7 @@ export function CyberCelestialNoirTheme({
             initial={{ opacity: 1, y: 0 }}
             exit={{ opacity: 0, y: "-100%" }}
             transition={{ duration: 0.5, ease: "easeInOut" }}
-            className="fixed inset-0 z-50 flex flex-col justify-between overflow-y-auto bg-[#0C0E14] text-[#F4F7FB] p-6 text-center font-mono gpu-layer"
+            className="fixed inset-0 z-50 flex flex-col justify-between overflow-y-auto bg-[#0C0E14] text-[#F4F7FB] p-6 text-center font-mono"
           >
             <div className="relative z-10 max-w-lg mx-auto w-full my-auto space-y-6">
               <div className="flex items-center justify-between border-b border-[#00F5D4]/30 pb-2 text-xs text-[#00F5D4]">
