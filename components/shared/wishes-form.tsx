@@ -3,6 +3,7 @@
 import { useState } from "react";
 import { useRouter } from "next/navigation";
 import { Send, Sparkles, UserX } from "lucide-react";
+import { isFloralTheme } from "@/lib/theme-style";
 
 interface WishesFormProps {
   slug: string;
@@ -28,6 +29,7 @@ export function WishesForm({
   const isCyber = themeId === "cyber-celestial-noir";
   const isGroovy = themeId === "70s-warm-groovy";
   const isWabi = themeId === "raw-wabi-sabi";
+  const isFloral = isFloralTheme(themeId);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -74,6 +76,8 @@ export function WishesForm({
     ? "border-2 border-[#D96B27] bg-[#FFF2D0] p-4 rounded-2xl text-[#3A2418] font-sans shadow-[4px_4px_0_#D96B27]"
     : isWabi
     ? "border border-[#2E241D]/20 bg-[#F7F0E8] p-4 rounded-md text-[#2E241D] font-serif shadow-sm"
+    : isFloral
+    ? "border border-[var(--f-border)] bg-[var(--f-surface)] p-4 rounded-[1.5rem] text-[var(--f-text)] shadow-sm"
     : "border-2 border-black bg-white p-4 shadow-[4px_4px_0_#121212]";
 
   const inputStyle = isCyber
@@ -82,6 +86,8 @@ export function WishesForm({
     ? "w-full px-3 py-2 text-xs border-2 border-[#D96B27]/40 bg-[#FDF8EE] text-[#3A2418] rounded-xl focus:outline-none focus:border-[#D96B27]"
     : isWabi
     ? "w-full px-3 py-2 text-xs border border-[#2E241D]/30 bg-[#EBE5DC] text-[#2E241D] rounded-md focus:outline-none focus:border-[#2E241D]"
+    : isFloral
+    ? "w-full px-3 py-2 text-xs border border-[var(--f-border)] bg-[var(--f-bg)] text-[var(--f-text)] rounded-xl focus:outline-none focus:border-[var(--f-accent)]"
     : "w-full px-3 py-2 text-xs border-2 border-black bg-[#F4EFEA] text-black focus:outline-none";
 
   const btnStyle = isCyber
@@ -90,6 +96,8 @@ export function WishesForm({
     ? "flex items-center justify-center gap-2 w-full px-4 py-2.5 text-xs font-bold uppercase rounded-full bg-[#D96B27] text-white hover:bg-[#C05A1D] shadow-[2px_2px_0_#3A2418] transition"
     : isWabi
     ? "flex items-center justify-center gap-2 w-full px-4 py-2.5 text-xs font-medium uppercase rounded-md bg-[#2E241D] text-[#EBE5DC] hover:bg-[#2E241D]/90 transition"
+    : isFloral
+    ? "flex items-center justify-center gap-2 w-full px-4 py-2.5 text-xs font-semibold uppercase rounded-full bg-[var(--f-accent)] text-[var(--f-accent-text)] hover:opacity-90 transition"
     : "flex items-center justify-center gap-2 w-full px-4 py-2.5 text-xs font-black uppercase border-2 border-black bg-[#D8FB38] text-black shadow-[3px_3px_0_#121212] hover:bg-[#c7eb22] transition";
 
   return (

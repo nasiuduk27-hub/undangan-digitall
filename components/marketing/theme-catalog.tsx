@@ -146,17 +146,28 @@ export function ThemeCatalog() {
                       )}
                     </div>
 
-                    {/* Color Swatch / Visual Placeholder */}
-                    <div className="h-28 sm:h-36 rounded-xl border border-[#e7ddd0] overflow-hidden flex items-center justify-center p-3 relative group-hover:scale-[1.02] transition-transform" style={{ backgroundColor: palette[0] || "#faf7f2" }}>
-                      <div className="flex items-center gap-1.5 z-10 bg-white/80 backdrop-blur-md px-3 py-1.5 rounded-full border border-black/5 shadow-sm">
-                        {palette.map((color, idx) => (
-                          <span
-                            key={idx}
-                            className="w-3.5 h-3.5 rounded-full border border-black/10 shadow-xs"
-                            style={{ backgroundColor: color }}
-                          />
-                        ))}
-                      </div>
+                    {/* Thumbnail / Color Swatch */}
+                    <div
+                      className="relative aspect-[3/4] rounded-xl border border-[#e7ddd0] overflow-hidden flex items-center justify-center p-3 group-hover:scale-[1.02] transition-transform"
+                      style={{ backgroundColor: palette[0] || "#faf7f2" }}
+                    >
+                      {theme.preview_thumbnail_url ? (
+                        <img
+                          src={theme.preview_thumbnail_url}
+                          alt={`Pratinjau ${theme.name}`}
+                          className="absolute inset-0 h-full w-full object-cover"
+                        />
+                      ) : (
+                        <div className="flex items-center gap-1.5 z-10 bg-white/80 backdrop-blur-md px-3 py-1.5 rounded-full border border-black/5 shadow-sm">
+                          {palette.map((color, idx) => (
+                            <span
+                              key={idx}
+                              className="w-3.5 h-3.5 rounded-full border border-black/10 shadow-xs"
+                              style={{ backgroundColor: color }}
+                            />
+                          ))}
+                        </div>
+                      )}
                     </div>
 
                     <h3 className="text-sm sm:text-base font-bold text-[#2b2420] mt-3">

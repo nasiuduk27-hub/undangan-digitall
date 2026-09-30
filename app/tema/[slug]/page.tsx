@@ -142,6 +142,7 @@ export default function PublicThemePreviewPage({
                 invitation={dummyData}
                 guest={DUMMY_GUEST}
                 wishes={DUMMY_WISHES}
+                preview
               />
             </IPhoneFrame>
           ) : (
@@ -150,6 +151,7 @@ export default function PublicThemePreviewPage({
                 invitation={dummyData}
                 guest={DUMMY_GUEST}
                 wishes={DUMMY_WISHES}
+                preview
               />
             </BrowserFrame>
           )}

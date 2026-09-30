@@ -1,0 +1,19 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 300 400" role="img" aria-label="Pratinjau Mawar Blush">
+  <rect width="300" height="400" fill="#FFF6F4"/>
+  <rect x="14" y="14" width="272" height="372" fill="none" stroke="#E8A5A5" stroke-width="1.2" opacity="0.7"/>
+  <g fill="#E8A5A5" opacity="0.9">
+    <circle cx="70" cy="330" r="18"/><circle cx="88" cy="314" r="12"/><circle cx="56" cy="312" r="11"/>
+    <circle cx="236" cy="74" r="14"/><circle cx="250" cy="62" r="9"/>
+  </g>
+  <g fill="none" stroke="#C77B7B" stroke-width="1" opacity="0.8">
+    <path d="M70 312 q10 18 0 36 q-10 -18 0 -36Z"/>
+    <path d="M236 60 q6 14 0 28 q-6 -14 0 -28Z"/>
+  </g>
+  <g fill="#8FA98F" opacity="0.85">
+    <path d="M96 342 q-24 -6 -30 -30 q26 2 30 30Z"/>
+    <path d="M212 100 q22 -8 30 -30 q-26 0 -30 30Z"/>
+  </g>
+  <text x="150" y="190" text-anchor="middle" font-family="Georgia, serif" font-style="italic" font-size="28" fill="#556B4E">Mawar</text>
+  <text x="150" y="224" text-anchor="middle" font-family="Verdana, sans-serif" font-size="14" letter-spacing="7" fill="#A8555A">BLUSH</text>
+  <g fill="#E8A5A5" opacity="0.85"><circle cx="120" cy="120" r="5"/><circle cx="186" cy="126" r="4"/></g>
+</svg>

@@ -52,11 +52,11 @@ export function LiveThemePreview({
       <div className="w-full transition-all duration-300">
         {currentMode === "mobile" ? (
           <IPhoneFrame>
-            <ThemeRenderer invitation={invitation} />
+            <ThemeRenderer invitation={invitation} preview />
           </IPhoneFrame>
         ) : (
           <BrowserFrame invitationSlug={invitation.slug}>
-            <ThemeRenderer invitation={invitation} />
+            <ThemeRenderer invitation={invitation} preview />
           </BrowserFrame>
         )}
       </div>

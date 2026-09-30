@@ -1,0 +1,21 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 300 400" role="img" aria-label="Pratinjau Padang Bunga Liar">
+  <rect width="300" height="400" fill="#F7F3E8"/>
+  <g fill="none" stroke="#8FA37E" stroke-width="1.6" stroke-linecap="round">
+    <path d="M40 400 C 46 330 30 290 46 240"/>
+    <path d="M110 400 C 104 340 120 300 110 250"/>
+    <path d="M200 400 C 208 330 190 292 206 236"/>
+    <path d="M268 400 C 262 340 278 302 268 256"/>
+  </g>
+  <g fill="#E0B44C">
+    <g transform="translate(46 232)">
+      <ellipse cx="0" cy="-10" rx="5" ry="10"/><ellipse cx="0" cy="-10" rx="5" ry="10" transform="rotate(60)"/><ellipse cx="0" cy="-10" rx="5" ry="10" transform="rotate(120)"/><ellipse cx="0" cy="-10" rx="5" ry="10" transform="rotate(180)"/><ellipse cx="0" cy="-10" rx="5" ry="10" transform="rotate(240)"/><ellipse cx="0" cy="-10" rx="5" ry="10" transform="rotate(300)"/>
+      <circle r="3" fill="#8A6D1F"/>
+    </g>
+    <circle cx="206" cy="230" r="7"/><circle cx="110" cy="246" r="6"/>
+  </g>
+  <g fill="#9B8FC0">
+    <ellipse cx="268" cy="248" rx="4" ry="6"/><ellipse cx="274" cy="258" rx="4" ry="6"/><ellipse cx="262" cy="258" rx="4" ry="6"/>
+  </g>
+  <text x="150" y="180" text-anchor="middle" font-family="Georgia, serif" font-size="23" fill="#5E6B4E">Padang</text>
+  <text x="150" y="212" text-anchor="middle" font-family="Verdana, sans-serif" font-size="13" letter-spacing="4" fill="#8A6D1F">BUNGA LIAR</text>
+</svg>

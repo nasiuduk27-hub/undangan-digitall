@@ -34,6 +34,41 @@ const THEMES = [
     desc: "Bentuk pil tebal, wavy divider, badge stempel vintage, Fraunces + DM Sans",
     palette: ["#FDF8EE", "#D96B27", "#EBB035"],
   },
+  {
+    id: "melati-kencana",
+    name: "Melati Kencana",
+    category: "Klasik / Adat",
+    desc: "Bingkai bunga melati & mawar watercolor, garis emas, monogram melingkar",
+    palette: ["#FFFCF5", "#B8860B", "#5C1A1A"],
+  },
+  {
+    id: "sekar-jagad-nusantara",
+    name: "Sekar Jagad Nusantara",
+    category: "Klasik / Adat",
+    desc: "Motif batik sebagai border & divider, warna maroon-emas tradisional",
+    palette: ["#FAF3E8", "#8B2E2E", "#C9A34E"],
+  },
+  {
+    id: "mawar-blush",
+    name: "Mawar Blush",
+    category: "Klasik / Adat",
+    desc: "Karangan mawar blush pink dengan daun sage, nuansa romantis hangat",
+    palette: ["#FFF6F4", "#E8A5A5", "#7A9A7E"],
+  },
+  {
+    id: "padang-bunga-liar",
+    name: "Padang Bunga Liar",
+    category: "Klasik / Adat",
+    desc: "Ilustrasi bunga liar tersebar organik, palet sage-krem-mustard",
+    palette: ["#F7F3E8", "#8FA37E", "#E0B44C"],
+  },
+  {
+    id: "anggrek-bulan-elegan",
+    name: "Anggrek Bulan Elegan",
+    category: "Klasik / Adat",
+    desc: "Anggrek bulan putih, aksen garis emas, tata letak simetris formal",
+    palette: ["#FBFAF7", "#1F4D3A", "#C6A75E"],
+  },
 ];
 
 function NewInvitationForm() {

@@ -214,6 +214,9 @@ Katalog terdiri dari 2 kategori dengan tujuan berbeda: **Non-Mainstream** (4 tem
 | --- | --- | --- | --- |
 | Melati Kencana | #FFFCF5 #B8860B #5C1A1A | Playfair Display (Italic) / Lora | Bingkai bunga melati & mawar watercolor, garis emas tipis (gold foil), inisial pasangan dalam monogram melingkar, ornamen sudut khas undangan klasik |
 | Sekar Jagad Nusantara | #FAF3E8 #8B2E2E #C9A34E | Cormorant / Plus Jakarta Sans | Motif batik/kain adat sebagai border & divider, ornamen ukiran khas daerah (dapat disesuaikan per adat: Jawa/Sunda/Bali), warna maroon-emas tradisional |
+| Mawar Blush | #FFF6F4 #E8A5A5 #7A9A7E | Cormorant Garamond (Italic) / Nunito Sans | Karangan mawar watercolor blush pink dengan daun hijau sage, sudut lembut, nuansa romantis hangat |
+| Padang Bunga Liar | #F7F3E8 #8FA37E #E0B44C | Libre Baskerville / Karla | Ilustrasi bunga liar (daisy, lavender, bunga kuning) tersebar organik di tepi halaman, palet sage-krem-mustard, kesan taman outdoor santai |
+| Anggrek Bulan Elegan | #FBFAF7 #1F4D3A #C6A75E | Bodoni Moda / Lato | Anggrek bulan putih dengan daun hijau tua, aksen garis emas, tata letak simetris formal untuk acara resmi |
 
 Kedua tema klasik ini tetap wajib mengikuti seluruh Kontrak Portabilitas Tema (bagian 13) dan aturan aksesibilitas/kontras yang sama — hanya gaya visualnya yang berbeda dari koleksi non-mainstream.
 
@@ -290,12 +293,25 @@ Prinsip: animasi bukan hiasan generik yang sama di semua tema (hindari pola "amp
 | Raw Wabi-Sabi | Ink-bleed pada nama pasangan (tinta menyebar); transisi antar-section dengan mask tekstur kertas tak beraturan; partikel debu mengendap di cover | SVG filter/mask + GSAP untuk animasi path |
 | Cyber-Celestial Noir | Partikel bintang membentuk nama pasangan (constellation forming); teks muncul karakter-per-karakter gaya terminal boot-up; portal tipis sebagai transisi | Canvas/WebGL ringan atau GSAP untuk particle animation |
 | 70s Warm Groovy | Blob morphing bergerak lambat sebagai background; garis wavy "digambar" (draw-on) sebagai divider; vinyl berputar dekat tombol audio | CSS `@keyframes` untuk blob & vinyl, SVG stroke-dashoffset untuk draw-on |
+| Melati Kencana | **Melati mekar:** kuncup melati di tengah layar mekar perlahan lalu kelopaknya membelah ke kiri-kanan membuka cover; garis emas "digambar" mengelilingi nama pasangan | SVG path + GSAP timeline, sekali putar saat tombol "Buka Undangan" ditekan |
+| Sekar Jagad Nusantara | **Tirai kain adat:** dua panel bermotif batik tersibak ke samping seperti tirai, memperlihatkan cover; motif border muncul bertahap | Dua elemen dengan `transform: translateX` (Framer Motion), tekstur batik berupa SVG pattern ringan |
+| Mawar Blush | **Kelopak berjatuhan:** kelopak mawar jatuh melayang dari atas layar saat undangan dibuka, cover muncul dengan fade lembut; kelopak mereda setelah beberapa detik | Partikel CSS/canvas ringan (maks. 20 kelopak di mobile), berhenti otomatis |
+| Padang Bunga Liar | **Bunga tumbuh:** batang dan bunga liar tumbuh dari tepi bawah layar ke atas (draw-on), lalu cover terbuka di antara tanaman | SVG stroke-dashoffset + GSAP, dijalankan sekali |
+| Anggrek Bulan Elegan | **Gerbang bunga:** dua panel berhias anggrek membuka pelan ke kiri-kanan dengan easing halus, garis emas menyala tipis saat panel terbuka | Framer Motion dengan easing lambat, tanpa partikel agar tetap terasa formal |
 
 **Interaksi lintas-tema (opsional, tidak spesifik satu tema):**
 
 - *Scroll-triggered reveal* — konten section muncul bertahap sesuai scroll, bukan animasi total di awal saja (lebih ramah performa mobile).
 - *Tekan & tahan untuk membuka* — progress ring mengisi saat ditahan, sebagai pengganti tap amplop yang mainstream.
 - *Polaroid develop* — foto upload user muncul perlahan seperti foto polaroid baru dicetak, relevan karena media di-upload sendiri oleh user.
+
+**Aturan animasi buka undangan (berlaku untuk semua tema):**
+
+- Dipicu tombol "Buka Undangan" di Cover/Gate (sekaligus memulai audio, sesuai kebijakan autoplay browser).
+- Durasi total maksimal sekitar 3–4 detik, dan tersedia tombol *Lewati* atau tap di mana saja untuk langsung membuka.
+- Animasi hanya berjalan sekali per kunjungan; kunjungan berikutnya di sesi yang sama boleh langsung membuka.
+- Jumlah partikel (kelopak, dll) dikurangi otomatis di perangkat mobile/koneksi lambat; dengan `prefers-reduced-motion` diganti transisi fade sederhana.
+- Animasi juga bisa dicoba di preview editor dan halaman pratinjau tema publik.
 
 Wajib hormati `prefers-reduced-motion` (lihat bagian 12) — semua animasi signature di atas harus punya fallback statis/instan untuk tamu yang sensitif gerak.
 

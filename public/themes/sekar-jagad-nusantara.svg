@@ -1,0 +1,17 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 300 400" role="img" aria-label="Pratinjau Sekar Jagad Nusantara">
+  <rect width="300" height="400" fill="#FAF3E8"/>
+  <defs>
+    <pattern id="batik" width="40" height="40" patternUnits="userSpaceOnUse">
+      <g stroke="#8B2E2E" stroke-width="1" fill="none" opacity="0.5">
+        <circle cx="10" cy="10" r="6"/><circle cx="30" cy="30" r="6"/>
+        <path d="M10 4 q6 6 0 12 q-6 -6 0 -12Z"/><path d="M30 24 q6 6 0 12 q-6 -6 0 -12Z"/>
+      </g>
+      <g stroke="#C9A34E" stroke-width="0.9" opacity="0.6"><path d="M0 20 H40 M20 0 V40"/></g>
+    </pattern>
+  </defs>
+  <rect x="14" y="14" width="272" height="372" fill="url(#batik)"/>
+  <rect x="34" y="148" width="232" height="104" fill="#FAF3E8" stroke="#C9A34E" stroke-width="1.4"/>
+  <text x="150" y="192" text-anchor="middle" font-family="Georgia, serif" font-size="24" fill="#8B2E2E">Sekar Jagad</text>
+  <text x="150" y="224" text-anchor="middle" font-family="Georgia, serif" font-size="14" letter-spacing="4" fill="#C9A34E">NUSANTARA</text>
+  <g fill="#8B2E2E" opacity="0.85"><circle cx="150" cy="132" r="2.4"/><circle cx="150" cy="268" r="2.4"/></g>
+</svg>

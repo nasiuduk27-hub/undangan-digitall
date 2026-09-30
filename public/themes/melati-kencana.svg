@@ -1,0 +1,24 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 300 400" role="img" aria-label="Pratinjau Melati Kencana">
+  <rect width="300" height="400" fill="#FFFCF5"/>
+  <rect x="14" y="14" width="272" height="372" fill="none" stroke="#B8860B" stroke-width="1.4" opacity="0.7"/>
+  <g fill="none" stroke="#B8860B" stroke-width="1.2" opacity="0.8">
+    <path d="M28 60 q40 4 60 34"/>
+    <path d="M272 340 q-40 -4 -60 -34"/>
+  </g>
+  <g fill="#FFFDF8" stroke="#C9A227" stroke-width="0.9">
+    <g transform="translate(60 64)">
+      <ellipse cx="0" cy="-9" rx="3.6" ry="9"/><ellipse cx="0" cy="-9" rx="3.6" ry="9" transform="rotate(72)"/><ellipse cx="0" cy="-9" rx="3.6" ry="9" transform="rotate(144)"/><ellipse cx="0" cy="-9" rx="3.6" ry="9" transform="rotate(216)"/><ellipse cx="0" cy="-9" rx="3.6" ry="9" transform="rotate(288)"/>
+      <circle r="2.6" fill="#B8860B"/>
+    </g>
+    <g transform="translate(238 328)">
+      <ellipse cx="0" cy="-8" rx="3.2" ry="8"/><ellipse cx="0" cy="-8" rx="3.2" ry="8" transform="rotate(72)"/><ellipse cx="0" cy="-8" rx="3.2" ry="8" transform="rotate(144)"/><ellipse cx="0" cy="-8" rx="3.2" ry="8" transform="rotate(216)"/><ellipse cx="0" cy="-8" rx="3.2" ry="8" transform="rotate(288)"/>
+      <circle r="2.2" fill="#B8860B"/>
+    </g>
+  </g>
+  <text x="150" y="196" text-anchor="middle" font-family="Georgia, serif" font-style="italic" font-size="26" fill="#5C1A1A">Melati</text>
+  <text x="150" y="232" text-anchor="middle" font-family="Georgia, serif" font-size="15" letter-spacing="6" fill="#B8860B">KENCANA</text>
+  <g fill="#8AA37E" opacity="0.85">
+    <path d="M84 108 q10 -12 24 -10 q-6 14 -24 10Z"/>
+    <path d="M216 292 q-10 12 -24 10 q6 -14 24 -10Z"/>
+  </g>
+</svg>

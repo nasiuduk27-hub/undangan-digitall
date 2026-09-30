@@ -26,6 +26,31 @@ const THEMES = [
     name: "70s Warm Groovy",
     palette: ["#FDF8EE", "#D96B27", "#EBB035"],
   },
+  {
+    id: "melati-kencana",
+    name: "Melati Kencana",
+    palette: ["#FFFCF5", "#B8860B", "#5C1A1A"],
+  },
+  {
+    id: "sekar-jagad-nusantara",
+    name: "Sekar Jagad Nusantara",
+    palette: ["#FAF3E8", "#8B2E2E", "#C9A34E"],
+  },
+  {
+    id: "mawar-blush",
+    name: "Mawar Blush",
+    palette: ["#FFF6F4", "#E8A5A5", "#7A9A7E"],
+  },
+  {
+    id: "padang-bunga-liar",
+    name: "Padang Bunga Liar",
+    palette: ["#F7F3E8", "#8FA37E", "#E0B44C"],
+  },
+  {
+    id: "anggrek-bulan-elegan",
+    name: "Anggrek Bulan Elegan",
+    palette: ["#FBFAF7", "#1F4D3A", "#C6A75E"],
+  },
 ];
 
 type MediaAsset = { id: string; type: string; url: string; status: string };

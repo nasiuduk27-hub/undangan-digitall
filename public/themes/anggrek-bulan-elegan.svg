@@ -1,0 +1,19 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 300 400" role="img" aria-label="Pratinjau Anggrek Bulan Elegan">
+  <rect width="300" height="400" fill="#FBFAF7"/>
+  <rect x="16" y="16" width="268" height="368" fill="none" stroke="#C6A75E" stroke-width="1.3" opacity="0.75"/>
+  <g fill="#16382A" opacity="0.9">
+    <path d="M150 300 q-30 -10 -38 -40 q34 2 38 40Z"/>
+    <path d="M150 280 q30 -12 36 -42 q-32 4 -36 42Z"/>
+  </g>
+  <g transform="translate(150 210)">
+    <ellipse cx="0" cy="-30" rx="15" ry="26" fill="#FFFFFF" stroke="#1F4D3A" stroke-width="1"/>
+    <ellipse cx="26" cy="-12" rx="13" ry="22" fill="#FFFFFF" stroke="#1F4D3A" stroke-width="1" transform="rotate(60 26 -12)"/>
+    <ellipse cx="26" cy="12" rx="13" ry="22" fill="#FFFFFF" stroke="#1F4D3A" stroke-width="1" transform="rotate(120 26 12)"/>
+    <ellipse cx="0" cy="30" rx="14" ry="24" fill="#FFFFFF" stroke="#1F4D3A" stroke-width="1"/>
+    <ellipse cx="-26" cy="12" rx="13" ry="22" fill="#FFFFFF" stroke="#1F4D3A" stroke-width="1" transform="rotate(-120 -26 12)"/>
+    <ellipse cx="-26" cy="-12" rx="13" ry="22" fill="#FFFFFF" stroke="#1F4D3A" stroke-width="1" transform="rotate(-60 -26 -12)"/>
+    <circle r="8" fill="#C6A75E"/><circle r="3.6" fill="#8A6D2F"/>
+  </g>
+  <text x="150" y="330" text-anchor="middle" font-family="Georgia, serif" font-size="22" fill="#1F4D3A">Anggrek Bulan</text>
+  <text x="150" y="356" text-anchor="middle" font-family="Verdana, sans-serif" font-size="12" letter-spacing="5" fill="#8A6D2F">ELEGAN</text>
+</svg>

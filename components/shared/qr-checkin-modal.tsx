@@ -2,6 +2,7 @@
 
 import { useEffect, useState } from "react";
 import { QrCode, X } from "lucide-react";
+import { isFloralTheme } from "@/lib/theme-style";
 
 interface QrCheckinModalProps {
   slug: string;
@@ -37,6 +38,7 @@ export function QrCheckinModal({
   const isBrutalist = themeId === "editorial-brutalism";
   const isWabi = themeId === "raw-wabi-sabi";
   const isCyber = themeId === "cyber-celestial-noir";
+  const isFloral = isFloralTheme(themeId);
 
   const buttonStyle = isBrutalist
     ? "border-2 border-black bg-[#D8FB38] text-black shadow-[3px_3px_0_#121212] hover:translate-y-0.5"
@@ -44,6 +46,8 @@ export function QrCheckinModal({
     ? "border border-[#2E241D]/30 bg-[#F7F0E8] text-[#2E241D] shadow-sm hover:bg-[#EBE5DC]"
     : isCyber
     ? "border border-[#00F5D4] bg-[#0C0E14] text-[#00F5D4] shadow-[0_0_10px_#00F5D4] hover:bg-[#00F5D4]/10"
+    : isFloral
+    ? "border border-[var(--f-border)] bg-[var(--f-accent)] text-[var(--f-accent-text)] shadow-sm hover:opacity-90"
     : "border-2 border-[#D96B27] bg-[#FFF2D0] text-[#D96B27] shadow-[2px_2px_0_#D96B27] hover:bg-[#FFE6A5]";
 
   const modalStyle = isBrutalist
@@ -52,6 +56,8 @@ export function QrCheckinModal({
     ? "border border-[#2E241D]/30 bg-[#F7F0E8] text-[#2E241D] rounded-2xl shadow-xl font-serif"
     : isCyber
     ? "border border-[#00F5D4]/50 bg-[#0C0E14] text-[#F4F7FB] rounded-2xl shadow-[0_0_30px_rgba(0,245,212,0.2)] font-mono"
+    : isFloral
+    ? "border border-[var(--f-border)] bg-[var(--f-surface)] text-[var(--f-text)] rounded-3xl shadow-xl"
     : "border-3 border-[#D96B27] bg-[#FFF2D0] text-[#3A2418] rounded-3xl shadow-[6px_6px_0_#D96B27] font-sans";
 
   return (
@@ -117,6 +123,8 @@ export function QrCheckinModal({
                     ? "bg-[#2E241D] text-[#EBE5DC] rounded-lg"
                     : isCyber
                     ? "bg-[#00F5D4] text-[#0C0E14] rounded-lg shadow-[0_0_10px_#00F5D4]"
+                    : isFloral
+                    ? "bg-[var(--f-accent)] text-[var(--f-accent-text)] rounded-full"
                     : "bg-[#D96B27] text-white rounded-full shadow-[2px_2px_0_#3A2418]"
                 }`}
               >

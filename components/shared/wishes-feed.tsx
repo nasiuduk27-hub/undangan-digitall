@@ -3,6 +3,7 @@
 import { useState } from "react";
 import { motion } from "framer-motion";
 import { MessageSquare } from "lucide-react";
+import { isFloralTheme } from "@/lib/theme-style";
 
 export type Wish = {
   id: string;
@@ -20,6 +21,7 @@ export function WishesFeed({
   themeId = "editorial-brutalism",
 }: WishesFeedProps) {
   const [isPaused, setIsPaused] = useState(false);
+  const isFloral = isFloralTheme(themeId);
 
   if (!wishes || wishes.length === 0) {
     if (themeId === "cyber-celestial-noir") {
@@ -39,6 +41,13 @@ export function WishesFeed({
     if (themeId === "raw-wabi-sabi") {
       return (
         <div className="border border-dashed border-[#2E241D]/30 p-4 text-center font-serif text-xs italic text-[#2E241D]/60">
+          Belum ada ucapan.
+        </div>
+      );
+    }
+    if (isFloral) {
+      return (
+        <div className="rounded-2xl border border-dashed border-[var(--f-border)] p-4 text-center text-xs italic text-[var(--f-muted)]">
           Belum ada ucapan.
         </div>
       );
@@ -87,6 +96,17 @@ export function WishesFeed({
         >
           <p className="font-serif text-xs italic text-[#BFA054]">{wish.guest.name}</p>
           <p className="mt-1 font-sans text-xs text-[#2E241D]">{wish.wish_message}</p>
+        </article>
+      );
+    }
+    if (isFloral) {
+      return (
+        <article
+          key={`${wish.id}-${idx}`}
+          className="rounded-2xl border border-[var(--f-border)] bg-[var(--f-surface)] p-4 shadow-sm"
+        >
+          <p className="text-xs italic text-[var(--f-accent-strong)]">{wish.guest.name}</p>
+          <p className="mt-1 text-xs leading-relaxed text-[var(--f-text)]">{wish.wish_message}</p>
         </article>
       );
     }

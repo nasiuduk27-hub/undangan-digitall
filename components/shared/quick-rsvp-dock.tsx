@@ -1,7 +1,8 @@
 "use client";
 
-import { useState } from "react";
+import { useState, type RefObject } from "react";
 import { Check, X, HelpCircle, CheckCircle2, XCircle, Pause, Play, Sparkles } from "lucide-react";
+import { getFloralAccent } from "@/lib/theme-style";
 
 type ThemeId = "editorial-brutalism" | "raw-wabi-sabi" | "cyber-celestial-noir" | "70s-warm-groovy";
 
@@ -14,6 +15,7 @@ interface QuickRsvpDockProps {
   initialPax?: number;
   initialWish?: string | null;
   audioUrl?: string | null;
+  audioRef?: RefObject<HTMLAudioElement | null>;
   className?: string;
   isDesktopNav?: boolean;
 }
@@ -27,6 +29,7 @@ export function QuickRsvpDock({
   initialPax = 1,
   initialWish = "",
   audioUrl,
+  audioRef,
   className = "",
   isDesktopNav = false,
 }: QuickRsvpDockProps) {
@@ -40,8 +43,10 @@ export function QuickRsvpDock({
   const [errorMessage, setErrorMessage] = useState<string>("");
   const [isPlayingAudio, setIsPlayingAudio] = useState<boolean>(false);
 
+  const floral = getFloralAccent(themeId);
+
   const handleAudioToggle = () => {
-    const el = document.querySelector<HTMLAudioElement>("audio");
+    const el = audioRef?.current ?? document.querySelector<HTMLAudioElement>("audio");
     if (!el) return;
     if (el.paused) {
       el.play()
@@ -123,6 +128,41 @@ export function QuickRsvpDock({
   // THEME BUTTON RENDERERS
   // -------------------------------------------------------------
   const renderQuickButtons = () => {
+    if (floral) {
+      const options = [
+        { status: "hadir" as const, label: "Hadir", Icon: Check },
+        { status: "tidak" as const, label: "Tidak", Icon: X },
+        { status: "ragu" as const, label: "Mungkin", Icon: HelpCircle },
+      ];
+      return (
+        <div
+          className="grid w-full grid-cols-3 gap-1 rounded-full p-1"
+          style={{ border: `1px solid ${floral.border}`, backgroundColor: floral.surface }}
+        >
+          {options.map(({ status, label, Icon }) => {
+            const active = selectedStatus === status;
+            return (
+              <button
+                key={status}
+                type="button"
+                onClick={() => handleQuickPick(status)}
+                disabled={isSavingQuick}
+                className="flex items-center justify-center gap-1.5 rounded-full px-2 py-1.5 text-xs transition"
+                style={
+                  active
+                    ? { backgroundColor: floral.accent, color: floral.accentText, fontWeight: 600 }
+                    : { color: floral.text, opacity: 0.85 }
+                }
+              >
+                <Icon className="h-3.5 w-3.5" />
+                <span>{label}</span>
+              </button>
+            );
+          })}
+        </div>
+      );
+    }
+
     switch (themeId) {
       case "raw-wabi-sabi":
         return (
@@ -319,8 +359,15 @@ export function QuickRsvpDock({
               ? "border border-[#2E241D]/30 bg-[#EBE5DC] text-[#2E241D] rounded-2xl shadow-xl font-serif"
               : isCyber
               ? "border border-[#00F5D4]/50 bg-[#0C0E14] text-[#F4F7FB] rounded-2xl shadow-[0_0_30px_rgba(0,245,212,0.2)] font-mono"
+              : floral
+              ? "rounded-3xl border shadow-lg"
               : "border-3 border-[#D96B27] bg-[#FDF8EE] text-[#3A2418] rounded-3xl shadow-[6px_6px_0_#D96B27] font-sans"
           }`}
+          style={
+            floral
+              ? { backgroundColor: floral.surface, color: floral.text, borderColor: floral.border }
+              : undefined
+          }
         >
           <div className="flex items-center justify-between pb-3 border-b border-current/20">
             <div>
@@ -422,8 +469,11 @@ export function QuickRsvpDock({
                     ? "bg-[#2E241D] text-[#EBE5DC] rounded-lg"
                     : isCyber
                     ? "bg-[#00F5D4] text-[#0C0E14] rounded-lg shadow-[0_0_10px_#00F5D4]"
+                    : floral
+                    ? "rounded-full"
                     : "bg-[#D96B27] text-white rounded-full shadow-[2px_2px_0_#3A2418]"
                 }`}
+                style={floral ? { backgroundColor: floral.accent, color: floral.accentText } : undefined}
               >
                 {isSavingDetail ? "Menyimpan..." : "Simpan Detail"}
               </button>
@@ -467,8 +517,15 @@ export function QuickRsvpDock({
                 ? "rounded-full border border-[#2E241D]/30 bg-[#F7F0E8] text-[#2E241D] shadow-sm"
                 : themeId === "cyber-celestial-noir"
                 ? "rounded-full border border-[#00F5D4] bg-[#0C0E14] text-[#00F5D4] shadow-[0_0_10px_#00F5D4]"
+                : floral
+                ? "rounded-full border shadow-sm"
                 : "rounded-full border-2 border-[#D96B27] bg-[#FFF2D0] text-[#D96B27] shadow-[2px_2px_0_#D96B27]"
             }`}
+            style={
+              floral
+                ? { backgroundColor: floral.accent, color: floral.accentText, borderColor: floral.border }
+                : undefined
+            }
             aria-label={isPlayingAudio ? "Pause Audio" : "Play Audio"}
           >
             {isPlayingAudio ? (

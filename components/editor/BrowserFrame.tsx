@@ -35,7 +35,7 @@ export function BrowserFrame({
       </div>
 
       {/* Browser Screen Content Area */}
-      <div className="relative h-[680px] w-full overflow-y-auto overflow-x-auto bg-white scrollbar-thin scrollbar-thumb-gray-400">
+      <div className="relative h-[680px] w-full overflow-y-auto overflow-x-auto bg-white scrollbar-thin scrollbar-thumb-gray-400 [transform:translateZ(0)]">
         <div className="min-w-[1024px] w-full min-h-full">
           {children}
         </div>

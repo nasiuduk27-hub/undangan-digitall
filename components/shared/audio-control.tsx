@@ -1,18 +1,21 @@
 "use client";
 
-import { useRef, useState } from "react";
+import { useRef, useState, type RefObject } from "react";
 import { Pause, Play } from "lucide-react";
 
 export function AudioControl({
   audioUrl,
   desktopClassName,
   label = "Audio",
+  audioRef: externalRef,
 }: {
   audioUrl?: string | null;
   desktopClassName?: string;
   label?: string;
+  audioRef?: RefObject<HTMLAudioElement | null>;
 }) {
-  const audioRef = useRef<HTMLAudioElement>(null);
+  const internalRef = useRef<HTMLAudioElement>(null);
+  const audioRef = externalRef ?? internalRef;
   const [playing, setPlaying] = useState(false);
 
   if (!audioUrl) return null;

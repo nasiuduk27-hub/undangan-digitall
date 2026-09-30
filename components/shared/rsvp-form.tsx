@@ -2,6 +2,7 @@
 
 import { useState } from "react";
 import { CheckCircle2, XCircle, HelpCircle, Sparkles, Edit3 } from "lucide-react";
+import { isFloralTheme } from "@/lib/theme-style";
 
 export function RsvpForm({
   slug,
@@ -97,6 +98,7 @@ export function RsvpForm({
   const isCyber = themeId === "cyber-celestial-noir";
   const isGroovy = themeId === "70s-warm-groovy";
   const isWabi = themeId === "raw-wabi-sabi";
+  const isFloral = isFloralTheme(themeId);
   const isBrutalist = themeId === "editorial-brutalism" || (!isCyber && !isGroovy && !isWabi);
 
   const containerStyle = isCyber
@@ -105,6 +107,8 @@ export function RsvpForm({
     ? "border-2 border-[#D96B27] bg-[#FFF2D0] p-5 lg:p-6 text-[#3A2418] rounded-3xl shadow-[5px_5px_0_#D96B27] font-sans"
     : isWabi
     ? "border border-[#2E241D]/30 bg-[#F7F0E8] p-5 lg:p-6 text-[#2E241D] rounded-xl shadow-sm font-serif"
+    : isFloral
+    ? "border border-[var(--f-border)] bg-[var(--f-surface)] p-5 lg:p-6 text-[var(--f-text)] rounded-[1.75rem] shadow-sm"
     : "border-2 border-black bg-white p-5 shadow-[6px_6px_0_#121212]";
 
   const tagStyle = isCyber
@@ -113,6 +117,8 @@ export function RsvpForm({
     ? "font-serif text-xs font-bold uppercase tracking-wider text-[#D96B27]"
     : isWabi
     ? "font-serif text-xs uppercase tracking-widest text-[#2E241D]/60"
+    : isFloral
+    ? "text-xs italic uppercase tracking-[0.3em] text-[var(--f-accent-strong)]"
     : "font-mono text-xs uppercase tracking-[0.2em] text-black/60";
 
   const titleStyle = isCyber
@@ -121,6 +127,8 @@ export function RsvpForm({
     ? "mt-2 font-serif text-2xl font-bold uppercase leading-none text-[#D96B27]"
     : isWabi
     ? "mt-2 font-serif text-2xl font-normal uppercase leading-none text-[#2E241D]"
+    : isFloral
+    ? "mt-2 text-2xl leading-none text-[var(--f-text)]"
     : "mt-2 text-2xl font-black uppercase leading-none";
 
   const subStyle = isCyber
@@ -129,6 +137,8 @@ export function RsvpForm({
     ? "mt-3 text-sm text-[#3A2418]/80 font-sans"
     : isWabi
     ? "mt-3 text-sm text-[#2E241D]/80 font-serif"
+    : isFloral
+    ? "mt-3 text-sm text-[var(--f-muted)]"
     : "mt-3 text-sm text-black/70";
 
   return (
@@ -161,6 +171,12 @@ export function RsvpForm({
                   selectedStatus === "hadir"
                     ? "bg-[#2E241D] text-[#EBE5DC] border-[#2E241D]"
                     : "border-[#2E241D]/30 bg-[#EBE5DC] text-[#2E241D]/80 hover:bg-[#2E241D]/10"
+                }`
+              : isFloral
+              ? `flex flex-col items-center justify-center p-3 rounded-full border text-xs transition ${
+                  selectedStatus === "hadir"
+                    ? "bg-[var(--f-accent)] text-[var(--f-accent-text)] border-[var(--f-accent)]"
+                    : "border-[var(--f-border)] bg-[var(--f-surface)] text-[var(--f-text)] hover:bg-[var(--f-accent)]/10"
                 }`
               : `flex flex-col items-center justify-center p-3 border-2 border-black font-mono text-xs font-black uppercase transition ${
                   selectedStatus === "hadir"
@@ -196,6 +212,12 @@ export function RsvpForm({
                     ? "bg-[#2E241D] text-[#EBE5DC] border-[#2E241D]"
                     : "border-[#2E241D]/30 bg-[#EBE5DC] text-[#2E241D]/80 hover:bg-[#2E241D]/10"
                 }`
+              : isFloral
+              ? `flex flex-col items-center justify-center p-3 rounded-full border text-xs transition ${
+                  selectedStatus === "ragu"
+                    ? "bg-[var(--f-accent)] text-[var(--f-accent-text)] border-[var(--f-accent)]"
+                    : "border-[var(--f-border)] bg-[var(--f-surface)] text-[var(--f-text)] hover:bg-[var(--f-accent)]/10"
+                }`
               : `flex flex-col items-center justify-center p-3 border-2 border-black font-mono text-xs font-black uppercase transition ${
                   selectedStatus === "ragu"
                     ? "bg-amber-300 text-black shadow-[2px_2px_0_#121212]"
@@ -229,6 +251,12 @@ export function RsvpForm({
                   selectedStatus === "tidak"
                     ? "bg-[#2E241D] text-[#EBE5DC] border-[#2E241D]"
                     : "border-[#2E241D]/30 bg-[#EBE5DC] text-[#2E241D]/80 hover:bg-[#2E241D]/10"
+                }`
+              : isFloral
+              ? `flex flex-col items-center justify-center p-3 rounded-full border text-xs transition ${
+                  selectedStatus === "tidak"
+                    ? "bg-[var(--f-accent)] text-[var(--f-accent-text)] border-[var(--f-accent)]"
+                    : "border-[var(--f-border)] bg-[var(--f-surface)] text-[var(--f-text)] hover:bg-[var(--f-accent)]/10"
                 }`
               : `flex flex-col items-center justify-center p-3 border-2 border-black font-mono text-xs font-black uppercase transition ${
                   selectedStatus === "tidak"
@@ -272,6 +300,8 @@ export function RsvpForm({
                 ? "border border-[#2E241D]/30 bg-[#EBE5DC] text-[#2E241D] rounded-2xl shadow-xl font-serif"
                 : isCyber
                 ? "border border-[#00F5D4]/50 bg-[#0C0E14] text-[#F4F7FB] rounded-2xl shadow-[0_0_30px_rgba(0,245,212,0.2)] font-mono"
+                : isFloral
+                ? "border border-[var(--f-border)] bg-[var(--f-surface)] text-[var(--f-text)] rounded-3xl shadow-lg"
                 : "border-3 border-[#D96B27] bg-[#FDF8EE] text-[#3A2418] rounded-3xl shadow-[6px_6px_0_#D96B27] font-sans"
             }`}
           >
@@ -319,6 +349,8 @@ export function RsvpForm({
                           ? "border-2 border-black bg-white"
                           : isCyber
                           ? "border-[#00F5D4]/40 bg-[#151A24] text-[#00F5D4] rounded-lg"
+                          : isFloral
+                          ? "border border-[var(--f-border)] bg-[var(--f-surface)] text-[var(--f-text)] rounded-xl"
                           : "border-[#2E241D]/30 bg-white/80 rounded-lg"
                       }`}
                     />
@@ -374,6 +406,8 @@ export function RsvpForm({
                       ? "bg-[#2E241D] text-[#EBE5DC] rounded-lg"
                       : isCyber
                       ? "bg-[#00F5D4] text-[#0C0E14] rounded-lg shadow-[0_0_10px_#00F5D4]"
+                      : isFloral
+                      ? "bg-[var(--f-accent)] text-[var(--f-accent-text)] rounded-full"
                       : "bg-[#D96B27] text-white rounded-full shadow-[2px_2px_0_#3A2418]"
                   }`}
                 >

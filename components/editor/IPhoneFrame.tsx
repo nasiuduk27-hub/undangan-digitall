@@ -21,7 +21,7 @@ export function IPhoneFrame({ children }: { children: ReactNode }) {
         </div>
 
         {/* Screen Area */}
-        <div className="relative h-[680px] w-full overflow-y-auto rounded-[36px] bg-white scrollbar-thin scrollbar-thumb-gray-400">
+        <div className="relative h-[680px] w-full overflow-y-auto rounded-[36px] bg-white scrollbar-thin scrollbar-thumb-gray-400 [transform:translateZ(0)]">
           {children}
         </div>
 
