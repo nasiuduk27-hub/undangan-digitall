@@ -50,7 +50,7 @@ export function BankCard({
               />
             ) : (
               <div className="w-7 h-7 rounded-full bg-[#f1e4d8] text-[#a9724f] font-bold text-xs flex items-center justify-center">
-                {bankCode.slice(0, 2)}
+                {bankCode.slice(0, 2).toUpperCase()}
               </div>
             )}
           </div>

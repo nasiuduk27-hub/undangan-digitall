@@ -9,6 +9,7 @@ const NON_MAINSTREAM_IDS = new Set([
   "editorial-brutalism",
   "raw-wabi-sabi",
   "cyber-celestial-noir",
+  "70s-warm-groovy",
 ]);
 
 const THUMBNAILS: Record<string, string> = {
@@ -17,6 +18,10 @@ const THUMBNAILS: Record<string, string> = {
   "mawar-blush": "/themes/mawar-blush.svg",
   "padang-bunga-liar": "/themes/padang-bunga-liar.svg",
   "anggrek-bulan-elegan": "/themes/anggrek-bulan-elegan.svg",
+  "editorial-brutalism": "/themes/editorial-brutalism.svg",
+  "raw-wabi-sabi": "/themes/raw-wabi-sabi.svg",
+  "cyber-celestial-noir": "/themes/cyber-celestial-noir.svg",
+  "70s-warm-groovy": "/themes/70s-warm-groovy.svg",
 };
 
 const DESCRIPTIONS: Record<string, string> = {

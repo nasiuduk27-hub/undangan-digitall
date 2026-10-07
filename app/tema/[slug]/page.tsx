@@ -38,14 +38,22 @@ const DUMMY_INVITATION = (themeSlug: string) => ({
       bank_code: "bca",
       account_number: "1234567890",
       account_holder: "Rian Pratama",
-      bank: { name: "Bank Central Asia (BCA)", logo_url: "/banks/bca.png" },
+      bank: {
+        name: "Bank Central Asia (BCA)",
+        logo_url:
+          "https://upload.wikimedia.org/wikipedia/commons/5/5c/Bank_Central_Asia.svg",
+      },
     },
     {
       id: "b2",
       bank_code: "mandiri",
       account_number: "9876543210",
       account_holder: "Sarah Anindya",
-      bank: { name: "Bank Mandiri", logo_url: "/banks/mandiri.png" },
+      bank: {
+        name: "Bank Mandiri",
+        logo_url:
+          "https://upload.wikimedia.org/wikipedia/commons/a/ad/Bank_Mandiri_logo_2016.svg",
+      },
     },
   ],
 });

@@ -18,6 +18,16 @@ type Theme = {
   description?: string;
 };
 
+// Label tampil kategori — disamakan dengan label tombol filter di bawah.
+const CATEGORY_LABELS: Record<string, string> = {
+  "Klasik-Adat": "Klasik / Adat",
+  "Non-Mainstream": "Non-Mainstream",
+};
+
+function categoryLabel(category: string): string {
+  return CATEGORY_LABELS[category] ?? category;
+}
+
 export function ThemeCatalog() {
   const [themes, setThemes] = useState<Theme[]>([]);
   const [loading, setLoading] = useState(true);
@@ -133,7 +143,7 @@ export function ThemeCatalog() {
                   <div>
                     <div className="flex items-center justify-between gap-1 mb-3">
                       <span className="text-[10px] sm:text-xs font-semibold px-2.5 py-0.5 rounded-full bg-white border border-[#e7ddd0] text-[#7a6f63] truncate">
-                        {theme.category}
+                        {categoryLabel(theme.category)}
                       </span>
                       {theme.is_premium ? (
                         <span className="inline-flex items-center gap-1 text-[10px] sm:text-xs font-bold px-2 py-0.5 rounded-full bg-[#2b2420] text-amber-300">

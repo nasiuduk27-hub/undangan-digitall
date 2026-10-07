@@ -15,13 +15,13 @@ import {
 } from "lucide-react";
 
 export const metadata: Metadata = {
-  title: "Undanganku — Platform Undangan Nikahan Digital Modern & Elegan",
+  title: "Undanganku — Platform Undangan Pernikahan Digital Modern & Elegan",
   description:
     "Buat undangan pernikahan digital impian dengan tema unik, upload musik & galeri foto/video sendiri, rekening bank otomatis, link personal tamu, serta QR check-in.",
   openGraph: {
-    title: "Undanganku — Platform Undangan Nikahan Digital",
+    title: "Undanganku — Platform Undangan Pernikahan Digital",
     description:
-      "Platform undangan nikahan digital modern, mobile-first, dan elegan. Gratis buat sekarang.",
+      "Platform undangan pernikahan digital modern, mobile-first, dan elegan. Gratis buat sekarang.",
     type: "website",
   },
 };
@@ -41,7 +41,7 @@ export default function HomePage() {
           </div>
 
           <h1 className="text-4xl sm:text-6xl lg:text-7xl font-bold tracking-tight text-[#2b2420] max-w-4xl mx-auto leading-[1.15]">
-            Momen Spesial Anda, Didokumentasikan dengan <span className="text-[#a9724f]">Sempurna</span>
+            Momen Spesial Anda, Dirayakan dengan <span className="text-[#a9724f]">Sempurna</span>
           </h1>
 
           <p className="mt-6 text-base sm:text-lg lg:text-xl text-[#7a6f63] max-w-2xl mx-auto leading-relaxed">
@@ -270,6 +270,26 @@ export default function HomePage() {
                 </p>
               </div>
             ))}
+          </div>
+        </div>
+      </section>
+
+      {/* 7. Closing CTA */}
+      <section className="py-16 md:py-20 bg-white border-t border-[#e7ddd0]">
+        <div className="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
+          <h2 className="text-3xl font-bold tracking-tight text-[#2b2420] sm:text-4xl">
+            Siap membuat undangan impian Anda?
+          </h2>
+          <p className="mt-3 text-[#7a6f63] text-sm sm:text-base">
+            Pilih tema favorit, isi detail acara, dan bagikan ke tamu dalam hitungan menit.
+          </p>
+          <div className="mt-8">
+            <Link
+              href="/register"
+              className="inline-flex items-center gap-2 px-8 py-3.5 rounded-xl bg-[#a9724f] text-white text-sm font-semibold hover:bg-[#8f5f40] transition-all shadow-md hover:shadow-lg"
+            >
+              Daftar Gratis <ArrowRight className="w-4 h-4" />
+            </Link>
           </div>
         </div>
       </section>

@@ -22,6 +22,7 @@ export async function GET(
               where: {
                 OR: [
                   { slug_token: token },
+                  { slug_token: token.slice(-16) },
                   { name: { equals: token, mode: "insensitive" } },
                   { name: { equals: token.replace(/-/g, " "), mode: "insensitive" } },
                 ],

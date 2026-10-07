@@ -3,7 +3,7 @@ import "./globals.css";
 import { Providers } from "@/components/providers";
 
 export const metadata: Metadata = {
-  title: "Undangan Nikahan Digital",
+  title: "Undangan Pernikahan Digital",
   description: "Platform Undangan Pernikahan Digital Eksklusif & Modern",
 };
 

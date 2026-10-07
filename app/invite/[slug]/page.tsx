@@ -26,6 +26,7 @@ export default async function InvitePage({
             where: {
               OR: [
                 { slug_token: to },
+                { slug_token: to.slice(-16) },
                 { name: { equals: to, mode: "insensitive" } },
                 { name: { equals: to.replace(/-/g, " "), mode: "insensitive" } },
               ],
